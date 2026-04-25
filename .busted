@@ -14,7 +14,7 @@ local spairs = tablex.sort
 local unpack = table.unpack or unpack
 
 local it = busted.it
-local case_keys = Set({ "args", "expected", "init", "throws" })
+local case_keys = Set({ "args", "assert", "expected", "init", "throws" })
 
 local function is_list(t)
   for k in pairs(t) do
@@ -79,6 +79,22 @@ local function flatten_cases(cases)
   return res
 end
 
+local function unpack_args(args)
+  if args == nil then
+    return
+  end
+  local n = args.n
+  if n == nil then
+    n = 0
+    for k in pairs(args) do
+      if type(k) == "number" and k % 1 == 0 and k > n then
+        n = k
+      end
+    end
+  end
+  return unpack(args, 1, n)
+end
+
 local function each(name, api, tests)
   local label_name = name or ""
 
@@ -93,13 +109,13 @@ local function each(name, api, tests)
 
         local function invoke()
           if fname == "__call" then
-            return api(unpack(case.args or {}))
+            return api(unpack_args(case.args))
           end
           if has_method then
-            local obj = api(unpack(case.init))
-            return obj[fname](obj, unpack(case.args or {}))
+            local obj = api(unpack_args(case.init))
+            return obj[fname](obj, unpack_args(case.args))
           end
-          return api[fname](unpack(case.args or {}))
+          return api[fname](unpack_args(case.args))
         end
 
         local label
@@ -114,13 +130,10 @@ local function each(name, api, tests)
         it(label, function()
           if case.throws then
             assert.Error(invoke, type(case.throws) == "string" and case.throws or nil)
+          elseif case["assert"] ~= nil then
+            case["assert"](invoke())
           else
-            local res = invoke()
-            if type(case.expected) == "function" then
-              case.expected(res)
-            else
-              assert.Same(case.expected, res)
-            end
+            assert.Same(case.expected, invoke())
           end
         end)
       end
