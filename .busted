@@ -1,18 +1,131 @@
+local List = require "pl.List"
+local Set = require "pl.Set"
 local assert = require "luassert"
-local ins = require "inspect"
+local busted = require "busted"
 local say = require "say"
+local tablex = require "pl.tablex"
 local util = require "luassert.util"
+local pretty = require "pl.pretty".write
 
-local remove_all_metatables = function(item, path)
-  if path[#path] ~= ins.METATABLE then
-    return item
+local fmt = string.format
+local flr = math.floor
+local find = string.find
+local spairs = tablex.sort
+local unpack = table.unpack or unpack
+
+local it = busted.it
+local case_keys = Set({ "args", "expected", "init", "throws" })
+
+local function is_list(t)
+  for k in pairs(t) do
+    if type(k) ~= "number" or k < 1 or k > #t or k ~= flr(k) then
+      return false
+    end
   end
+  return true
 end
 
-_G._TEST = true
-_G.unpack = table.unpack or unpack
-_G.inspect = function(v)
-  return ins(v, { process = remove_all_metatables })
+local function quote(v)
+  if type(v) ~= "string" then
+    return v
+  end
+  if find(v, '"', 1, true) and not find(v, "'", 1, true) then
+    return "'" .. v .. "'"
+  end
+  return '"' .. v:gsub('"', '\\"') .. '"'
+end
+
+local function stringify(v, strip_braces)
+  if v == nil then
+    return ""
+  end
+  local vt = type(v)
+  local res = (vt == "table" and is_list(v)) and "{ " .. List(v):map(quote):join(", ") .. " }" or pretty(v)
+  if strip_braces and vt == "table" then
+    return res:sub(3, -3)
+  end
+  return res
+end
+
+local function is_case(v)
+  if type(v) ~= "table" then
+    return false
+  end
+  for k in pairs(v) do
+    if case_keys[k] then
+      return true
+    end
+  end
+  return false
+end
+
+local function flatten_cases(cases)
+  local res = {}
+
+  local function append(case)
+    if type(case) == "function" or is_case(case) then
+      res[#res + 1] = case
+    elseif type(case) == "table" then
+      for i = 1, #case do
+        append(case[i])
+      end
+    end
+  end
+
+  for i = 1, #cases do
+    append(cases[i])
+  end
+
+  return res
+end
+
+local function each(name, api, tests)
+  local label_name = name or ""
+
+  for fname, t in spairs(tests) do
+    local cases = flatten_cases(t)
+    for i = 1, #cases do
+      local case = cases[i]
+      if type(case) == "function" then
+        it(fmt("%s.%s() [case %d]", label_name, fname, i), case)
+      else
+        local has_method = case.init
+
+        local function invoke()
+          if fname == "__call" then
+            return api(unpack(case.args or {}))
+          end
+          if has_method then
+            local obj = api(unpack(case.init))
+            return obj[fname](obj, unpack(case.args or {}))
+          end
+          return api[fname](unpack(case.args or {}))
+        end
+
+        local label
+        if fname == "__call" then
+          label = fmt("%s(%s)", label_name, stringify(case.args, true))
+        elseif has_method then
+          label = fmt("%s(%s):%s(%s)", label_name, stringify(case.init, true), fname, stringify(case.args, true))
+        else
+          label = fmt("%s.%s(%s)", label_name, fname, stringify(case.args, true))
+        end
+
+        it(label, function()
+          if case.throws then
+            assert.Error(invoke, type(case.throws) == "string" and case.throws or nil)
+          else
+            local res = invoke()
+            if type(case.expected) == "function" then
+              case.expected(res)
+            else
+              assert.Same(case.expected, res)
+            end
+          end
+        end)
+      end
+    end
+  end
 end
 
 local positive_msg = "assertion.callable.positive"
@@ -41,5 +154,8 @@ say:set(set_negative, "Expected object to not be a mods.Set.\nPassed in:\n%s\nDi
 assert:register("assertion", "set", function(_, args)
   return getmetatable(args[1]) == require "mods.Set"
 end, set_positive, set_negative)
+
+rawset(_G, "_TEST", true)
+rawset(_G, "each", each)
 
 return {}
