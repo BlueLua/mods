@@ -29,7 +29,24 @@ print(s:contains("a")) --> true
 | [`symmetric_difference_update(set)`](#fn-symmetric-difference-update) | Update the set with elements not shared by both (in place). |
 | [`update(set)`](#fn-update)                                           | Add all elements from another set (in place).               |
 
-**Copying**:
+**Predicates**:
+
+| Function                            | Description                                                      |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| [`equals(t)`](#fn-equals)           | Return true when both sets contain exactly the same members.     |
+| [`isdisjoint(set)`](#fn-isdisjoint) | Return true if sets have no elements in common.                  |
+| [`isempty()`](#fn-isempty)          | Return true if the set has no elements.                          |
+| [`issubset(t)`](#fn-issubset)       | Return true if all elements of this set are also in another set. |
+| [`issuperset(t)`](#fn-issuperset)   | Return true if this set contains all elements of another set.    |
+
+**Queries**:
+
+| Function                      | Description                               |
+| ----------------------------- | ----------------------------------------- |
+| [`contains(v)`](#fn-contains) | Return true if the set contains `v`.      |
+| [`len()`](#fn-len)            | Return the number of elements in the set. |
+
+**Set Operations**:
 
 | Function                                              | Description                                         |
 | ----------------------------------------------------- | --------------------------------------------------- |
@@ -40,39 +57,23 @@ print(s:contains("a")) --> true
 | [`symmetric_difference(t)`](#fn-symmetric-difference) | Return elements not shared by both sets.            |
 | [`union(t)`](#fn-union)                               | Return a new set with all elements from both.       |
 
-**Predicates**:
+**Transforms**:
 
-| Function                            | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| [`isdisjoint(set)`](#fn-isdisjoint) | Return true if sets have no elements in common.                  |
-| [`equals(t)`](#fn-equals)           | Return true when both sets contain exactly the same members.     |
-| [`isempty()`](#fn-isempty)          | Return true if the set has no elements.                          |
-| [`issubset(t)`](#fn-issubset)       | Return true if all elements of this set are also in another set. |
-| [`issuperset(t)`](#fn-issuperset)   | Return true if this set contains all elements of another set.    |
-
-**Query**:
-
-| Function                      | Description                               |
-| ----------------------------- | ----------------------------------------- |
-| [`contains(v)`](#fn-contains) | Return true if the set contains `v`.      |
-| [`len()`](#fn-len)            | Return the number of elements in the set. |
-
-**Transform**:
-
-| Function                          | Description                             |
-| --------------------------------- | --------------------------------------- |
-| [`map(fn)`](#fn-map)              | Return a new set by mapping each value. |
-| [`values()`](#fn-values)          | Return a list of all values in the set. |
-| [`tostring()`](#fn-tostring)      | Render the set as a string.             |
-| [`join(sep?, quoted?)`](#fn-join) | Join set values into a string.          |
+| Function                          | Description                                             |
+| --------------------------------- | ------------------------------------------------------- |
+| [`join(sep?, quoted?)`](#fn-join) | Join set values into a string.                          |
+| [`map(fn)`](#fn-map)              | Return a new set by mapping each value.                 |
+| [`mirror()`](#fn-mirror)          | Mirror values into a new table as both keys and values. |
+| [`tostring()`](#fn-tostring)      | Render the set as a string.                             |
+| [`values()`](#fn-values)          | Return a list of all values in the set.                 |
 
 **Metamethods**:
 
 | Function                       | Description                                                                |
 | ------------------------------ | -------------------------------------------------------------------------- |
 | [`__add(t)`](#fn-add)          | Return the union of two sets using `+`.                                    |
-| [`__bor(t)`](#fn-bor)          | Return the union of two sets using `\|`.                                   |
 | [`__band(t)`](#fn-band)        | Return the intersection of two sets using `&`.                             |
+| [`__bor(t)`](#fn-bor)          | Return the union of two sets using `\|`.                                   |
 | [`__bxor(t)`](#fn-bxor)        | Return elements present in exactly one set using `^`.                      |
 | [`__eq(t)`](#fn-eq)            | Return true if both sets contain exactly the same members using `==`.      |
 | [`__le(t)`](#fn-le)            | Return true if the left set is a subset of the right set using `<=`.       |
@@ -82,7 +83,7 @@ print(s:contains("a")) --> true
 
 ### Mutation
 
-In-place operations that mutate the current set. <a id="fn-add"></a>
+<a id="fn-add"></a>
 
 #### `add(v)`
 
@@ -216,9 +217,158 @@ Add all elements from another set (in place).
 s = Set({ "a" }):update(Set({ "b" })) --> s contains "a", "b"
 ```
 
-### Copying
+### Predicates
 
-Non-mutating set operations that return new set instances. <a id="fn-copy"></a>
+<a id="fn-equals"></a>
+
+#### `equals(t)`
+
+Return true when both sets contain exactly the same members.
+
+**Parameters**:
+
+- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
+
+**Return**:
+
+- `isEqual` (`boolean`): True when both sets contain the same members.
+
+**Example**:
+
+```lua
+a = Set({ "a", "b" })
+b = Set({ "b", "a" })
+ok = a:equals(b) --> true
+```
+
+> [!NOTE]
+>
+> `equals` is also available as the `__eq` (`==`) operator. `a:equals(b)` is
+> equivalent to `a == b`.
+
+<a id="fn-isdisjoint"></a>
+
+#### `isdisjoint(set)`
+
+Return true if sets have no elements in common.
+
+**Parameters**:
+
+- `set` (`T|mods.List`): Other set/list.
+
+**Return**:
+
+- `isDisjoint` (`boolean`): True when sets have no elements in common.
+
+**Example**:
+
+```lua
+ok = Set({ "a" }):isdisjoint(Set({ "b" })) --> true
+```
+
+<a id="fn-isempty"></a>
+
+#### `isempty()`
+
+Return true if the set has no elements.
+
+**Return**:
+
+- `isEmpty` (`boolean`): True when the set has no elements.
+
+**Example**:
+
+```lua
+empty = Set({}):isempty() --> true
+```
+
+<a id="fn-issubset"></a>
+
+#### `issubset(t)`
+
+Return true if all elements of this set are also in another set.
+
+**Parameters**:
+
+- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
+
+**Return**:
+
+- `isSubset` (`boolean`): True when every element of `self` exists in `set`.
+
+**Example**:
+
+```lua
+ok = Set({ "a" }):issubset(Set({ "a", "b" })) --> true
+```
+
+> [!NOTE]
+>
+> `issubset` is also available as the `__le` (`<=`) operator. `a:issubset(b)` is
+> equivalent to `a <= b`.
+
+<a id="fn-issuperset"></a>
+
+#### `issuperset(t)`
+
+Return true if this set contains all elements of another set.
+
+**Parameters**:
+
+- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
+
+**Return**:
+
+- `isSuperset` (`boolean`): True when `self` contains every element of `set`.
+
+**Example**:
+
+```lua
+ok = Set({ "a", "b" }):issuperset(Set({ "a" })) --> true
+```
+
+### Queries
+
+<a id="fn-contains"></a>
+
+#### `contains(v)`
+
+Return true if the set contains `v`.
+
+**Parameters**:
+
+- `v` (`any`): Value to check.
+
+**Return**:
+
+- `isPresent` (`boolean`): True when `v` is present in the set.
+
+**Example**:
+
+```lua
+ok = Set({ "a", "b" }):contains("a") --> true
+ok = Set({ "a", "b" }):contains("z") --> false
+```
+
+<a id="fn-len"></a>
+
+#### `len()`
+
+Return the number of elements in the set.
+
+**Return**:
+
+- `count` (`integer`): Element count.
+
+**Example**:
+
+```lua
+n = Set({ "a", "b" }):len() --> 2
+```
+
+### Set Operations
+
+<a id="fn-copy"></a>
 
 #### `copy()`
 
@@ -353,208 +503,7 @@ s = Set({ "a" }):union(Set({ "b" })) --> s contains "a", "b"
 > `union` is available as `__add` (`+`) and `__bor` (`|`) on Lua 5.3+.
 > `a:union(b)` is equivalent to `a + b` and `a | b`.
 
-### Predicates
-
-Boolean checks about set relationships and emptiness. <a id="fn-isdisjoint"></a>
-
-#### `isdisjoint(set)`
-
-Return true if sets have no elements in common.
-
-**Parameters**:
-
-- `set` (`T|mods.List`): Other set/list.
-
-**Return**:
-
-- `isDisjoint` (`boolean`): True when sets have no elements in common.
-
-**Example**:
-
-```lua
-ok = Set({ "a" }):isdisjoint(Set({ "b" })) --> true
-```
-
-<a id="fn-equals"></a>
-
-#### `equals(t)`
-
-Return true when both sets contain exactly the same members.
-
-**Parameters**:
-
-- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
-
-**Return**:
-
-- `isEqual` (`boolean`): True when both sets contain the same members.
-
-**Example**:
-
-```lua
-a = Set({ "a", "b" })
-b = Set({ "b", "a" })
-ok = a:equals(b) --> true
-```
-
-> [!NOTE]
->
-> `equals` is also available as the `__eq` (`==`) operator. `a:equals(b)` is
-> equivalent to `a == b`.
-
-<a id="fn-isempty"></a>
-
-#### `isempty()`
-
-Return true if the set has no elements.
-
-**Return**:
-
-- `isEmpty` (`boolean`): True when the set has no elements.
-
-**Example**:
-
-```lua
-empty = Set({}):isempty() --> true
-```
-
-<a id="fn-issubset"></a>
-
-#### `issubset(t)`
-
-Return true if all elements of this set are also in another set.
-
-**Parameters**:
-
-- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
-
-**Return**:
-
-- `isSubset` (`boolean`): True when every element of `self` exists in `set`.
-
-**Example**:
-
-```lua
-ok = Set({ "a" }):issubset(Set({ "a", "b" })) --> true
-```
-
-> [!NOTE]
->
-> `issubset` is also available as the `__le` (`<=`) operator. `a:issubset(b)` is
-> equivalent to `a <= b`.
-
-<a id="fn-issuperset"></a>
-
-#### `issuperset(t)`
-
-Return true if this set contains all elements of another set.
-
-**Parameters**:
-
-- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
-
-**Return**:
-
-- `isSuperset` (`boolean`): True when `self` contains every element of `set`.
-
-**Example**:
-
-```lua
-ok = Set({ "a", "b" }):issuperset(Set({ "a" })) --> true
-```
-
-### Query
-
-Read-only queries for membership and size. <a id="fn-contains"></a>
-
-#### `contains(v)`
-
-Return true if the set contains `v`.
-
-**Parameters**:
-
-- `v` (`any`): Value to check.
-
-**Return**:
-
-- `isPresent` (`boolean`): True when `v` is present in the set.
-
-**Example**:
-
-```lua
-ok = Set({ "a", "b" }):contains("a") --> true
-ok = Set({ "a", "b" }):contains("z") --> false
-```
-
-<a id="fn-len"></a>
-
-#### `len()`
-
-Return the number of elements in the set.
-
-**Return**:
-
-- `count` (`integer`): Element count.
-
-**Example**:
-
-```lua
-n = Set({ "a", "b" }):len() --> 2
-```
-
-### Transform
-
-Value-to-value transformations and projection helpers. <a id="fn-map"></a>
-
-#### `map(fn)`
-
-Return a new set by mapping each value.
-
-**Parameters**:
-
-- `fn` (`fun(v:any):any`): Mapping function.
-
-**Return**:
-
-- `set` (`mods.Set`): New set.
-
-**Example**:
-
-```lua
-s = Set({ 1, 2 }):map(function(v) return v * 10 end) --> s contains 10, 20
-```
-
-<a id="fn-values"></a>
-
-#### `values()`
-
-Return a list of all values in the set.
-
-**Return**:
-
-- `values` (`mods.List`): List of set values.
-
-**Example**:
-
-```lua
-values = Set({ "a", "b" }):values() --> { "a", "b" }
-```
-
-<a id="fn-tostring"></a>
-
-#### `tostring()`
-
-Render the set as a string.
-
-**Return**:
-
-- `renderedSet` (`string`): Rendered set string.
-
-**Example**:
-
-```lua
-s = Set({ "b", "a", 1 }):tostring() --> '{ 1, "a", "b" }'
-```
+### Transforms
 
 <a id="fn-join"></a>
 
@@ -581,6 +530,74 @@ s = Set({ "b", "a" }):join(", ", true) --> '"a", "b"'
 > [!NOTE]
 >
 > Join order is not guaranteed.
+
+<a id="fn-map"></a>
+
+#### `map(fn)`
+
+Return a new set by mapping each value.
+
+**Parameters**:
+
+- `fn` (`fun(v:any):any`): Mapping function.
+
+**Return**:
+
+- `set` (`mods.Set`): New set.
+
+**Example**:
+
+```lua
+s = Set({ 1, 2 }):map(function(v) return v * 10 end) --> s contains 10, 20
+```
+
+<a id="fn-mirror"></a>
+
+#### `mirror()`
+
+Mirror values into a new table as both keys and values.
+
+**Return**:
+
+- `mirroredValues` (`table<K,K>`): Table mapping each value to itself.
+
+**Example**:
+
+```lua
+mirrored = Set({ "a", "b" }):mirror() --> { a = "a", b = "b" }
+```
+
+<a id="fn-tostring"></a>
+
+#### `tostring()`
+
+Render the set as a string.
+
+**Return**:
+
+- `renderedSet` (`string`): Rendered set string.
+
+**Example**:
+
+```lua
+s = Set({ "b", "a", 1 }):tostring() --> '{ 1, "a", "b" }'
+```
+
+<a id="fn-values"></a>
+
+#### `values()`
+
+Return a list of all values in the set.
+
+**Return**:
+
+- `values` (`mods.List`): List of set values.
+
+**Example**:
+
+```lua
+values = Set({ "a", "b" }):values() --> { "a", "b" }
+```
 
 ### Metamethods
 
@@ -610,32 +627,6 @@ u = a + b --> { a = true, b = true, c = true }
 >
 > `__add` is the operator form of `:union(set)`.
 
-<a id="fn-bor"></a>
-
-#### `__bor(t)`
-
-Return the union of two sets using `|`.
-
-**Parameters**:
-
-- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
-
-**Return**:
-
-- `set` (`mods.Set`): New set.
-
-**Example**:
-
-```lua
-a = Set({ "a", "b" })
-b = Set({ "b", "c" })
-u = a | b --> { a = true, b = true, c = true }
-```
-
-> [!NOTE]
->
-> `__bor` is the operator form of `:union(set)` on Lua 5.3+.
-
 <a id="fn-band"></a>
 
 #### `__band(t)`
@@ -661,6 +652,32 @@ i = a & b --> { b = true }
 > [!NOTE]
 >
 > `__band` is the operator form of `:intersection(set)` on Lua 5.3+.
+
+<a id="fn-bor"></a>
+
+#### `__bor(t)`
+
+Return the union of two sets using `|`.
+
+**Parameters**:
+
+- `t` (`mods.Set|mods.List|table<any,true>`): Other set/list.
+
+**Return**:
+
+- `set` (`mods.Set`): New set.
+
+**Example**:
+
+```lua
+a = Set({ "a", "b" })
+b = Set({ "b", "c" })
+u = a | b --> { a = true, b = true, c = true }
+```
+
+> [!NOTE]
+>
+> `__bor` is the operator form of `:union(set)` on Lua 5.3+.
 
 <a id="fn-bxor"></a>
 

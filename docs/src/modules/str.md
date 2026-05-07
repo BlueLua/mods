@@ -17,6 +17,17 @@ print(str.capitalize("hello world")) --> "Hello world"
 
 ## Functions
 
+**Casing & Transform**:
+
+| Function                                                 | Description                                               |
+| -------------------------------------------------------- | --------------------------------------------------------- |
+| [`startswith(s, prefix, start?, stop?)`](#fn-startswith) | Return true if string starts with prefix.                 |
+| [`swapcase(s)`](#fn-swapcase)                            | Return a copy with case of alphabetic characters swapped. |
+| [`title(s)`](#fn-title)                                  | Return titlecased copy.                                   |
+| [`translate(s, table_map)`](#fn-translate)               | Translate characters using a mapping table.               |
+| [`upper(s)`](#fn-upper)                                  | Return uppercased copy.                                   |
+| [`zfill(s, width)`](#fn-zfill)                           | Pad numeric string on the left with zeros.                |
+
 **Formatting**:
 
 | Function                                             | Description                                                           |
@@ -29,23 +40,6 @@ print(str.capitalize("hello world")) --> "Hello world"
 | [`find(s, sub, start?, stop?)`](#fn-find)            | Return lowest index of substring or nil if not found.                 |
 | [`format_map(s, mapping)`](#fn-format-map)           | Format string with mapping (key-based) replacement.                   |
 
-**Predicates**:
-
-| Function                              | Description                                                                                  |
-| ------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [`isalnum(s)`](#fn-isalnum)           | Return true if all characters are alphanumeric and string is non-empty.                      |
-| [`isalpha(s)`](#fn-isalpha)           | Return true if all characters are alphabetic and string is non-empty.                        |
-| [`isascii(s)`](#fn-isascii)           | Return true if all characters are ASCII.                                                     |
-| [`isdecimal(s)`](#fn-isdecimal)       | Return true if all characters are decimal characters and string is non-empty.                |
-| [`isdigit(s)`](#fn-isdigit)           | Return true if all characters are digits and string is non-empty.                            |
-| [`isidentifier(s)`](#fn-isidentifier) | Return true if string is a valid identifier and not a reserved keyword.                      |
-| [`islower(s)`](#fn-islower)           | Return true if all cased characters are lowercase and there is at least one cased character. |
-| [`isnumeric(s)`](#fn-isnumeric)       | Return true if all characters are numeric and string is non-empty.                           |
-| [`isprintable(s)`](#fn-isprintable)   | Return true if all characters are printable.                                                 |
-| [`isspace(s)`](#fn-isspace)           | Return true if all characters are whitespace and string is non-empty.                        |
-| [`istitle(s)`](#fn-istitle)           | Return true if string is titlecased.                                                         |
-| [`isupper(s)`](#fn-isupper)           | Return true if all cased characters are uppercase and there is at least one cased character. |
-
 **Layout**:
 
 | Function                                  | Description                                                         |
@@ -56,6 +50,21 @@ print(str.capitalize("hello world")) --> "Hello world"
 | [`lstrip(s, chars?)`](#fn-lstrip)         | Remove leading characters (default: whitespace).                    |
 | [`rstrip(s, chars?)`](#fn-rstrip)         | Remove trailing characters (default: whitespace).                   |
 | [`strip(s, chars?)`](#fn-strip)           | Remove leading and trailing characters (default: whitespace).       |
+
+**Predicates**:
+
+| Function                              | Description                                                                                  |
+| ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [`isalnum(s)`](#fn-isalnum)           | Return true if all characters are alphanumeric and string is non-empty.                      |
+| [`isalpha(s)`](#fn-isalpha)           | Return true if all characters are alphabetic and string is non-empty.                        |
+| [`isascii(s)`](#fn-isascii)           | Return true if all characters are ASCII.                                                     |
+| [`isdecimal(s)`](#fn-isdecimal)       | Return true if all characters are decimal characters and string is non-empty.                |
+| [`isidentifier(s)`](#fn-isidentifier) | Return true if string is a valid identifier and not a reserved keyword.                      |
+| [`islower(s)`](#fn-islower)           | Return true if all cased characters are lowercase and there is at least one cased character. |
+| [`isprintable(s)`](#fn-isprintable)   | Return true if all characters are printable.                                                 |
+| [`isspace(s)`](#fn-isspace)           | Return true if all characters are whitespace and string is non-empty.                        |
+| [`istitle(s)`](#fn-istitle)           | Return true if string is titlecased.                                                         |
+| [`isupper(s)`](#fn-isupper)           | Return true if all cased characters are uppercase and there is at least one cased character. |
 
 **Split & Replace**:
 
@@ -73,16 +82,137 @@ print(str.capitalize("hello world")) --> "Hello world"
 | [`split(s, sep?, maxsplit?)`](#fn-split)      | Split by separator (or whitespace) up to maxsplit.                        |
 | [`splitlines(s, keepends?)`](#fn-splitlines)  | Split on line boundaries.                                                 |
 
-**Casing & Transform**:
+### Casing & Transform
 
-| Function                                                 | Description                                               |
-| -------------------------------------------------------- | --------------------------------------------------------- |
-| [`swapcase(s)`](#fn-swapcase)                            | Return a copy with case of alphabetic characters swapped. |
-| [`startswith(s, prefix, start?, stop?)`](#fn-startswith) | Return true if string starts with prefix.                 |
-| [`title(s)`](#fn-title)                                  | Return titlecased copy.                                   |
-| [`translate(s, table_map)`](#fn-translate)               | Translate characters using a mapping table.               |
-| [`upper(s)`](#fn-upper)                                  | Return uppercased copy.                                   |
-| [`zfill(s, width)`](#fn-zfill)                           | Pad numeric string on the left with zeros.                |
+<a id="fn-startswith"></a>
+
+#### `startswith(s, prefix, start?, stop?)`
+
+Return true if string starts with prefix.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+- `prefix` (`string|string[]`): Prefix string.
+- `start?` (`integer`): Optional start index (defaults to `1`).
+- `stop?` (`integer`): Optional exclusive end index (defaults to `#s + 1`).
+
+**Return**:
+
+- `hasPrefix` (`boolean`): True when `s` starts with `prefix`.
+
+**Example**:
+
+```lua
+ok = startswith("hello.lua", "he") --> true
+```
+
+> [!NOTE]
+>
+> If prefix is a list, returns `true` when any prefix matches.
+
+<a id="fn-swapcase"></a>
+
+#### `swapcase(s)`
+
+Return a copy with case of alphabetic characters swapped.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `swappedCase` (`string`): String with alphabetic case swapped.
+
+**Example**:
+
+```lua
+s = swapcase("AbC") --> "aBc"
+```
+
+<a id="fn-title"></a>
+
+#### `title(s)`
+
+Return titlecased copy.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `titlecased` (`string`): Titlecased string.
+
+**Example**:
+
+```lua
+s = title("hello world") --> "Hello World"
+```
+
+<a id="fn-translate"></a>
+
+#### `translate(s, table_map)`
+
+Translate characters using a mapping table.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+- `table_map` (`table`): Character translation map.
+
+**Return**:
+
+- `translated` (`string`): Translated string.
+
+**Example**:
+
+```lua
+map = { [string.byte("a")] = "b", ["c"] = false }
+s = translate("abc", map) --> "bb"
+```
+
+<a id="fn-upper"></a>
+
+#### `upper(s)`
+
+Return uppercased copy.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `uppercased` (`string`): Uppercased string.
+
+**Example**:
+
+```lua
+s = upper("Hello") --> "HELLO"
+```
+
+<a id="fn-zfill"></a>
+
+#### `zfill(s, width)`
+
+Pad numeric string on the left with zeros.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+- `width` (`integer`): Target width.
+
+**Return**:
+
+- `zeroFilled` (`string`): Zero-padded string.
+
+**Example**:
+
+```lua
+s = zfill("42", 5) --> "00042"
+```
 
 ### Formatting
 
@@ -250,285 +380,6 @@ s = format_map("hi {name}", { name = "bob" }) --> "hi bob"
 > `format_map` is a lightweight `{key}` replacement helper. For richer
 > templating, use [`mods.template`](/modules/template).
 
-### Predicates
-
-<a id="fn-isalnum"></a>
-
-#### `isalnum(s)`
-
-Return true if all characters are alphanumeric and string is non-empty.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isAlnum` (`boolean`): True when `s` is non-empty and all characters are
-  alphanumeric.
-
-**Example**:
-
-```lua
-ok = isalnum("abc123") --> true
-```
-
-> [!NOTE]
->
-> Lua letters are ASCII by default, so non-ASCII letters are not alphanumeric.
->
-> ```lua
-> isalnum("á1") --> false
-> ```
-
-<a id="fn-isalpha"></a>
-
-#### `isalpha(s)`
-
-Return true if all characters are alphabetic and string is non-empty.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isAlpha` (`boolean`): True when `s` is non-empty and all characters are
-  alphabetic.
-
-**Example**:
-
-```lua
-ok = isalpha("abc") --> true
-```
-
-> [!NOTE]
->
-> Lua letters are ASCII by default, so non-ASCII letters are not alphabetic.
->
-> ```lua
-> isalpha("á") --> false
-> ```
-
-<a id="fn-isascii"></a>
-
-#### `isascii(s)`
-
-Return true if all characters are ASCII.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isAscii` (`boolean`): True when all bytes in `s` are ASCII.
-
-**Example**:
-
-```lua
-ok = isascii("hello") --> true
-```
-
-> [!NOTE]
->
-> The empty string returns `true`.
-
-<a id="fn-isdecimal"></a>
-
-#### `isdecimal(s)`
-
-Return true if all characters are decimal characters and string is non-empty.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isDecimal` (`boolean`): True when `s` is non-empty and all characters are
-  decimal digits.
-
-**Example**:
-
-```lua
-ok = isdecimal("123") --> true
-```
-
-<a id="fn-isdigit"></a>
-
-#### `isdigit(s)`
-
-Return true if all characters are digits and string is non-empty.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isDigit` (`boolean`): True when `s` is non-empty and all characters are
-  digits.
-
-**Example**:
-
-```lua
-ok = isdigit("123") --> true
-```
-
-<a id="fn-isidentifier"></a>
-
-#### `isidentifier(s)`
-
-Return true if string is a valid identifier and not a reserved keyword.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isIdentifier` (`boolean`): True when `s` is a valid identifier and not a
-  keyword.
-
-**Example**:
-
-```lua
-ok = isidentifier("foo_bar") --> true
-ok = isidentifier("2var") --> false
-ok = isidentifier("end") --> false (keyword)
-```
-
-<a id="fn-islower"></a>
-
-#### `islower(s)`
-
-Return true if all cased characters are lowercase and there is at least one
-cased character.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isLower` (`boolean`): True when `s` has at least one cased character and all
-  are lowercase.
-
-**Example**:
-
-```lua
-ok = islower("hello") --> true
-```
-
-<a id="fn-isnumeric"></a>
-
-#### `isnumeric(s)`
-
-Return true if all characters are numeric and string is non-empty.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isNumeric` (`boolean`): True when `s` is non-empty and all characters are
-  numeric.
-
-**Example**:
-
-```lua
-ok = isnumeric("123") --> true
-```
-
-<a id="fn-isprintable"></a>
-
-#### `isprintable(s)`
-
-Return true if all characters are printable.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isPrintable` (`boolean`): True when all bytes in `s` are printable ASCII.
-
-**Example**:
-
-```lua
-ok = isprintable("abc!") --> true
-```
-
-> [!NOTE]
->
-> The empty string returns `true`.
-
-<a id="fn-isspace"></a>
-
-#### `isspace(s)`
-
-Return true if all characters are whitespace and string is non-empty.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isSpace` (`boolean`): True when `s` is non-empty and all characters are
-  whitespace.
-
-**Example**:
-
-```lua
-ok = isspace(" \t") --> true
-```
-
-<a id="fn-istitle"></a>
-
-#### `istitle(s)`
-
-Return true if string is titlecased.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isTitle` (`boolean`): True when `s` is titlecased.
-
-**Example**:
-
-```lua
-ok = istitle("Hello World") --> true
-```
-
-<a id="fn-isupper"></a>
-
-#### `isupper(s)`
-
-Return true if all cased characters are uppercase and there is at least one
-cased character.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `isUpper` (`boolean`): True when `s` has at least one cased character and all
-  are uppercase.
-
-**Example**:
-
-```lua
-ok = isupper("HELLO") --> true
-```
-
 ### Layout
 
 <a id="fn-join"></a>
@@ -655,6 +506,243 @@ Remove leading and trailing characters (default: whitespace).
 
 ```lua
 s = strip("  hello  ") --> "hello"
+```
+
+### Predicates
+
+<a id="fn-isalnum"></a>
+
+#### `isalnum(s)`
+
+Return true if all characters are alphanumeric and string is non-empty.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isAlnum` (`boolean`): True when `s` is non-empty and all characters are
+  alphanumeric.
+
+**Example**:
+
+```lua
+ok = isalnum("abc123") --> true
+```
+
+> [!NOTE]
+>
+> Lua letters are ASCII by default, so non-ASCII letters are not alphanumeric.
+>
+> ```lua
+> isalnum("á1") --> false
+> ```
+
+<a id="fn-isalpha"></a>
+
+#### `isalpha(s)`
+
+Return true if all characters are alphabetic and string is non-empty.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isAlpha` (`boolean`): True when `s` is non-empty and all characters are
+  alphabetic.
+
+**Example**:
+
+```lua
+ok = isalpha("abc") --> true
+```
+
+> [!NOTE]
+>
+> Lua letters are ASCII by default, so non-ASCII letters are not alphabetic.
+>
+> ```lua
+> isalpha("á") --> false
+> ```
+
+<a id="fn-isascii"></a>
+
+#### `isascii(s)`
+
+Return true if all characters are ASCII.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isAscii` (`boolean`): True when all bytes in `s` are ASCII.
+
+**Example**:
+
+```lua
+ok = isascii("hello") --> true
+```
+
+> [!NOTE]
+>
+> The empty string returns `true`.
+
+<a id="fn-isdecimal"></a>
+
+#### `isdecimal(s)`
+
+Return true if all characters are decimal characters and string is non-empty.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isDecimal` (`boolean`): True when `s` is non-empty and all characters are
+  decimal digits.
+
+**Example**:
+
+```lua
+ok = isdecimal("123") --> true
+```
+
+<a id="fn-isidentifier"></a>
+
+#### `isidentifier(s)`
+
+Return true if string is a valid identifier and not a reserved keyword.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isIdentifier` (`boolean`): True when `s` is a valid identifier and not a
+  keyword.
+
+**Example**:
+
+```lua
+ok = isidentifier("foo_bar") --> true
+ok = isidentifier("2var") --> false
+ok = isidentifier("end") --> false (keyword)
+```
+
+<a id="fn-islower"></a>
+
+#### `islower(s)`
+
+Return true if all cased characters are lowercase and there is at least one
+cased character.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isLower` (`boolean`): True when `s` has at least one cased character and all
+  are lowercase.
+
+**Example**:
+
+```lua
+ok = islower("hello") --> true
+```
+
+<a id="fn-isprintable"></a>
+
+#### `isprintable(s)`
+
+Return true if all characters are printable.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isPrintable` (`boolean`): True when all bytes in `s` are printable ASCII.
+
+**Example**:
+
+```lua
+ok = isprintable("abc!") --> true
+```
+
+> [!NOTE]
+>
+> The empty string returns `true`.
+
+<a id="fn-isspace"></a>
+
+#### `isspace(s)`
+
+Return true if all characters are whitespace and string is non-empty.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isSpace` (`boolean`): True when `s` is non-empty and all characters are
+  whitespace.
+
+**Example**:
+
+```lua
+ok = isspace(" \t") --> true
+```
+
+<a id="fn-istitle"></a>
+
+#### `istitle(s)`
+
+Return true if string is titlecased.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isTitle` (`boolean`): True when `s` is titlecased.
+
+**Example**:
+
+```lua
+ok = istitle("Hello World") --> true
+```
+
+<a id="fn-isupper"></a>
+
+#### `isupper(s)`
+
+Return true if all cased characters are uppercase and there is at least one
+cased character.
+
+**Parameters**:
+
+- `s` (`string`): Input string.
+
+**Return**:
+
+- `isUpper` (`boolean`): True when `s` has at least one cased character and all
+  are uppercase.
+
+**Example**:
+
+```lua
+ok = isupper("HELLO") --> true
 ```
 
 ### Split & Replace
@@ -901,136 +989,4 @@ Split on line boundaries.
 
 ```lua
 lines = splitlines("a\nb\r\nc") --> { "a", "b", "c" }
-```
-
-### Casing & Transform
-
-<a id="fn-swapcase"></a>
-
-#### `swapcase(s)`
-
-Return a copy with case of alphabetic characters swapped.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `swappedCase` (`string`): String with alphabetic case swapped.
-
-**Example**:
-
-```lua
-s = swapcase("AbC") --> "aBc"
-```
-
-<a id="fn-startswith"></a>
-
-#### `startswith(s, prefix, start?, stop?)`
-
-Return true if string starts with prefix.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-- `prefix` (`string|string[]`): Prefix string.
-- `start?` (`integer`): Optional start index (defaults to `1`).
-- `stop?` (`integer`): Optional exclusive end index (defaults to `#s + 1`).
-
-**Return**:
-
-- `hasPrefix` (`boolean`): True when `s` starts with `prefix`.
-
-**Example**:
-
-```lua
-ok = startswith("hello.lua", "he") --> true
-```
-
-> [!NOTE]
->
-> If prefix is a list, returns `true` when any prefix matches.
-
-<a id="fn-title"></a>
-
-#### `title(s)`
-
-Return titlecased copy.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `titlecased` (`string`): Titlecased string.
-
-**Example**:
-
-```lua
-s = title("hello world") --> "Hello World"
-```
-
-<a id="fn-translate"></a>
-
-#### `translate(s, table_map)`
-
-Translate characters using a mapping table.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-- `table_map` (`table`): Character translation map.
-
-**Return**:
-
-- `translated` (`string`): Translated string.
-
-**Example**:
-
-```lua
-map = { [string.byte("a")] = "b", ["c"] = false }
-s = translate("abc", map) --> "bb"
-```
-
-<a id="fn-upper"></a>
-
-#### `upper(s)`
-
-Return uppercased copy.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-
-**Return**:
-
-- `uppercased` (`string`): Uppercased string.
-
-**Example**:
-
-```lua
-s = upper("Hello") --> "HELLO"
-```
-
-<a id="fn-zfill"></a>
-
-#### `zfill(s, width)`
-
-Pad numeric string on the left with zeros.
-
-**Parameters**:
-
-- `s` (`string`): Input string.
-- `width` (`integer`): Target width.
-
-**Return**:
-
-- `zeroFilled` (`string`): Zero-padded string.
-
-**Example**:
-
-```lua
-s = zfill("42", 5) --> "00042"
 ```

@@ -25,15 +25,18 @@ print(ls:index("b"))    --> 2
 
 ## Functions
 
-**Predicates**:
+**Access**:
 
-| Function                   | Description                                       |
-| -------------------------- | ------------------------------------------------- |
-| [`all(pred)`](#fn-all)     | Return `true` if all values match the predicate.  |
-| [`any(pred)`](#fn-any)     | Return `true` if any value matches the predicate. |
-| [`equals(ls)`](#fn-equals) | Compare two lists using shallow element equality. |
-| [`lt(ls)`](#fn-lt)         | Compare two lists lexicographically.              |
-| [`le(ls)`](#fn-le)         | Compare two lists lexicographically.              |
+| Function               | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| [`first()`](#fn-first) | Return the first element or `nil` if empty. |
+| [`last()`](#fn-last)   | Return the last element or `nil` if empty.  |
+
+**Copies**:
+
+| Function             | Description                        |
+| -------------------- | ---------------------------------- |
+| [`copy()`](#fn-copy) | Return a shallow copy of the list. |
 
 **Mutation**:
 
@@ -49,15 +52,20 @@ print(ls:index("b"))    --> 2
 | [`pop(pos)`](#fn-pop)          | Remove and return the element at the given position.                 |
 | [`prepend(v)`](#fn-prepend)    | Insert a value at the start of the list.                             |
 | [`remove(v)`](#fn-remove)      | Remove the first matching value.                                     |
+| [`shuffle(rng?)`](#fn-shuffle) | Shuffle the list in place.                                           |
 | [`sort(comp?)`](#fn-sort)      | Sort the list in place.                                              |
 
-**Copying**:
+**Predicates**:
 
-| Function             | Description                        |
-| -------------------- | ---------------------------------- |
-| [`copy()`](#fn-copy) | Return a shallow copy of the list. |
+| Function                   | Description                                       |
+| -------------------------- | ------------------------------------------------- |
+| [`all(pred)`](#fn-all)     | Return `true` if all values match the predicate.  |
+| [`any(pred)`](#fn-any)     | Return `true` if any value matches the predicate. |
+| [`equals(ls)`](#fn-equals) | Compare two lists using shallow element equality. |
+| [`le(ls)`](#fn-le)         | Compare two lists lexicographically.              |
+| [`lt(ls)`](#fn-lt)         | Compare two lists lexicographically.              |
 
-**Query**:
+**Queries**:
 
 | Function                         | Description                                                 |
 | -------------------------------- | ----------------------------------------------------------- |
@@ -65,20 +73,14 @@ print(ls:index("b"))    --> 2
 | [`count(v)`](#fn-count)          | Count how many times a value appears.                       |
 | [`index(v)`](#fn-index)          | Return the index of the first matching value.               |
 | [`index_if(pred)`](#fn-index-if) | Return the index of the first value matching the predicate. |
-| [`len()`](#fn-len)               | Return the number of elements in the list.                  |
 | [`isempty()`](#fn-isempty)       | Return whether the list has no elements.                    |
+| [`len()`](#fn-len)               | Return the number of elements in the list.                  |
 
-**Access**:
-
-| Function               | Description                                 |
-| ---------------------- | ------------------------------------------- |
-| [`first()`](#fn-first) | Return the first element or `nil` if empty. |
-| [`last()`](#fn-last)   | Return the last element or `nil` if empty.  |
-
-**Transform**:
+**Transforms**:
 
 | Function                              | Description                                                          |
 | ------------------------------------- | -------------------------------------------------------------------- |
+| [`concat(sep?, i?, j?)`](#fn-concat)  | Concatenate list values using Lua's native `table.concat` behavior.  |
 | [`difference(t)`](#fn-difference)     | Return a new list with values not in the given list or set.          |
 | [`drop(n)`](#fn-drop)                 | Return a new list without the first n elements.                      |
 | [`filter(pred)`](#fn-filter)          | Return a new list with values matching the predicate.                |
@@ -87,17 +89,17 @@ print(ls:index("b"))    --> 2
 | [`group_by(fn)`](#fn-group-by)        | Group list values by a computed key.                                 |
 | [`intersection(t)`](#fn-intersection) | Return values that are also present in the given list or set.        |
 | [`invert()`](#fn-invert)              | Invert values to indices in a new table.                             |
-| [`concat(sep?, i?, j?)`](#fn-concat)  | Concatenate list values using Lua's native `table.concat` behavior.  |
 | [`join(sep?, quoted?)`](#fn-join)     | Join list values into a string.                                      |
-| [`tostring()`](#fn-tostring)          | Render the list to a string via the regular method form.             |
 | [`keypath()`](#fn-keypath)            | Render list items as a table-access key path.                        |
 | [`map(fn)`](#fn-map)                  | Return a new list by mapping each value.                             |
+| [`mirror()`](#fn-mirror)              | Mirror values into a new table as both keys and values.              |
 | [`mul(n)`](#fn-mul)                   | Return a new list repeated `n` times (list multiplication behavior). |
 | [`reduce(fn, init?)`](#fn-reduce)     | Reduce the list to a single value using an accumulator.              |
 | [`reverse()`](#fn-reverse)            | Reverse the list in place.                                           |
-| [`toset()`](#fn-toset)                | Convert the list to a set.                                           |
 | [`slice(i?, j?)`](#fn-slice)          | Return a new list containing items from i to j (inclusive).          |
 | [`take(n)`](#fn-take)                 | Return the first n elements as a new list.                           |
+| [`toset()`](#fn-toset)                | Convert the list to a set.                                           |
+| [`tostring()`](#fn-tostring)          | Render the list to a string via the regular method form.             |
 | [`uniq()`](#fn-uniq)                  | Return a new list with duplicates removed (first occurrence kept).   |
 | [`zip(t)`](#fn-zip)                   | Zip two collections into a list of 2-element tables.                 |
 
@@ -105,166 +107,69 @@ print(ls:index("b"))    --> 2
 
 | Function                       | Description                                                                                                     |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| [`__eq(ls)`](#fn-eq)           | Compare two lists using shallow element equality (`==`).                                                        |
-| [`__lt(ls)`](#fn-lt)           | Compare two lists lexicographically (`<`).                                                                      |
-| [`__le(ls)`](#fn-le)           | Compare two lists lexicographically (`<=`).                                                                     |
-| [`__mul(n)`](#fn-mul)          | Repeat a list `n` times (`*`).                                                                                  |
 | [`__add(ls)`](#fn-add)         | Extend the left-hand list in place with right-hand values, then return the same left-hand list reference (`+`). |
+| [`__eq(ls)`](#fn-eq)           | Compare two lists using shallow element equality (`==`).                                                        |
+| [`__le(ls)`](#fn-le)           | Compare two lists lexicographically (`<=`).                                                                     |
+| [`__lt(ls)`](#fn-lt)           | Compare two lists lexicographically (`<`).                                                                      |
+| [`__mul(n)`](#fn-mul)          | Repeat a list `n` times (`*`).                                                                                  |
 | [`__sub(ls)`](#fn-sub)         | Return values from the left list that are not present in the right list (`-`).                                  |
 | [`__tostring()`](#fn-tostring) | Render the list to a string like `{ "a", "b", 1 }`.                                                             |
 
-### Predicates
+### Access
 
-Boolean checks for list-wide conditions. <a id="fn-all"></a>
+<a id="fn-first"></a>
 
-#### `all(pred)`
+#### `first()`
 
-Return `true` if all values match the predicate.
-
-**Parameters**:
-
-- `pred` (`fun(v:any):boolean`): Predicate function.
+Return the first element or `nil` if empty.
 
 **Return**:
 
-- `allMatch` (`boolean`): Whether the condition is met.
+- `firstValue` (`any`): First value, or `nil` if empty.
 
 **Example**:
 
 ```lua
-is_even = function(v) return v % 2 == 0 end
-ok = List({ 2, 4 }):all(is_even) --> true
+v = List({ "a", "b" }):first() --> "a"
 ```
 
-> [!NOTE]
->
-> Empty lists return `true`.
+<a id="fn-last"></a>
 
-<a id="fn-any"></a>
+#### `last()`
 
-#### `any(pred)`
-
-Return `true` if any value matches the predicate.
-
-**Parameters**:
-
-- `pred` (`fun(v:any):boolean`): Predicate function.
+Return the last element or `nil` if empty.
 
 **Return**:
 
-- `anyMatch` (`boolean`): Whether the condition is met.
+- `lastValue` (`any`): Last value, or `nil` if empty.
 
 **Example**:
 
 ```lua
-has_len_2 = function(v) return #v == 2 end
-ok = List({ "a", "bb" }):any(has_len_2) --> true
+v = List({ "a", "b" }):last() --> "b"
 ```
 
-<a id="fn-equals"></a>
+### Copies
 
-#### `equals(ls)`
+<a id="fn-copy"></a>
 
-Compare two lists using shallow element equality.
+#### `copy()`
 
-**Parameters**:
-
-- `ls` (`mods.List|any[]`): Other list value.
+Return a shallow copy of the list.
 
 **Return**:
 
-- `isEqual` (`boolean`): Whether the condition is met.
+- `ls` (`mods.List`): New list.
 
 **Example**:
 
 ```lua
-a = List({ "x", "y" })
-b = List({ "x", "y" })
-ok = a:equals(b) --> true
+c = List({ "a", "b" }):copy() --> { "a", "b" }
 ```
-
-> [!NOTE]
->
-> - `equals` is also available through the `==` operator when both operands are
->   `List`.
->
->   ```lua
->   a = List({ "a", 1 })
->   b = List({ "a", 1 })
->   ok = (a == b) --> true
->   ```
->
-> - Unlike `==`, this method also works when `ls` is a plain array table.
->
->   ```lua
->   a = List({ "a", 1 })
->   b = { "a", 1 }
->   ok = a:equals(b) --> true
->   ```
->
-> - `equals` checks only array positions (`1..#list`), so extra non-array keys
->   are ignored:
->
->   ```lua
->   t = {}
->   a = List({ "a", t })
->   b = { "a", t, a = 1 }
->   ok = a:equals(b) --> true
->   ```
-
-<a id="fn-lt"></a>
-
-#### `lt(ls)`
-
-Compare two lists lexicographically.
-
-**Parameters**:
-
-- `ls` (`mods.List|any[]`): Other list value.
-
-**Return**:
-
-- `isLess` (`boolean`): Whether the condition is met.
-
-**Example**:
-
-```lua
-ok = List({ 1, 2 }):lt({ 1, 3 })    --> true
-ok = List({ 1, 2 }):lt({ 1, 2, 0 }) --> true
-```
-
-> [!NOTE]
->
-> `lt` is also available through the `<` operator.
-
-<a id="fn-le"></a>
-
-#### `le(ls)`
-
-Compare two lists lexicographically.
-
-**Parameters**:
-
-- `ls` (`mods.List|any[]`): Other list value.
-
-**Return**:
-
-- `isLessOrEqual` (`boolean`): Whether the condition is met.
-
-**Example**:
-
-```lua
-ok = List({ 1, 2 }):le({ 1, 2 })  --> true
-ok = List({ 1, 2 }):le({ 1, 1 })  --> false
-```
-
-> [!NOTE]
->
-> `le` is also available through the `<=` operator.
 
 ### Mutation
 
-In-place operations that modify the current list. <a id="fn-append"></a>
+<a id="fn-append"></a>
 
 #### `append()`
 
@@ -464,6 +369,27 @@ ls = List({ "a", "b", "b" })
 ls:remove("b") --> { "a", "b" }
 ```
 
+<a id="fn-shuffle"></a>
+
+#### `shuffle(rng?)`
+
+Shuffle the list in place.
+
+**Parameters**:
+
+- `rng?` (`fun(lo:integer, hi:integer):integer`): Optional random index picker;
+  defaults to `math.random`.
+
+**Return**:
+
+- `self` (`T`): Current list.
+
+**Example**:
+
+```lua
+ls = List({ "a", "b", "c" }):shuffle() --> { "b", "c", "a" } -- order varies
+```
+
 <a id="fn-sort"></a>
 
 #### `sort(comp?)`
@@ -491,27 +417,158 @@ words:sort(function(a, b)
 end) --> { "a", "bb", "ccc" }
 ```
 
-### Copying
+### Predicates
 
-Operations that return copied list data. <a id="fn-copy"></a>
+<a id="fn-all"></a>
 
-#### `copy()`
+#### `all(pred)`
 
-Return a shallow copy of the list.
+Return `true` if all values match the predicate.
+
+**Parameters**:
+
+- `pred` (`fun(v:any):boolean`): Predicate function.
 
 **Return**:
 
-- `ls` (`mods.List`): New list.
+- `allMatch` (`boolean`): Whether the condition is met.
 
 **Example**:
 
 ```lua
-c = List({ "a", "b" }):copy() --> { "a", "b" }
+is_even = function(v) return v % 2 == 0 end
+ok = List({ 2, 4 }):all(is_even) --> true
 ```
 
-### Query
+> [!NOTE]
+>
+> Empty lists return `true`.
 
-Read-only queries for membership, counts, and indices. <a id="fn-contains"></a>
+<a id="fn-any"></a>
+
+#### `any(pred)`
+
+Return `true` if any value matches the predicate.
+
+**Parameters**:
+
+- `pred` (`fun(v:any):boolean`): Predicate function.
+
+**Return**:
+
+- `anyMatch` (`boolean`): Whether the condition is met.
+
+**Example**:
+
+```lua
+has_len_2 = function(v) return #v == 2 end
+ok = List({ "a", "bb" }):any(has_len_2) --> true
+```
+
+<a id="fn-equals"></a>
+
+#### `equals(ls)`
+
+Compare two lists using shallow element equality.
+
+**Parameters**:
+
+- `ls` (`mods.List|any[]`): Other list value.
+
+**Return**:
+
+- `isEqual` (`boolean`): Whether the condition is met.
+
+**Example**:
+
+```lua
+a = List({ "x", "y" })
+b = List({ "x", "y" })
+ok = a:equals(b) --> true
+```
+
+> [!NOTE]
+>
+> - `equals` is also available through the `==` operator when both operands are
+>   `List`.
+>
+>   ```lua
+>   a = List({ "a", 1 })
+>   b = List({ "a", 1 })
+>   ok = (a == b) --> true
+>   ```
+>
+> - Unlike `==`, this method also works when `ls` is a plain array table.
+>
+>   ```lua
+>   a = List({ "a", 1 })
+>   b = { "a", 1 }
+>   ok = a:equals(b) --> true
+>   ```
+>
+> - `equals` checks only array positions (`1..#list`), so extra non-array keys
+>   are ignored:
+>
+>   ```lua
+>   t = {}
+>   a = List({ "a", t })
+>   b = { "a", t, a = 1 }
+>   ok = a:equals(b) --> true
+>   ```
+
+<a id="fn-le"></a>
+
+#### `le(ls)`
+
+Compare two lists lexicographically.
+
+**Parameters**:
+
+- `ls` (`mods.List|any[]`): Other list value.
+
+**Return**:
+
+- `isLessOrEqual` (`boolean`): Whether the condition is met.
+
+**Example**:
+
+```lua
+ok = List({ 1, 2 }):le({ 1, 2 })  --> true
+ok = List({ 1, 2 }):le({ 1, 1 })  --> false
+```
+
+> [!NOTE]
+>
+> `le` is also available through the `<=` operator.
+
+<a id="fn-lt"></a>
+
+#### `lt(ls)`
+
+Compare two lists lexicographically.
+
+**Parameters**:
+
+- `ls` (`mods.List|any[]`): Other list value.
+
+**Return**:
+
+- `isLess` (`boolean`): Whether the condition is met.
+
+**Example**:
+
+```lua
+ok = List({ 1, 2 }):lt({ 1, 3 })    --> true
+ok = List({ 1, 2 }):lt({ 1, 2, 0 }) --> true
+```
+
+> [!NOTE]
+>
+> `lt` is also available through the `<` operator.
+
+### Queries
+
+<a id="fn-contains"></a>
 
 #### `contains(v)`
 
@@ -592,6 +649,22 @@ gt_1 = function(x) return x > 1 end
 i = List({ 1, 2, 3 }):index_if(gt_1) --> 2
 ```
 
+<a id="fn-isempty"></a>
+
+#### `isempty()`
+
+Return whether the list has no elements.
+
+**Return**:
+
+- `empty` (`boolean`): `true` when the list has no elements.
+
+**Example**:
+
+```lua
+ok = List():isempty() --> true
+```
+
 <a id="fn-len"></a>
 
 #### `len()`
@@ -612,59 +685,35 @@ n = List({ "a", "b", "c" }):len() --> 3
 >
 > Uses Lua's `#` operator.
 
-<a id="fn-isempty"></a>
+### Transforms
 
-#### `isempty()`
+<a id="fn-concat"></a>
 
-Return whether the list has no elements.
+#### `concat(sep?, i?, j?)`
+
+Concatenate list values using Lua's native `table.concat` behavior.
+
+**Parameters**:
+
+- `sep?` (`string`): Optional separator value (defaults to `""`).
+- `i?` (`integer`): Optional start index (defaults to `1`).
+- `j?` (`integer`): Optional end index (defaults to `#self`).
 
 **Return**:
 
-- `empty` (`boolean`): `true` when the list has no elements.
+- `concatenated` (`string`): Concatenated string.
 
 **Example**:
 
 ```lua
-ok = List():isempty() --> true
+s = List({ "a", "b", "c" }):concat(",") --> "a,b,c"
 ```
 
-### Access
+> [!NOTE]
+>
+> This method forwards to `table.concat` directly and keeps its strict element
+> rules.
 
-Direct element access helpers. <a id="fn-first"></a>
-
-#### `first()`
-
-Return the first element or `nil` if empty.
-
-**Return**:
-
-- `firstValue` (`any`): First value, or `nil` if empty.
-
-**Example**:
-
-```lua
-v = List({ "a", "b" }):first() --> "a"
-```
-
-<a id="fn-last"></a>
-
-#### `last()`
-
-Return the last element or `nil` if empty.
-
-**Return**:
-
-- `lastValue` (`any`): Last value, or `nil` if empty.
-
-**Example**:
-
-```lua
-v = List({ "a", "b" }):last() --> "b"
-```
-
-### Transform
-
-Non-mutating transformations and derived-list operations.
 <a id="fn-difference"></a>
 
 #### `difference(t)`
@@ -830,33 +879,6 @@ Invert values to indices in a new table.
 t = List({ "a", "b", "c" }):invert() --> { a = 1, b = 2, c = 3 }
 ```
 
-<a id="fn-concat"></a>
-
-#### `concat(sep?, i?, j?)`
-
-Concatenate list values using Lua's native `table.concat` behavior.
-
-**Parameters**:
-
-- `sep?` (`string`): Optional separator value (defaults to `""`).
-- `i?` (`integer`): Optional start index (defaults to `1`).
-- `j?` (`integer`): Optional end index (defaults to `#self`).
-
-**Return**:
-
-- `concatenated` (`string`): Concatenated string.
-
-**Example**:
-
-```lua
-s = List({ "a", "b", "c" }):concat(",") --> "a,b,c"
-```
-
-> [!NOTE]
->
-> This method forwards to `table.concat` directly and keeps its strict element
-> rules.
-
 <a id="fn-join"></a>
 
 #### `join(sep?, quoted?)`
@@ -883,22 +905,6 @@ s = List({ "a", "b", "c" }):join(", ", true) --> '"a", "b", "c"'
 >
 > Values are converted with `tostring` before joining. Set `quoted = true` to
 > quote string values.
-
-<a id="fn-tostring"></a>
-
-#### `tostring()`
-
-Render the list to a string via the regular method form.
-
-**Return**:
-
-- `renderedList` (`string`): Rendered list string.
-
-**Example**:
-
-```lua
-s = List({ "a", "b", 1 }):tostring() --> '{ "a", "b", 1 }'
-```
 
 <a id="fn-keypath"></a>
 
@@ -935,6 +941,22 @@ Return a new list by mapping each value.
 ```lua
 to_upper = function(v) return v:upper() end
 m = List({ "a", "b" }):map(to_upper) --> { "A", "B" }
+```
+
+<a id="fn-mirror"></a>
+
+#### `mirror()`
+
+Mirror values into a new table as both keys and values.
+
+**Return**:
+
+- `mirroredValues` (`table<T,T>`): Table mapping each value to itself.
+
+**Example**:
+
+```lua
+t = List({ "a", "b", "c" }):mirror() --> { a = "a", b = "b", c = "c" }
 ```
 
 <a id="fn-mul"></a>
@@ -1005,26 +1027,6 @@ Reverse the list in place.
 r = List({ "a", "b", "c" }):reverse() --> { "c", "b", "a" }
 ```
 
-<a id="fn-toset"></a>
-
-#### `toset()`
-
-Convert the list to a set.
-
-**Return**:
-
-- `set` (`mods.Set`): New set.
-
-**Example**:
-
-```lua
-s = List({ "a", "b", "a" }):toset() --> { a = true, b = true }
-```
-
-> [!NOTE]
->
-> Order is preserved from the original list.
-
 <a id="fn-slice"></a>
 
 #### `slice(i?, j?)`
@@ -1070,6 +1072,42 @@ Return the first n elements as a new list.
 t = List({ "a", "b", "c" }):take(2) --> { "a", "b" }
 ```
 
+<a id="fn-toset"></a>
+
+#### `toset()`
+
+Convert the list to a set.
+
+**Return**:
+
+- `set` (`mods.Set`): New set.
+
+**Example**:
+
+```lua
+s = List({ "a", "b", "a" }):toset() --> { a = true, b = true }
+```
+
+> [!NOTE]
+>
+> Order is preserved from the original list.
+
+<a id="fn-tostring"></a>
+
+#### `tostring()`
+
+Render the list to a string via the regular method form.
+
+**Return**:
+
+- `renderedList` (`string`): Rendered list string.
+
+**Example**:
+
+```lua
+s = List({ "a", "b", 1 }):tostring() --> '{ "a", "b", 1 }'
+```
+
 <a id="fn-uniq"></a>
 
 #### `uniq()`
@@ -1112,6 +1150,33 @@ z = List({ "a", "b" }):zip(Set({ 1, 2 })) --> { {"a",1}, {"b",2} }
 > Length is the minimum of both tables' lengths.
 
 ### Metamethods
+
+<a id="fn-add"></a>
+
+#### `__add(ls)`
+
+Extend the left-hand list in place with right-hand values, then return the same
+left-hand list reference (`+`).
+
+**Parameters**:
+
+- `ls` (`mods.List|any[]`): Other list value.
+
+**Return**:
+
+- `self` (`mods.List|any[]`): Current list.
+
+**Example**:
+
+```lua
+a = List({ "a", "b" })
+b = { "c", "d" }
+c = a + b --> c and a are the same reference: { "a", "b", "c", "d" }
+```
+
+> [!NOTE]
+>
+> `+` operator is equivalent to `:extend(ls)`.
 
 <a id="fn-eq"></a>
 
@@ -1162,30 +1227,6 @@ ok = a == b --> true (same nested table reference)
 >   ok = (a == b) --> true
 >   ```
 
-<a id="fn-lt"></a>
-
-#### `__lt(ls)`
-
-Compare two lists lexicographically (`<`).
-
-**Parameters**:
-
-- `ls` (`mods.List|any[]`): Other list value.
-
-**Return**:
-
-- `isLess` (`boolean`): Whether the condition is met.
-
-**Example**:
-
-```lua
-ok = List({ 1, 2 }) < List({ 1, 3 }) --> true
-```
-
-> [!NOTE]
->
-> `<` is equivalent to `:lt(ls)`.
-
 <a id="fn-le"></a>
 
 #### `__le(ls)`
@@ -1209,6 +1250,30 @@ ok = List({ 1, 2 }) <= List({ 1, 2 }) --> true
 > [!NOTE]
 >
 > `<=` is equivalent to `:le(ls)`.
+
+<a id="fn-lt"></a>
+
+#### `__lt(ls)`
+
+Compare two lists lexicographically (`<`).
+
+**Parameters**:
+
+- `ls` (`mods.List|any[]`): Other list value.
+
+**Return**:
+
+- `isLess` (`boolean`): Whether the condition is met.
+
+**Example**:
+
+```lua
+ok = List({ 1, 2 }) < List({ 1, 3 }) --> true
+```
+
+> [!NOTE]
+>
+> `<` is equivalent to `:lt(ls)`.
 
 <a id="fn-mul"></a>
 
@@ -1234,33 +1299,6 @@ l2 = 3 * List({ "a", "b" }) --> { "a", "b", "a", "b", "a", "b" }
 > [!NOTE]
 >
 > `*` is equivalent to `:mul(n)`.
-
-<a id="fn-add"></a>
-
-#### `__add(ls)`
-
-Extend the left-hand list in place with right-hand values, then return the same
-left-hand list reference (`+`).
-
-**Parameters**:
-
-- `ls` (`mods.List|any[]`): Other list value.
-
-**Return**:
-
-- `self` (`mods.List|any[]`): Current list.
-
-**Example**:
-
-```lua
-a = List({ "a", "b" })
-b = { "c", "d" }
-c = a + b --> c and a are the same reference: { "a", "b", "c", "d" }
-```
-
-> [!NOTE]
->
-> `+` operator is equivalent to `:extend(ls)`.
 
 <a id="fn-sub"></a>
 

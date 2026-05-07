@@ -6,6 +6,11 @@ description: "Filesystem I/O, metadata, and filesystem path operations."
 
 Filesystem I/O, metadata, and filesystem path operations.
 
+> [!NOTE]
+>
+> This module requires
+> [LuaFileSystem (`lfs`)](https://github.com/lunarmodules/luafilesystem).
+
 ## Usage
 
 ```lua
@@ -18,39 +23,6 @@ print(fs.read_text("tmp/cache/app/data.txt")) --> "hello"
 
 ## Functions
 
-**Reading**:
-
-| Function                              | Description                            |
-| ------------------------------------- | -------------------------------------- |
-| [`read_bytes(path)`](#fn-read-bytes)  | Read full file in binary mode.         |
-| [`read_text(path)`](#fn-read-text)    | Read full file in text mode.           |
-| [`dir(path, opts?)`](#fn-dir)         | Iterator over items in `path`.         |
-| [`listdir(path, opts?)`](#fn-listdir) | Return direct children of a directory. |
-
-**Writing**:
-
-| Function                                     | Description                                                                   |
-| -------------------------------------------- | ----------------------------------------------------------------------------- |
-| [`write_bytes(path, data)`](#fn-write-bytes) | Write full file in binary mode.                                               |
-| [`write_text(path, data)`](#fn-write-text)   | Write full file in text mode.                                                 |
-| [`touch(path)`](#fn-touch)                   | Create file if missing without truncating, or update timestamps if it exists. |
-| [`rename(oldname, newname)`](#fn-rename)     | Rename or move a filesystem entry.                                            |
-| [`rm(path, recursive?)`](#fn-rm)             | Remove a filesystem entry, or a directory tree when `recursive` is `true`.    |
-| [`mkdir(path, parents?)`](#fn-mkdir)         | Create a directory.                                                           |
-| [`cp(src, dst)`](#fn-cp)                     | Copy a file or directory tree.                                                |
-
-**Metadata**:
-
-| Function                                   | Description                                                                        |
-| ------------------------------------------ | ---------------------------------------------------------------------------------- |
-| [`getsize(path)`](#fn-getsize)             | Return file size in bytes.                                                         |
-| [`getatime(path)`](#fn-getatime)           | Return last access time.                                                           |
-| [`getmtime(path)`](#fn-getmtime)           | Return last modification time.                                                     |
-| [`getctime(path)`](#fn-getctime)           | Return metadata change time.                                                       |
-| [`lstat(path)`](#fn-lstat)                 | Return symlink-aware file attributes.                                              |
-| [`stat(path)`](#fn-stat)                   | Return file attributes.                                                            |
-| [`samefile(path_a, path_b)`](#fn-samefile) | Return whether two paths refer to the same file, or `nil` and an error on failure. |
-
 **Existence Checks**:
 
 | Function                       | Description                                                  |
@@ -58,13 +30,50 @@ print(fs.read_text("tmp/cache/app/data.txt")) --> "hello"
 | [`exists(path)`](#fn-exists)   | Return `true` when a path exists.                            |
 | [`lexists(path)`](#fn-lexists) | Return `true` when a path exists without following symlinks. |
 
-### Reading
+**Filesystem Mutations**:
 
-<a id="fn-read-bytes"></a>
+| Function                                     | Description                                                                   |
+| -------------------------------------------- | ----------------------------------------------------------------------------- |
+| [`cd(path)`](#fn-cd)                         | Change the current working directory.                                         |
+| [`cp(src, dst)`](#fn-cp)                     | Copy a file or directory tree.                                                |
+| [`cwd()`](#fn-cwd)                           | Return the current working directory.                                         |
+| [`link(path, linkpath)`](#fn-link)           | Create a hard link.                                                           |
+| [`mkdir(path, parents?)`](#fn-mkdir)         | Create a directory.                                                           |
+| [`rename(oldname, newname)`](#fn-rename)     | Rename or move a filesystem entry.                                            |
+| [`rm(path, recursive?)`](#fn-rm)             | Remove a filesystem entry, or a directory tree when `recursive` is `true`.    |
+| [`symlink(path, linkpath)`](#fn-symlink)     | Create a symbolic link.                                                       |
+| [`touch(path)`](#fn-touch)                   | Create file if missing without truncating, or update timestamps if it exists. |
+| [`write_bytes(path, data)`](#fn-write-bytes) | Write full file in binary mode.                                               |
+| [`write_text(path, data)`](#fn-write-text)   | Write full file in text mode.                                                 |
 
-#### `read_bytes(path)`
+**Metadata**:
 
-Read full file in binary mode.
+| Function                         | Description                                                                        |
+| -------------------------------- | ---------------------------------------------------------------------------------- |
+| [`getatime(path)`](#fn-getatime) | Return last access time.                                                           |
+| [`getctime(path)`](#fn-getctime) | Return metadata change time.                                                       |
+| [`getmtime(path)`](#fn-getmtime) | Return last modification time.                                                     |
+| [`getsize(path)`](#fn-getsize)   | Return file size in bytes.                                                         |
+| [`lstat(path)`](#fn-lstat)       | Return symlink-aware file attributes.                                              |
+| [`samefile(a, b)`](#fn-samefile) | Return whether two paths refer to the same file, or `nil` and an error on failure. |
+| [`stat(path)`](#fn-stat)         | Return file attributes.                                                            |
+
+**Reading**:
+
+| Function                              | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| [`dir(path, opts?)`](#fn-dir)         | Iterator over items in `path`.         |
+| [`listdir(path, opts?)`](#fn-listdir) | Return direct children of a directory. |
+| [`read_bytes(path)`](#fn-read-bytes)  | Read full file in binary mode.         |
+| [`read_text(path)`](#fn-read-text)    | Read full file in text mode.           |
+
+### Existence Checks
+
+<a id="fn-exists"></a>
+
+#### `exists(path)`
+
+Return `true` when a path exists.
 
 **Parameters**:
 
@@ -72,21 +81,23 @@ Read full file in binary mode.
 
 **Return**:
 
-- `body` (`string?`): File contents read in binary mode, or `nil` on failure.
-- `errmsg` (`string?`): Error message when the check fails.
-- `errcode` (`integer?`): OS error code when available.
+- `exists` (`boolean`): True when the path exists.
 
 **Example**:
 
 ```lua
-fs.read_bytes("README.md")
+fs.exists("README.md") --> true
 ```
 
-<a id="fn-read-text"></a>
+> [!NOTE]
+>
+> Broken symlinks return `false`.
 
-#### `read_text(path)`
+<a id="fn-lexists"></a>
 
-Read full file in text mode.
+#### `lexists(path)`
+
+Return `true` when a path exists without following symlinks.
 
 **Parameters**:
 
@@ -94,130 +105,121 @@ Read full file in text mode.
 
 **Return**:
 
-- `body` (`string?`): File contents read in text mode, or `nil` on failure.
-- `errmsg` (`string?`): Error message when the check fails.
-- `errcode` (`integer?`): OS error code when available.
+- `exists` (`boolean`): True when the path or symlink entry exists.
 
 **Example**:
 
 ```lua
-fs.read_text("README.md")
+fs.lexists("README.md") --> true
 ```
 
-<a id="fn-dir"></a>
+> [!NOTE]
+>
+> Broken symlinks return `true`.
 
-#### `dir(path, opts?)`
+### Filesystem Mutations
 
-Iterator over items in `path`.
+<a id="fn-cd"></a>
+
+#### `cd(path)`
+
+Change the current working directory.
 
 **Parameters**:
 
-- `path` (`string`): Input path.
-- `opts?`
-  (`{hidden?:boolean, recursive?:boolean, follow_links?:boolean, type?:string}`):
-  Optional traversal options.
+- `path` (`string`): Directory path to switch into.
 
 **Return**:
 
-- `iterator`
-  (`(fun(state:table, prev?:string):basename:string?, type:"file"|"directory"|"link"|"fifo"|"socket"|"char"|"block"|"unknown"?)?`):
-  Iterator, or `nil` on failure.
-- `state` (`table|string`): Iterator state on success, or error message on
+- `changed` (`true?`): `true` when the directory change succeeds, or `nil` on
   failure.
+- `errmsg` (`string?`): Error message when the change fails.
 
 **Example**:
 
 ```lua
-for name, type in fs.dir(path.cwd(), { recursive = true }) do
-  print(name, type)
-end
+fs.cd("src")
 ```
 
-<a id="fn-listdir"></a>
+<a id="fn-cp"></a>
 
-#### `listdir(path, opts?)`
+#### `cp(src, dst)`
 
-Return direct children of a directory.
+Copy a file or directory tree.
 
 **Parameters**:
 
-- `path` (`string`): Input path.
-- `opts?`
-  (`{hidden?:boolean, recursive?:boolean, follow_links?:boolean, type?:string}`):
-  Optional traversal options.
+- `src` (`string`): Source path.
+- `dst` (`string`): Destination path.
 
 **Return**:
 
-- `paths` (`mods.List<string>?`): Direct child paths.
-- `err` (`string?`): Error message when traversal setup fails.
-
-**Example**:
-
-```lua
-fs.listdir("src")
-```
-
-### Writing
-
-<a id="fn-write-bytes"></a>
-
-#### `write_bytes(path, data)`
-
-Write full file in binary mode.
-
-**Parameters**:
-
-- `path` (`string`): Input path.
-- `data` (`string`): Input data.
-
-**Return**:
-
-- `written` (`true?`): `true` when writing succeeds, or `nil` on failure.
+- `copied` (`true?`): `true` when copying succeeds, or `nil` on failure.
 - `errmsg` (`string?`): Error message when the check fails.
 - `errcode` (`integer?`): OS error code when available.
 
 **Example**:
 
 ```lua
-fs.write_bytes("tmp.bin", "abc") --> true, nil
+fs.cp("a.txt", "b.txt")
+fs.cp("src", "backup/src")
 ```
 
-<a id="fn-write-text"></a>
+<a id="fn-cwd"></a>
 
-#### `write_text(path, data)`
+#### `cwd()`
 
-Write full file in text mode.
-
-**Parameters**:
-
-- `path` (`string`): Input path.
-- `data` (`string`): Input data.
+Return the current working directory.
 
 **Return**:
 
-- `written` (`true?`): `true` when writing succeeds, or `nil` on failure.
+- `cwd` (`string?`): Current working directory, or `nil` on failure.
+- `errmsg` (`string?`): Error message when the lookup fails.
+- `errcode` (`integer?`): OS error code when available.
+
+**Example**:
+
+```lua
+fs.cwd()
+```
+
+<a id="fn-link"></a>
+
+#### `link(path, linkpath)`
+
+Create a hard link.
+
+**Parameters**:
+
+- `path` (`string`): Existing path to link to.
+- `linkpath` (`string`): New link path to create.
+
+**Return**:
+
+- `linked` (`true?`): `true` when link creation succeeds, or `nil` on failure.
 - `errmsg` (`string?`): Error message when the check fails.
 - `errcode` (`integer?`): OS error code when available.
 
 **Example**:
 
 ```lua
-fs.write_text("tmp.txt", "abc") --> true, nil
+fs.link("target.txt", "hardlink.txt")
 ```
 
-<a id="fn-touch"></a>
+<a id="fn-mkdir"></a>
 
-#### `touch(path)`
+#### `mkdir(path, parents?)`
 
-Create file if missing without truncating, or update timestamps if it exists.
+Create a directory.
 
 **Parameters**:
 
 - `path` (`string`): Input path.
+- `parents?` (`boolean`): Create missing parent directories when `true`.
 
 **Return**:
 
-- `touched` (`true?`): `true` when the file exists after touch, or `nil` on
+- `created` (`true?`): `true` when directory creation succeeds, or `nil` on
   failure.
 - `errmsg` (`string?`): Error message when the check fails.
 - `errcode` (`integer?`): OS error code when available.
@@ -225,7 +227,7 @@ Create file if missing without truncating, or update timestamps if it exists.
 **Example**:
 
 ```lua
-fs.touch("tmp.txt") --> true, nil
+fs.mkdir("tmp/a/b", true)
 ```
 
 <a id="fn-rename"></a>
@@ -279,20 +281,42 @@ fs.rm("tmp.txt") --> true, nil
 fs.rm("tmp/cache", true) --> true, nil
 ```
 
-<a id="fn-mkdir"></a>
+<a id="fn-symlink"></a>
 
-#### `mkdir(path, parents?)`
+#### `symlink(path, linkpath)`
 
-Create a directory.
+Create a symbolic link.
+
+**Parameters**:
+
+- `path` (`string`): Path to reference from the new symlink.
+- `linkpath` (`string`): New symlink path to create.
+
+**Return**:
+
+- `linked` (`true?`): `true` when link creation succeeds, or `nil` on failure.
+- `errmsg` (`string?`): Error message when the check fails.
+- `errcode` (`integer?`): OS error code when available.
+
+**Example**:
+
+```lua
+fs.symlink("target.txt", "symlink.txt")
+```
+
+<a id="fn-touch"></a>
+
+#### `touch(path)`
+
+Create file if missing without truncating, or update timestamps if it exists.
 
 **Parameters**:
 
 - `path` (`string`): Input path.
-- `parents?` (`boolean`): Create missing parent directories when `true`.
 
 **Return**:
 
-- `created` (`true?`): `true` when directory creation succeeds, or `nil` on
+- `touched` (`true?`): `true` when the file exists after touch, or `nil` on
   failure.
 - `errmsg` (`string?`): Error message when the check fails.
 - `errcode` (`integer?`): OS error code when available.
@@ -300,56 +324,56 @@ Create a directory.
 **Example**:
 
 ```lua
-fs.mkdir("tmp/a/b", true)
+fs.touch("tmp.txt") --> true, nil
 ```
 
-<a id="fn-cp"></a>
+<a id="fn-write-bytes"></a>
 
-#### `cp(src, dst)`
+#### `write_bytes(path, data)`
 
-Copy a file or directory tree.
-
-**Parameters**:
-
-- `src` (`string`): Source path.
-- `dst` (`string`): Destination path.
-
-**Return**:
-
-- `copied` (`true?`): `true` when copying succeeds, or `nil` on failure.
-- `errmsg` (`string?`): Error message when the check fails.
-- `errcode` (`integer?`): OS error code when available.
-
-**Example**:
-
-```lua
-fs.cp("a.txt", "b.txt")
-fs.cp("src", "backup/src")
-```
-
-### Metadata
-
-<a id="fn-getsize"></a>
-
-#### `getsize(path)`
-
-Return file size in bytes.
+Write full file in binary mode.
 
 **Parameters**:
 
 - `path` (`string`): Input path.
+- `data` (`string`): Input data.
 
 **Return**:
 
-- `size` (`integer?`): File size in bytes.
+- `written` (`true?`): `true` when writing succeeds, or `nil` on failure.
 - `errmsg` (`string?`): Error message when the check fails.
 - `errcode` (`integer?`): OS error code when available.
 
 **Example**:
 
 ```lua
-fs.getsize("README.md") --> 1234
+fs.write_bytes("tmp.bin", "abc") --> true, nil
 ```
+
+<a id="fn-write-text"></a>
+
+#### `write_text(path, data)`
+
+Write full file in text mode.
+
+**Parameters**:
+
+- `path` (`string`): Input path.
+- `data` (`string`): Input data.
+
+**Return**:
+
+- `written` (`true?`): `true` when writing succeeds, or `nil` on failure.
+- `errmsg` (`string?`): Error message when the check fails.
+- `errcode` (`integer?`): OS error code when available.
+
+**Example**:
+
+```lua
+fs.write_text("tmp.txt", "abc") --> true, nil
+```
+
+### Metadata
 
 <a id="fn-getatime"></a>
 
@@ -371,28 +395,6 @@ Return last access time.
 
 ```lua
 fs.getatime("README.md") --> 1712345678
-```
-
-<a id="fn-getmtime"></a>
-
-#### `getmtime(path)`
-
-Return last modification time.
-
-**Parameters**:
-
-- `path` (`string`): Input path.
-
-**Return**:
-
-- `timestamp` (`number?`): Modification time (seconds since epoch).
-- `errmsg` (`string?`): Error message when the check fails.
-- `errcode` (`integer?`): OS error code when available.
-
-**Example**:
-
-```lua
-fs.getmtime("README.md") --> 1712345678
 ```
 
 <a id="fn-getctime"></a>
@@ -417,6 +419,50 @@ Return metadata change time.
 fs.getctime("README.md") --> 1712345678
 ```
 
+<a id="fn-getmtime"></a>
+
+#### `getmtime(path)`
+
+Return last modification time.
+
+**Parameters**:
+
+- `path` (`string`): Input path.
+
+**Return**:
+
+- `timestamp` (`number?`): Modification time (seconds since epoch).
+- `errmsg` (`string?`): Error message when the check fails.
+- `errcode` (`integer?`): OS error code when available.
+
+**Example**:
+
+```lua
+fs.getmtime("README.md") --> 1712345678
+```
+
+<a id="fn-getsize"></a>
+
+#### `getsize(path)`
+
+Return file size in bytes.
+
+**Parameters**:
+
+- `path` (`string`): Input path.
+
+**Return**:
+
+- `size` (`integer?`): File size in bytes.
+- `errmsg` (`string?`): Error message when the check fails.
+- `errcode` (`integer?`): OS error code when available.
+
+**Example**:
+
+```lua
+fs.getsize("README.md") --> 1234
+```
+
 <a id="fn-lstat"></a>
 
 #### `lstat(path)`
@@ -438,6 +484,30 @@ Return symlink-aware file attributes.
 
 ```lua
 fs.lstat("README.md")
+```
+
+<a id="fn-samefile"></a>
+
+#### `samefile(a, b)`
+
+Return whether two paths refer to the same file, or `nil` and an error on
+failure.
+
+**Parameters**:
+
+- `a` (`string`): Input path.
+- `b` (`string`): Input path.
+
+**Return**:
+
+- `isSameFile` (`boolean?`): True when both paths refer to the same file.
+- `errmsg` (`string?`): Error message when the check fails.
+- `errcode` (`integer?`): OS error code when available.
+
+**Example**:
+
+```lua
+fs.samefile("README.md", "README.md") --> true
 ```
 
 <a id="fn-stat"></a>
@@ -464,37 +534,107 @@ Return file attributes.
 fs.stat("README.md")
 ```
 
-<a id="fn-samefile"></a>
+### Reading
 
-#### `samefile(path_a, path_b)`
+<a id="fn-dir"></a>
 
-Return whether two paths refer to the same file, or `nil` and an error on
-failure.
+#### `dir(path, opts?)`
+
+Iterator over items in `path`.
+
+**Options**:
+
+- `recursive`: recurse into subdirectories; defaults to `false`.
+- `hidden`: include hidden entries; defaults to `true`.
+- `follow`: recurse into symlinked directories; defaults to `false`.
+- `type`: filter by entry type, such as `"file"` or `"directory"`; defaults to
+  `nil`.
 
 **Parameters**:
 
-- `path_a` (`string`): Input path.
-- `path_b` (`string`): Input path.
+- `path` (`string`): Input path.
+- `opts?`
+  (`{hidden?:boolean, recursive?:boolean, follow?:boolean, type?:modsFsEntryType}`):
+  Optional traversal options.
 
 **Return**:
 
-- `isSameFile` (`boolean?`): True when both paths refer to the same file.
+- `iterator`
+  (`(fun(state:table, prev?:string):basename:string?, type:modsFsEntryType?)?`):
+  Iterator, or `nil` on failure.
+- `state` (`table|string`): Iterator state on success, or error message on
+  failure.
+
+**Example**:
+
+```lua
+for name, type in fs.dir(path.cwd(), { recursive = true }) do
+  print(name, type)
+end
+```
+
+<a id="fn-listdir"></a>
+
+#### `listdir(path, opts?)`
+
+Return direct children of a directory.
+
+**Options**:
+
+- `recursive`: recurse into subdirectories; defaults to `false`.
+- `hidden`: include hidden entries; defaults to `true`.
+- `follow`: recurse into symlinked directories; defaults to `false`.
+- `type`: filter by entry type, such as `"file"` or `"directory"`; defaults to
+  `nil`.
+- `names`: return basenames; defaults to `false`.
+
+**Parameters**:
+
+- `path` (`string`): Input path.
+- `opts?`
+  (`{hidden?:boolean, recursive?:boolean, follow?:boolean, type?:modsFsEntryType, names?:boolean}`):
+  Optional traversal options.
+
+**Return**:
+
+- `paths` (`mods.List<string>?`): Direct child paths, or basenames when
+  `opts.names` is `true`.
+- `err` (`string?`): Error message when traversal setup fails.
+
+**Example**:
+
+```lua
+fs.listdir("src")
+fs.listdir("src", { names = true })
+```
+
+<a id="fn-read-bytes"></a>
+
+#### `read_bytes(path)`
+
+Read full file in binary mode.
+
+**Parameters**:
+
+- `path` (`string`): Input path.
+
+**Return**:
+
+- `body` (`string?`): File contents read in binary mode, or `nil` on failure.
 - `errmsg` (`string?`): Error message when the check fails.
 - `errcode` (`integer?`): OS error code when available.
 
 **Example**:
 
 ```lua
-fs.samefile("README.md", "README.md") --> true
+fs.read_bytes("README.md")
 ```
 
-### Existence Checks
+<a id="fn-read-text"></a>
 
-<a id="fn-exists"></a>
+#### `read_text(path)`
 
-#### `exists(path)`
-
-Return `true` when a path exists.
+Read full file in text mode.
 
 **Parameters**:
 
@@ -502,38 +642,12 @@ Return `true` when a path exists.
 
 **Return**:
 
-- `exists` (`boolean`): True when the path exists.
+- `body` (`string?`): File contents read in text mode, or `nil` on failure.
+- `errmsg` (`string?`): Error message when the check fails.
+- `errcode` (`integer?`): OS error code when available.
 
 **Example**:
 
 ```lua
-fs.exists("README.md") --> true
+fs.read_text("README.md")
 ```
-
-> [!NOTE]
->
-> Broken symlinks return `false`.
-
-<a id="fn-lexists"></a>
-
-#### `lexists(path)`
-
-Return `true` when a path exists without following symlinks.
-
-**Parameters**:
-
-- `path` (`string`): Input path.
-
-**Return**:
-
-- `exists` (`boolean`): True when the path or symlink entry exists.
-
-**Example**:
-
-```lua
-fs.lexists("README.md") --> true
-```
-
-> [!NOTE]
->
-> Broken symlinks return `true`.

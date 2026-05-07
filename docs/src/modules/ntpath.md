@@ -24,6 +24,18 @@ print(ntpath.isreserved([[C:\Temp\CON.txt]])) --> true
 
 ## Functions
 
+<a id="fn-expand-percent-vars"></a>
+
+### `_expand_percent_vars(p)`
+
+Expand percent-style variables in a string. **Parameters**:
+
+- `p` (`string`)
+
+**Return**:
+
+- `expanded` (`string`)
+
 <a id="fn-ismount"></a>
 
 ### `ismount(path)`

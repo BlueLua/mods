@@ -17,59 +17,31 @@ kw.isidentifier("hello_world") --> true
 
 ## Functions
 
-| Function                                              | Description                                                   |
-| ----------------------------------------------------- | ------------------------------------------------------------- |
-| [`iskeyword(v)`](#fn-iskeyword)                       | Return `true` when `v` is a reserved Lua keyword.             |
-| [`isidentifier(v)`](#fn-isidentifier)                 | Return `true` when `v` is a valid non-keyword Lua identifier. |
-| [`kwlist()`](#fn-kwlist)                              | Return Lua keywords as a [`mods.List`](/modules/list).        |
-| [`kwset()`](#fn-kwset)                                | Return Lua keywords as a [`mods.Set`](/modules/set).          |
-| [`normalize_identifier(s)`](#fn-normalize-identifier) | Normalize an input into a safe Lua identifier.                |
+**Collections**:
 
-<a id="fn-iskeyword"></a>
+| Function                 | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| [`kwlist()`](#fn-kwlist) | Return Lua keywords as a [`mods.List`](/modules/list). |
+| [`kwset()`](#fn-kwset)   | Return Lua keywords as a [`mods.Set`](/modules/set).   |
 
-### `iskeyword(v)`
+**Normalization**:
 
-Return `true` when `v` is a reserved Lua keyword.
+| Function                                              | Description                                    |
+| ----------------------------------------------------- | ---------------------------------------------- |
+| [`normalize_identifier(s)`](#fn-normalize-identifier) | Normalize an input into a safe Lua identifier. |
 
-**Parameters**:
+**Predicates**:
 
-- `v` (`any`): Value to validate.
+| Function                              | Description                                                   |
+| ------------------------------------- | ------------------------------------------------------------- |
+| [`isidentifier(v)`](#fn-isidentifier) | Return `true` when `v` is a valid non-keyword Lua identifier. |
+| [`iskeyword(v)`](#fn-iskeyword)       | Return `true` when `v` is a reserved Lua keyword.             |
 
-**Return**:
-
-- `isKeyword` (`boolean`): Whether the check succeeds.
-
-**Example**:
-
-```lua
-kw.iskeyword("function") --> true
-kw.iskeyword("hello") --> false
-```
-
-<a id="fn-isidentifier"></a>
-
-### `isidentifier(v)`
-
-Return `true` when `v` is a valid non-keyword Lua identifier.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-
-**Return**:
-
-- `isIdentifier` (`boolean`): Whether the check succeeds.
-
-**Example**:
-
-```lua
-kw.isidentifier("hello_world") --> true
-kw.isidentifier("local") --> false
-```
+### Collections
 
 <a id="fn-kwlist"></a>
 
-### `kwlist()`
+#### `kwlist()`
 
 Return Lua keywords as a [`mods.List`](/modules/list).
 
@@ -80,12 +52,13 @@ Return Lua keywords as a [`mods.List`](/modules/list).
 **Example**:
 
 ```lua
-kw.kwlist():contains("and") --> true
+kw.kwlist():contains("and")    --> true
+kw.kwlist():contains("global") --> true -- Lua 5.5+
 ```
 
 <a id="fn-kwset"></a>
 
-### `kwset()`
+#### `kwset()`
 
 Return Lua keywords as a [`mods.Set`](/modules/set).
 
@@ -96,12 +69,15 @@ Return Lua keywords as a [`mods.Set`](/modules/set).
 **Example**:
 
 ```lua
-kw.kwlset():contains("and") --> true
+kw.kwlset():contains("and")    --> true
+kw.kwlset():contains("global") --> true -- Lua 5.5+
 ```
+
+### Normalization
 
 <a id="fn-normalize-identifier"></a>
 
-### `normalize_identifier(s)`
+#### `normalize_identifier(s)`
 
 Normalize an input into a safe Lua identifier.
 
@@ -117,4 +93,48 @@ Normalize an input into a safe Lua identifier.
 
 ```lua
 kw.normalize_identifier(" 2 bad-name ") --> "_2_bad_name"
+```
+
+### Predicates
+
+<a id="fn-isidentifier"></a>
+
+#### `isidentifier(v)`
+
+Return `true` when `v` is a valid non-keyword Lua identifier.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+
+**Return**:
+
+- `isIdentifier` (`boolean`): Whether the check succeeds.
+
+**Example**:
+
+```lua
+kw.isidentifier("hello_world") --> true
+kw.isidentifier("local")       --> false
+```
+
+<a id="fn-iskeyword"></a>
+
+#### `iskeyword(v)`
+
+Return `true` when `v` is a reserved Lua keyword.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+
+**Return**:
+
+- `isKeyword` (`boolean`): Whether the check succeeds.
+
+**Example**:
+
+```lua
+kw.iskeyword("function") --> true
+kw.iskeyword("hello")    --> false
 ```

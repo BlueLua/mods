@@ -26,6 +26,12 @@ validate(1)        --> true, nil
 validate(1, "nil") --> false, "nil expected, got number"
 ```
 
+> [!IMPORTANT]
+>
+> Path checks require **LuaFileSystem**
+> ([`lfs`](https://github.com/lunarmodules/luafilesystem)) and raise an error if
+> it is not installed.
+
 ## Validator Names
 
 Validator names are case-insensitive for field access.
@@ -57,6 +63,26 @@ validate.string(123, "want {{expected}}, got {{got}}")
 
 ## Functions
 
+**Path Checks**:
+
+| Function                        | Description                                                                                             |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [`block(v, msg?)`](#fn-block)   | Returns `true` when `v` is a block device path. Otherwise returns `false` and an error message.         |
+| [`char(v, msg?)`](#fn-char)     | Returns `true` when `v` is a char device path. Otherwise returns `false` and an error message.          |
+| [`device(v, msg?)`](#fn-device) | Returns `true` when `v` is a block or char device path. Otherwise returns `false` and an error message. |
+| [`dir(v, msg?)`](#fn-dir)       | Returns `true` when `v` is a directory path. Otherwise returns `false` and an error message.            |
+| [`fifo(v, msg?)`](#fn-fifo)     | Returns `true` when `v` is a FIFO path. Otherwise returns `false` and an error message.                 |
+| [`file(v, msg?)`](#fn-file)     | Returns `true` when `v` is a file path. Otherwise returns `false` and an error message.                 |
+| [`link(v, msg?)`](#fn-link)     | Returns `true` when `v` is a symlink path. Otherwise returns `false` and an error message.              |
+| [`path(v, msg?)`](#fn-path)     | Returns `true` when `v` is a valid filesystem path. Otherwise returns `false` and an error message.     |
+| [`socket(v, msg?)`](#fn-socket) | Returns `true` when `v` is a socket path. Otherwise returns `false` and an error message.               |
+
+**Registration**:
+
+| Function                                               | Description                                        |
+| ------------------------------------------------------ | -------------------------------------------------- |
+| [`register(name, validator, template?)`](#fn-register) | Register or override a validator function by name. |
+
 **Type Checks**:
 
 | Function                            | Description                                                                                  |
@@ -74,36 +100,262 @@ validate.string(123, "want {{expected}}, got {{got}}")
 
 | Function                            | Description                                                                                 |
 | ----------------------------------- | ------------------------------------------------------------------------------------------- |
-| [`false(v, msg?)`](#fn-false)       | Returns `true` when `v` is exactly `false`. Otherwise returns `false` and an error message. |
-| [`true(v, msg?)`](#fn-true)         | Returns `true` when `v` is exactly `true`. Otherwise returns `false` and an error message.  |
-| [`falsy(v, msg?)`](#fn-falsy)       | Returns `true` when `v` is falsy. Otherwise returns `false` and an error message.           |
 | [`callable(v, msg?)`](#fn-callable) | Returns `true` when `v` is callable. Otherwise returns `false` and an error message.        |
+| [`false(v, msg?)`](#fn-false)       | Returns `true` when `v` is exactly `false`. Otherwise returns `false` and an error message. |
+| [`falsy(v, msg?)`](#fn-falsy)       | Returns `true` when `v` is falsy. Otherwise returns `false` and an error message.           |
 | [`integer(v, msg?)`](#fn-integer)   | Returns `true` when `v` is an integer. Otherwise returns `false` and an error message.      |
+| [`true(v, msg?)`](#fn-true)         | Returns `true` when `v` is exactly `true`. Otherwise returns `false` and an error message.  |
 | [`truthy(v, msg?)`](#fn-truthy)     | Returns `true` when `v` is truthy. Otherwise returns `false` and an error message.          |
 
-**Path Checks**:
+### Path Checks
 
-| Function                        | Description                                                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| [`path(v, msg?)`](#fn-path)     | Returns `true` when `v` is a valid filesystem path. Otherwise returns `false` and an error message.     |
-| [`block(v, msg?)`](#fn-block)   | Returns `true` when `v` is a block device path. Otherwise returns `false` and an error message.         |
-| [`char(v, msg?)`](#fn-char)     | Returns `true` when `v` is a char device path. Otherwise returns `false` and an error message.          |
-| [`device(v, msg?)`](#fn-device) | Returns `true` when `v` is a block or char device path. Otherwise returns `false` and an error message. |
-| [`dir(v, msg?)`](#fn-dir)       | Returns `true` when `v` is a directory path. Otherwise returns `false` and an error message.            |
-| [`fifo(v, msg?)`](#fn-fifo)     | Returns `true` when `v` is a FIFO path. Otherwise returns `false` and an error message.                 |
-| [`file(v, msg?)`](#fn-file)     | Returns `true` when `v` is a file path. Otherwise returns `false` and an error message.                 |
-| [`link(v, msg?)`](#fn-link)     | Returns `true` when `v` is a symlink path. Otherwise returns `false` and an error message.              |
-| [`socket(v, msg?)`](#fn-socket) | Returns `true` when `v` is a socket path. Otherwise returns `false` and an error message.               |
+<a id="fn-block"></a>
 
-**Validator API**:
+#### `block(v, msg?)`
 
-| Function                                               | Description                                        |
-| ------------------------------------------------------ | -------------------------------------------------- |
-| [`register(name, validator, template?)`](#fn-register) | Register or override a validator function by name. |
+Returns `true` when `v` is a block device path. Otherwise returns `false` and an
+error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.block(".")
+```
+
+<a id="fn-char"></a>
+
+#### `char(v, msg?)`
+
+Returns `true` when `v` is a char device path. Otherwise returns `false` and an
+error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.char(".")
+```
+
+<a id="fn-device"></a>
+
+#### `device(v, msg?)`
+
+Returns `true` when `v` is a block or char device path. Otherwise returns
+`false` and an error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.device(".")
+```
+
+<a id="fn-dir"></a>
+
+#### `dir(v, msg?)`
+
+Returns `true` when `v` is a directory path. Otherwise returns `false` and an
+error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.dir(".")
+```
+
+<a id="fn-fifo"></a>
+
+#### `fifo(v, msg?)`
+
+Returns `true` when `v` is a FIFO path. Otherwise returns `false` and an error
+message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.fifo(".")
+```
+
+<a id="fn-file"></a>
+
+#### `file(v, msg?)`
+
+Returns `true` when `v` is a file path. Otherwise returns `false` and an error
+message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.file(".")
+```
+
+<a id="fn-link"></a>
+
+#### `link(v, msg?)`
+
+Returns `true` when `v` is a symlink path. Otherwise returns `false` and an
+error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.link(".")
+```
+
+<a id="fn-path"></a>
+
+#### `path(v, msg?)`
+
+Returns `true` when `v` is a valid filesystem path. Otherwise returns `false`
+and an error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.path("README.md")
+```
+
+<a id="fn-socket"></a>
+
+#### `socket(v, msg?)`
+
+Returns `true` when `v` is a socket path. Otherwise returns `false` and an error
+message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.socket(".")
+```
+
+### Registration
+
+<a id="fn-register"></a>
+
+#### `register(name, validator, template?)`
+
+Register or override a validator function by name.
+
+**Parameters**:
+
+- `name` (`string`): Validator name.
+- `validator` (`fun(v:any):(ok:boolean)`): Validator function.
+- `template?` (`string`): Optional default message template.
+
+**Return**:
+
+- `none` (`nil`)
+
+**Example**:
+
+```lua
+validate.register("odd", function(v)
+  return type(v) == "number" and v % 2 == 1
+end, "{{value}} does not satisfy {{expected}}")
+
+ok, err = validate.odd(3)     --> true, nil
+ok, err = validate.odd("x")   --> false, '"x" does not satisfy odd'
+ok, err = validate(2, "odd")  --> false, "2 does not satisfy odd"
+```
+
+> [!NOTE]
+>
+> - If `template` is provided, it becomes the default message template for that
+>   validator.
+> - If `template` is omitted, failures use:
+>   `{{expected}} expected, got {{got}}`.
 
 ### Type Checks
 
-Basic Lua type validators (and their negated variants). <a id="fn-boolean"></a>
+<a id="fn-boolean"></a>
 
 #### `boolean(v, msg?)`
 
@@ -299,7 +551,30 @@ ok, err = validate.userdata(1)         --> false, "userdata expected, got number
 
 ### Value Checks
 
-Value-state validators (exact true/false, truthy/falsy, callable, integer).
+<a id="fn-callable"></a>
+
+#### `callable(v, msg?)`
+
+Returns `true` when `v` is callable. Otherwise returns `false` and an error
+message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.callable(type) --> true, nil
+ok, err = validate.callable(1)    --> false, "callable value expected, got 1"
+```
+
 <a id="fn-false"></a>
 
 #### `false(v, msg?)`
@@ -322,30 +597,6 @@ error message.
 ```lua
 ok, err = validate.False(false) --> true, nil
 ok, err = validate.False(true)  --> false, "false value expected, got true"
-```
-
-<a id="fn-true"></a>
-
-#### `true(v, msg?)`
-
-Returns `true` when `v` is exactly `true`. Otherwise returns `false` and an
-error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.True(true)  --> true, nil
-ok, err = validate.True(false) --> false, "true value expected, got false"
 ```
 
 <a id="fn-falsy"></a>
@@ -372,30 +623,6 @@ ok, err = validate.falsy(false) --> true, nil
 ok, err = validate.falsy(1)     --> false, "falsy value expected, got 1"
 ```
 
-<a id="fn-callable"></a>
-
-#### `callable(v, msg?)`
-
-Returns `true` when `v` is callable. Otherwise returns `false` and an error
-message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.callable(type) --> true, nil
-ok, err = validate.callable(1)    --> false, "callable value expected, got 1"
-```
-
 <a id="fn-integer"></a>
 
 #### `integer(v, msg?)`
@@ -418,6 +645,30 @@ message.
 ```lua
 ok, err = validate.integer(1)   --> true, nil
 ok, err = validate.integer(1.5) --> false, "integer value expected, got 1.5"
+```
+
+<a id="fn-true"></a>
+
+#### `true(v, msg?)`
+
+Returns `true` when `v` is exactly `true`. Otherwise returns `false` and an
+error message.
+
+**Parameters**:
+
+- `v` (`any`): Value to validate.
+- `msg?` (`string`): Optional override template.
+
+**Return**:
+
+- `isValid` (`boolean`): Whether the check succeeds.
+- `err` (`string?`): Error message when the check fails.
+
+**Example**:
+
+```lua
+ok, err = validate.True(true)  --> true, nil
+ok, err = validate.True(false) --> false, "true value expected, got false"
 ```
 
 <a id="fn-truthy"></a>
@@ -444,261 +695,11 @@ ok, err = validate.truthy(1)     --> true, nil
 ok, err = validate.truthy(false) --> false, "truthy value expected, got false"
 ```
 
-### Path Checks
-
-Filesystem path-kind validators backed by LuaFileSystem (`lfs`).
-
-> [!IMPORTANT]
->
-> Path checks require **LuaFileSystem**
-> ([`lfs`](https://github.com/lunarmodules/luafilesystem)) and raise an error if
-> it is not installed. <a id="fn-path"></a>
-
-#### `path(v, msg?)`
-
-Returns `true` when `v` is a valid filesystem path. Otherwise returns `false`
-and an error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.path("README.md")
-```
-
-<a id="fn-block"></a>
-
-#### `block(v, msg?)`
-
-Returns `true` when `v` is a block device path. Otherwise returns `false` and an
-error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.block(".")
-```
-
-<a id="fn-char"></a>
-
-#### `char(v, msg?)`
-
-Returns `true` when `v` is a char device path. Otherwise returns `false` and an
-error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.char(".")
-```
-
-<a id="fn-device"></a>
-
-#### `device(v, msg?)`
-
-Returns `true` when `v` is a block or char device path. Otherwise returns
-`false` and an error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.device(".")
-```
-
-<a id="fn-dir"></a>
-
-#### `dir(v, msg?)`
-
-Returns `true` when `v` is a directory path. Otherwise returns `false` and an
-error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.dir(".")
-```
-
-<a id="fn-fifo"></a>
-
-#### `fifo(v, msg?)`
-
-Returns `true` when `v` is a FIFO path. Otherwise returns `false` and an error
-message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.fifo(".")
-```
-
-<a id="fn-file"></a>
-
-#### `file(v, msg?)`
-
-Returns `true` when `v` is a file path. Otherwise returns `false` and an error
-message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.file(".")
-```
-
-<a id="fn-link"></a>
-
-#### `link(v, msg?)`
-
-Returns `true` when `v` is a symlink path. Otherwise returns `false` and an
-error message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.link(".")
-```
-
-<a id="fn-socket"></a>
-
-#### `socket(v, msg?)`
-
-Returns `true` when `v` is a socket path. Otherwise returns `false` and an error
-message.
-
-**Parameters**:
-
-- `v` (`any`): Value to validate.
-- `msg?` (`string`): Optional override template.
-
-**Return**:
-
-- `isValid` (`boolean`): Whether the check succeeds.
-- `err` (`string?`): Error message when the check fails.
-
-**Example**:
-
-```lua
-ok, err = validate.socket(".")
-```
-
-### Validator API
-
-<a id="fn-register"></a>
-
-#### `register(name, validator, template?)`
-
-Register or override a validator function by name.
-
-**Parameters**:
-
-- `name` (`string`): Validator name.
-- `validator` (`fun(v:any):(ok:boolean)`): Validator function.
-- `template?` (`string`): Optional default message template.
-
-**Return**:
-
-- `none` (`nil`)
-
-**Example**:
-
-```lua
-validate.register("odd", function(v)
-  return type(v) == "number" and v % 2 == 1
-end, "{{value}} does not satisfy {{expected}}")
-
-ok, err = validate.odd(3)     --> true, nil
-ok, err = validate.odd("x")   --> false, '"x" does not satisfy odd'
-ok, err = validate(2, "odd")  --> false, "2 does not satisfy odd"
-```
-
-> [!NOTE]
->
-> - If `template` is provided, it becomes the default message template for that
->   validator.
-> - If `template` is omitted, failures use:
->   `{{expected}} expected, got {{got}}`.
-
 ## Fields
 
-### `messages`
+<a id="messages"></a>
+
+### `messages` (`modsValidatorMessages`)
 
 Custom error-message templates for validator failures.
 
