@@ -313,6 +313,20 @@ function List:remove(v) end
 function List:sort(comp) end
 
 ---
+---Shuffle the list in place.
+---
+---```lua
+---ls = List({ "a", "b", "c" }):shuffle() --> { "b", "c", "a" } -- order varies
+---```
+---
+---@section Mutation
+---@generic T:mods.List|any[]
+---@param self T Current list.
+---@param rng? fun(lo:integer, hi:integer):integer Optional random index picker; defaults to `math.random`.
+---@return T self Current list.
+function List:shuffle(rng) end
+
+---
 ---Return a shallow copy of the list.
 ---
 ---```lua

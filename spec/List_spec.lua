@@ -11,6 +11,7 @@ local shallow_copy = mods.tbl.copy
 local fmt = string.format
 local upper = string.upper
 local len = string.len
+local unpack = table.unpack
 
 describe("mods.List", function()
   local L = List
@@ -200,6 +201,29 @@ describe("mods.List", function()
 
       assert.are_same({ "a", "bb", "ccc" }, res)
       assert.are_equal(true, rawequal(ls, res), "Expected same list reference")
+    end)
+  end)
+
+  describe("shuffle()", function()
+    it("shuffles in place using math.random by default", function()
+      local ls = List({ "a", "b" })
+      local res = ls:shuffle()
+      assert.True((res == { "b", "a" }) or (res == { "a", "b" }))
+    end)
+
+    it("shuffles in place using the provided rng", function()
+      local calls = {}
+      local function rng(lo, hi)
+        calls[#calls + 1] = { lo, hi }
+        return lo
+      end
+
+      local ls = List({ "a", "b", "c", "d", "e" })
+      local res = ls:shuffle(rng)
+
+      assert.are_same({ "b", "c", "d", "e", "a" }, res)
+      assert.are_equal(true, rawequal(ls, res), "Expected same list reference")
+      assert.are_same({ { 1, 5 }, { 1, 4 }, { 1, 3 }, { 1, 2 } }, calls)
     end)
   end)
 
