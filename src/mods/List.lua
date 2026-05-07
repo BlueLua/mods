@@ -367,10 +367,6 @@ end
 
 function List:slice(i, j)
   local len = #self
-  local res = List()
-  if len == 0 then
-    return res
-  end
   local start = i or 1
   local finish = j or len
   if start < 0 then
@@ -386,10 +382,9 @@ function List:slice(i, j)
     finish = len
   end
   if start > finish then
-    return res
+    return List()
   end
-  move(self, start, finish, 1, res)
-  return res
+  return List(move(self, start, finish, 1, {}))
 end
 
 function List:sort(comp)
