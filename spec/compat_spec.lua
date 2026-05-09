@@ -371,4 +371,117 @@ describe("mods internal compat", function()
       end)
     end)
   end)
+
+  describe("loadfile()", function()
+    local function with_chunk_file(chunk, fn)
+      local path = os.tmpname()
+      local fh = assert(io.open(path, "wb"))
+      fh:write(chunk)
+      fh:close()
+
+      local results = table.pack(pcall(fn, path))
+      os.remove(path)
+      if not results[1] then
+        error(results[2], 0)
+      end
+      return table.unpack(results, 2, results.n)
+    end
+
+    it("loads file chunks with the default mode", function()
+      assert.Not.Error(function()
+        with_chunk_file("return 10", function(path)
+          local fn = loadfile(path)
+          assert.Equals(10, fn())
+        end)
+      end)
+    end)
+
+    it("applies env to file chunks", function()
+      assert.Not.Error(function()
+        with_chunk_file("return v", function(path)
+          local fn = loadfile(path, nil, { v = 11 })
+          assert.Equals(11, fn())
+        end)
+      end)
+    end)
+
+    it("accepts text chunks in mode 't'", function()
+      assert.Not.Error(function()
+        with_chunk_file("return 12", function(path)
+          local fn = loadfile(path, "t")
+          assert.Equals(12, fn())
+        end)
+      end)
+    end)
+
+    it("accepts binary chunks in mode 'b'", function()
+      assert.Not.Error(function()
+        with_chunk_file(
+          string.dump(function()
+            return 13
+          end),
+          function(path)
+            local fn = loadfile(path, "b")
+            assert.Equals(13, fn())
+          end
+        )
+      end)
+    end)
+
+    it("rejects text chunks in mode 'b'", function()
+      assert.Not.Error(function()
+        with_chunk_file("return 1", function(path)
+          local fn, err = loadfile(path, "b")
+          assert.Nil(fn)
+          assert.Not.Nil(err)
+        end)
+      end)
+    end)
+
+    it("rejects binary chunks in mode 't'", function()
+      assert.Not.Error(function()
+        with_chunk_file(
+          string.dump(function()
+            return 1
+          end),
+          function(path)
+            local fn, err = loadfile(path, "t")
+            assert.Nil(fn)
+            assert.Not.Nil(err)
+          end
+        )
+      end)
+    end)
+
+    it("returns nil and an error for invalid file chunks", function()
+      assert.Not.Error(function()
+        with_chunk_file("return )", function(path)
+          local fn, err = loadfile(path, "t")
+          assert.Nil(fn)
+          assert.Not.Nil(err)
+          assert.Not.Nil(err:find(path, 1, true))
+        end)
+      end)
+    end)
+
+    it("returns nil and an error for missing files", function()
+      assert.Not.Error(function()
+        local fn, err = loadfile("mods-compat-missing-file.lua")
+        assert.Nil(fn)
+        assert.Not.Nil(err)
+      end)
+    end)
+
+    it("raises for bad filename types", function()
+      assert.Error(function()
+        loadfile({})
+      end)
+    end)
+
+    it("raises for bad mode types", function()
+      assert.Error(function()
+        loadfile("mods-compat-missing-file.lua", {})
+      end)
+    end)
+  end)
 end)

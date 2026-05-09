@@ -7,6 +7,7 @@ end
 local floor = math.floor
 local char = string.char
 local concat = table.concat
+local io_open = io.open
 local huge, neg_huge = math.huge, -math.huge
 
 if runtime.is_lua51 then
@@ -17,12 +18,16 @@ if runtime.is_lua51 then
 end
 
 if runtime.is_lua51 and not runtime.is_luajit then
-  local function load_string(v, i, name, expected)
-    local t = type(v)
-    if t == "string" or t == "number" then
+  local loadfile = loadfile
+
+  local function load_arg(v, i, fname, expected)
+    local tv = type(v)
+    if tv == "string" then
+      return v
+    elseif tv == "number" then
       return tostring(v)
     end
-    error(("bad argument #%d to 'load' (%s expected, got %s)"):format(i, expected or name, t), 3)
+    error(("bad argument #%d to '%s' (%s expected, got %s)"):format(i, fname, expected, tv), 3)
   end
 
   rawset(_G, "load", function(chunk, chunkname, mode, env)
@@ -47,10 +52,10 @@ if runtime.is_lua51 and not runtime.is_luajit then
         chunks[i] = part
       end
     else
-      src = load_string(chunk, 1, "function or string", "function")
+      src = load_arg(chunk, 1, "load", "function")
     end
 
-    mode = mode == nil and "bt" or load_string(mode, 3, "string")
+    mode = mode == nil and "bt" or load_arg(mode, 3, "load", "string")
 
     local kind = src:byte(1) == 27 and "binary" or "text"
     if mode:find(kind == "binary" and "b" or "t", 1, true) == nil then
@@ -62,6 +67,30 @@ if runtime.is_lua51 and not runtime.is_luajit then
       setfenv(fn, env)
     end
     return fn, err
+  end)
+
+  rawset(_G, "loadfile", function(filename, mode, env)
+    if mode == nil and env == nil then
+      return loadfile(filename)
+    end
+
+    filename = load_arg(filename, 1, "loadfile", "string")
+    mode = mode == nil and "bt" or load_arg(mode, 2, "loadfile", "string")
+
+    local f, src, err
+
+    f, err = io_open(filename, "rb")
+    if not f then
+      return nil, err
+    end
+
+    src, err = f:read("*a")
+    f:close()
+    if not src then
+      return nil, err
+    end
+
+    return load(src, "@" .. filename, mode, env)
   end)
 end
 
