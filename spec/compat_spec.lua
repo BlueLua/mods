@@ -112,6 +112,38 @@ describe("mods internal compat", function()
     assert.Error(function() _ = utf8.char(1.5)        end)
   end)
 
+  describe("xpcall()", function()
+    it("passes arguments through to the protected function", function()
+      assert.Not.Error(function()
+        local results = table.pack(xpcall(function(...)
+          return select("#", ...), ...
+        end, function(err)
+          return err
+        end, "a", nil, "c"))
+
+        assert.Equals(5, results.n)
+        assert.Equals(true, results[1])
+        assert.Equals(3, results[2])
+        assert.Equals("a", results[3])
+        assert.Nil(results[4])
+        assert.Equals("c", results[5])
+      end)
+    end)
+
+    it("uses the message handler when a call with arguments fails", function()
+      assert.Not.Error(function()
+        local ok, err = xpcall(function(prefix, message)
+          error(prefix .. message, 0)
+        end, function(err)
+          return "handled: " .. err
+        end, "boom: ", "bad")
+
+        assert.False(ok)
+        assert.Equals("handled: boom: bad", err)
+      end)
+    end)
+  end)
+
   describe("load()", function()
     it("compiles string chunks with env", function()
       assert.Not.Error(function()

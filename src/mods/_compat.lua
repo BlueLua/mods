@@ -8,17 +8,22 @@ local floor = math.floor
 local char = string.char
 local concat = table.concat
 local io_open = io.open
+local unpack = table.unpack or unpack
+local pack = table.pack
 local huge, neg_huge = math.huge, -math.huge
 
 if runtime.is_lua51 then
-  rawset(table, "unpack", unpack)
-  rawset(table, "pack", function(...)
+  pack = function(...)
     return { n = select("#", ...), ... }
-  end)
+  end
+
+  rawset(table, "unpack", unpack)
+  rawset(table, "pack", pack)
 end
 
 if runtime.is_lua51 and not runtime.is_luajit then
   local loadfile = loadfile
+  local xpcall = xpcall
 
   local function load_arg(v, i, fname, expected)
     local tv = type(v)
@@ -91,6 +96,13 @@ if runtime.is_lua51 and not runtime.is_luajit then
     end
 
     return load(src, "@" .. filename, mode, env)
+  end)
+
+  rawset(_G, "xpcall", function(f, msgh, ...)
+    local args = pack(...)
+    return xpcall(function()
+      return f(unpack(args, 1, args.n))
+    end, msgh)
   end)
 end
 
