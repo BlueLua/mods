@@ -1,40 +1,88 @@
 ---@meta mods.repr
+
 ---
----Readable string rendering for Lua values.
+---Render Lua values as readable source-like text.
 ---
 ---## Usage
 ---
 ---```lua
----repr = require "mods.repr"
+---local repr = require("mods").repr
 ---
----print(repr("Hello world!")) --> "Hello world!"
+---local t = {
+---  "first",
+---  "second",
+---  name = "Ada",
+---  ok = true,
+---  nested = { value = 42 },
+---}
 ---
----view = { user = { name = "Ada", tags = { "lua", "docs" } } }
----print(repr(view))
+---print(repr(t))
 -----> {
------    user = {
------      name = "Ada",
------      tags = {
------        [1] = "lua",
------        [2] = "docs"
------      }
------    }
------  }
+----->   [1] = "first",
+----->   [2] = "second",
+----->   name = "Ada",
+----->   nested = {
+----->     value = 42
+----->   },
+----->   ok = true
+-----> }
 ---```
 ---
-
+---### Key formatting
 ---
----Convert a Lua value to a readable string representation.
+---Strings are quoted and reserved keys use bracket notation.
 ---
 ---```lua
----repr("Hello")      --> '"Hello"'
----repr({ "a", "b" }) --> '{ "a", "b" }'
----repr()             --> "nil"
+---print(repr({ name = "Ada", ["with space"] = true }))
+-----> {
+----->   ["with space"] = true,
+----->   name = "Ada"
+-----> }
 ---```
 ---
----@param v any Value to render.
+---### Cycle rendering
+---
+---Circular references render as `<cycle>`.
+---
+---```lua
+---local t = {}
+---t.self = t
+---
+---print(repr(t))
+-----> {
+----->   self = <cycle>
+-----> }
+---```
+---
+---## Replacers
+---
+---A replacer can transform or remove values during rendering.
+---
+---```lua
+---local function replacer(k, v)
+---  if k ~= "secret" then
+---    return v
+---  end
+---end
+---
+---print(repr({ name = "Ada", secret = "hidden" }, replacer))
+-----> {
+----->   name = "Ada"
+-----> }
+---```
+---
+---## Spacing
+---
+---`space` controls indentation: `nil` uses the default two-space indent, a
+---positive number uses that many spaces up to 10, `0` or less produces inline
+---output, a string uses that string up to 10 characters, and `""` also
+---produces inline output.
+---
+---@param value any Lua value to render.
+---@param replacer? fun(k:any, v:any):result:any Optional function that can transform or remove entries.
+---@param space? integer|string Custom table indentation.
 ---@return string out Readable string representation.
 ---@nodiscard
-local function repr(v) end
+local function repr(value, replacer, space) end
 
 return repr
