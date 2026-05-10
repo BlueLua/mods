@@ -103,10 +103,10 @@ Run lint checks before opening a PR:
   [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2):
 
   ```sh
-  # Global install
+  # If markdownlint-cli2 is installed globally
   markdownlint-cli2 'docs/**/*.md' '!docs/.vitepress/**'
 
-  # Without global install
+  # If you want to run it through npx
   npx --yes markdownlint-cli2 'docs/**/*.md' '!docs/.vitepress/**'
   ```
 
@@ -118,10 +118,10 @@ Run formatters before opening a PR:
   [Prettier](https://prettier.io/):
 
   ```sh
-  # Global install
+  # If Prettier is installed globally
   prettier --write .
 
-  # Without global install
+  # If you want to run it through npx
   npx --yes prettier --write .
   ```
 
