@@ -22,12 +22,17 @@ describe("mods.calendar", function()
     --{{expected}, {args}}
 
     isleap = {
-      {{ false }, { 1900 }},
-      {{ true  }, { 1600 }},
-      {{ true  }, { 2000 }},
+      -- Typical Leap Years vs Non-Leap Years
       {{ true  }, { 2024 }},
       {{ false }, { 2025 }},
+
+      -- Century Years (must be divisible by 400 to be leap)
+      {{ true  }, { 2000 }},
       {{ false }, { 2100 }},
+
+      {{ true  }, { 1600 }},
+      {{ false }, { 1900 }},
+
       {{ true  }, { 2400 }},
     },
     leapdays = {
@@ -156,51 +161,149 @@ describe("mods.calendar", function()
     assert.are_equal(cal.SUNDAY, cal.getfirstweekday())
   end)
 
-  ---@diagnostic disable: discard-returns, param-type-mismatch, missing-parameter, assign-type-mismatch
+  describe("validation", function()
+    describe("argument types", function()
+      it("errors on invalid types", function()
+        -- Argument #1 validation.
+        assert.Error(function()
+          cal.isleap(true)
+        end, "bad argument #1 (integer value expected, got true)")
+        assert.Error(function()
+          cal.monthdays(false, 2)
+        end, "bad argument #1 (integer value expected, got false)")
+        assert.Error(function()
+          cal.monthrange(2026.5, 3)
+        end, "bad argument #1 (integer value expected, got 2026.5)")
+        assert.Error(function()
+          cal.setfirstweekday(7.5)
+        end, "bad argument #1 (integer value expected, got 7.5)")
+        assert.Error(function()
+          cal.setfirstweekday(true)
+        end, "bad argument #1 (integer value expected, got true)")
+        assert.Error(function()
+          cal.weekdays(false)
+        end, "bad argument #1 (integer value expected, got false)")
+        assert.Error(function()
+          cal.weekheader("2")
+        end, [[bad argument #1 (integer value expected, got "2")]])
 
-  it("firstweekday field errors on invalid assignment", function()
-    assert.Error(function()
-      cal.firstweekday = true
-    end, "calendar.firstweekday: integer value expected, got true")
-  end)
+        -- Argument #2 validation.
+        assert.Error(function()
+          cal.leapdays(2000, false)
+        end, "bad argument #2 (integer value expected, got false)")
+        assert.Error(function()
+          cal.monthdays(2026, "2")
+        end, [[bad argument #2 (integer value expected, got "2")]])
+        assert.Error(function()
+          cal.monthrange(2026)
+        end, "bad argument #2 (integer value expected, got no value)")
+        assert.Error(function()
+          cal.weekday(2026, "3", 1)
+        end, [[bad argument #2 (integer value expected, got "3")]])
+        assert.Error(function()
+          cal.weekheader(2, "7")
+        end, [[bad argument #2 (integer value expected, got "7")]])
 
-  -- stylua: ignore
-  it("errors on invalid argument types", function()
-    -- Argument #1 validation.
+        -- Argument #3 validation.
+        assert.Error(function()
+          cal.monthdays(2026, 2, "7")
+        end, [[bad argument #3 (integer value expected, got "7")]])
+      end)
 
-    assert.Error(function() cal.isleap(true)          end, "bad argument #1 (integer value expected, got true)")
-    assert.Error(function() cal.monthdays(false, 2)   end, "bad argument #1 (integer value expected, got false)")
-    assert.Error(function() cal.monthrange(2026.5, 3) end, "bad argument #1 (integer value expected, got 2026.5)")
-    assert.Error(function() cal.setfirstweekday(7.5)  end, "bad argument #1 (integer value expected, got 7.5)")
-    assert.Error(function() cal.setfirstweekday(true) end, "bad argument #1 (integer value expected, got true)")
-    assert.Error(function() cal.weekdays(false)       end, "bad argument #1 (integer value expected, got false)")
-    assert.Error(function() cal.weekheader("2")       end, [[bad argument #1 (integer value expected, got "2")]])
+      it("accepts valid types", function()
+        assert.has_no_error(function()
+          cal.isleap(2026)
+        end)
+        assert.has_no_error(function()
+          cal.monthrange(2026, 3)
+        end)
+      end)
+    end)
 
-    -- Argument #2 validation.
+    describe("month range", function()
+      it("errors on out-of-range months", function()
+        assert.Error(function()
+          cal.monthrange(2026, 0)
+        end, "bad month number 0; must be 1-12")
+        assert.Error(function()
+          cal.monthrange(2026, 13)
+        end, "bad month number 13; must be 1-12")
+        assert.Error(function()
+          cal.monthdays(2026, 0)
+        end, "bad month number 0; must be 1-12")
+        assert.Error(function()
+          cal.monthdays(2026, 13)
+        end, "bad month number 13; must be 1-12")
+      end)
 
-    assert.Error(function() cal.leapdays(2000, false) end, "bad argument #2 (integer value expected, got false)")
-    assert.Error(function() cal.monthdays(2026, "2")  end, [[bad argument #2 (integer value expected, got "2")]])
-    assert.Error(function() cal.monthrange(2026)      end, "bad argument #2 (integer value expected, got no value)")
-    assert.Error(function() cal.weekday(2026, "3", 1) end, [[bad argument #2 (integer value expected, got "3")]])
-    assert.Error(function() cal.weekheader(2, "7")    end, [[bad argument #2 (integer value expected, got "7")]])
+      it("accepts valid months", function()
+        assert.has_no_error(function()
+          cal.monthrange(2026, 1)
+        end)
+        assert.has_no_error(function()
+          cal.monthrange(2026, 12)
+        end)
+      end)
+    end)
 
-    -- Argument #3 validation.
+    describe("weekday range", function()
+      it("errors on out-of-range weekdays", function()
+        assert.Error(function()
+          cal.monthdays(2026, 2, 8)
+        end, "bad weekday number 8; must be 1 (Monday) to 7 (Sunday)")
+        assert.Error(function()
+          cal.setfirstweekday(0)
+        end, "bad weekday number 0; must be 1 (Monday) to 7 (Sunday)")
+        assert.Error(function()
+          cal.setfirstweekday(8)
+        end, "bad weekday number 8; must be 1 (Monday) to 7 (Sunday)")
+        assert.Error(function()
+          cal.weekdays(0)
+        end, "bad weekday number 0; must be 1 (Monday) to 7 (Sunday)")
+        assert.Error(function()
+          cal.weekheader(2, 8)
+        end, "bad weekday number 8; must be 1 (Monday) to 7 (Sunday)")
+      end)
 
-    assert.Error(function() cal.monthdays(2026, 2, "7") end, [[bad argument #3 (integer value expected, got "7")]])
-  end)
+      it("accepts valid weekdays", function()
+        assert.has_no_error(function()
+          cal.setfirstweekday(1)
+        end)
+        assert.has_no_error(function()
+          cal.setfirstweekday(7)
+        end)
+      end)
+    end)
 
-  -- stylua: ignore
-  it("errors on out-of-range values", function()
-    assert.Error(function() cal.monthrange(2026, 0)   end, "bad month number 0; must be 1-12")
-    assert.Error(function() cal.monthrange(2026, 13)  end, "bad month number 13; must be 1-12")
-    assert.Error(function() cal.monthdays(2026, 0)    end, "bad month number 0; must be 1-12")
-    assert.Error(function() cal.monthdays(2026, 13)   end, "bad month number 13; must be 1-12")
-    assert.Error(function() cal.monthdays(2026, 2, 8) end, "bad weekday number 8; must be 1 (Monday) to 7 (Sunday)")
-    assert.Error(function() cal.setfirstweekday(0)    end, "bad weekday number 0; must be 1 (Monday) to 7 (Sunday)")
-    assert.Error(function() cal.setfirstweekday(8)    end, "bad weekday number 8; must be 1 (Monday) to 7 (Sunday)")
-    assert.Error(function() cal.weekday(2026, 2, 29)  end, "bad day number 29 for 2026-02")
-    assert.Error(function() cal.weekdays(0)           end, "bad weekday number 0; must be 1 (Monday) to 7 (Sunday)")
-    assert.Error(function() cal.weekheader(0)         end, "bad argument #1 to 'weekheader' (width must be a positive integer)")
-    assert.Error(function() cal.weekheader(2, 8)      end, "bad weekday number 8; must be 1 (Monday) to 7 (Sunday)")
+    describe("day range", function()
+      it("errors on out-of-range days", function()
+        assert.Error(function()
+          cal.weekday(2026, 2, 29)
+        end, "bad day number 29 for 2026-02")
+      end)
+
+      it("accepts valid days", function()
+        assert.has_no_error(function()
+          cal.weekday(2024, 2, 29)
+        end) -- Leap year
+        assert.has_no_error(function()
+          cal.weekday(2026, 2, 28)
+        end)
+      end)
+    end)
+
+    describe("other constraints", function()
+      it("errors on invalid width", function()
+        assert.Error(function()
+          cal.weekheader(0)
+        end, "bad argument #1 to 'weekheader' (width must be a positive integer)")
+      end)
+
+      it("accepts valid width", function()
+        assert.has_no_error(function()
+          cal.weekheader(1)
+        end)
+      end)
+    end)
   end)
 end)
