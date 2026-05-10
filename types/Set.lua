@@ -133,6 +133,22 @@ function Set:update(set) end
 function Set:copy() end
 
 ---
+---Check whether a value is present in the set without following the metatable.
+---
+---```lua
+---s = Set({ "a", "b", "c" })
+---print(s:has("a"))       --> true
+---print(s:has("__index")) --> false
+---```
+---
+---@section Set Operations
+---@param self mods.Set|table<any,true> Current set.
+---@param v any Value to look up.
+---@return boolean present Whether the value is present.
+---@nodiscard
+function Set:has(v) end
+
+---
 ---Return elements in this set but not in another.
 ---
 ---```lua

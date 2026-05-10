@@ -143,6 +143,13 @@ describe("mods.Set", function()
     assert.are_same(ls, res:sort())
   end)
 
+  it("has() checks raw membership", function()
+    local s = Set({ "a", "b", "c" })
+    assert.is_true(s:has("a"))
+    assert.is_false(s:has("__tostring"))
+    assert.is_false(s:has("__index"))
+  end)
+
   describe("metamethods", function()
     it("__call constructs a set from a list", function()
       local s = Set({ "a", "b", "c" })

@@ -46,6 +46,10 @@ local function stringify(self)
   return "{ " .. join_values(self, ", ", true) .. " }"
 end
 
+local function has(set, k)
+  return rawget(set, k) ~= nil
+end
+
 function Set:add(v)
   self[v] = true
   return self
@@ -169,6 +173,7 @@ function Set:equals(t)
   return is_same(self, as_set(t))
 end
 
+Set.has = has
 Set.copy = copy_set
 Set.isempty = tbl.isempty
 Set.join = join_values
