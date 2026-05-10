@@ -19,7 +19,7 @@ keywords:sort()
 each("mods.keyword", kw, {
   kwlist = {
     {
-      expected = function()
+      assert = function()
         assert.Same(keywords, kw.kwlist())
         assert.List(kw.kwlist())
         assert.False(rawequal(kw.kwlist(), kw.kwlist()))
@@ -28,7 +28,7 @@ each("mods.keyword", kw, {
   },
   kwset = {
     {
-      expected = function()
+      assert = function()
         assert.Same(keywords:toset(), kw.kwset())
         assert.Set(kw.kwset())
         assert.False(rawequal(kw.kwset(), kw.kwset()))
