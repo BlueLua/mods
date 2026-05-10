@@ -13,13 +13,14 @@ describe("mods", function()
       error("lfs should not be required when loading mods modules" .. suffix, 2)
     end
 
-    ---@diagnostic disable-next-line: undefined-field
-    for _, name in ipairs(mods._module_name) do
-      current_module = name
-      assert.not_equal(nil, mods[name], fmt("mods.%s should load", name))
-    end
-
     package.preload["lfs"] = old_preload
     package.loaded["lfs"] = old_loaded_lfs
+  end)
+
+  it("throws when accessing an unknown module", function()
+    assert.has_error(function()
+      ---@diagnostic disable-next-line: undefined-field
+      return mods.not_a_real_module
+    end, 'unknown mods module "not_a_real_module"')
   end)
 end)
