@@ -75,7 +75,7 @@ end
 
 function Set:intersection_update(t)
   for k in pairs(self) do
-    if not as_set(t)[k] then
+    if not has(as_set(t), k) then
       self[k] = nil
     end
   end
@@ -88,7 +88,7 @@ end
 
 function Set:isdisjoint(t)
   for k in pairs(self) do
-    if as_set(t)[k] then
+    if has(as_set(t), k) then
       return false
     end
   end
@@ -97,7 +97,7 @@ end
 
 function Set:issubset(t)
   for k in pairs(self) do
-    if not as_set(t)[k] then
+    if not has(as_set(t), k) then
       return false
     end
   end
@@ -106,7 +106,7 @@ end
 
 function Set:issuperset(t)
   for k in pairs(as_set(t)) do
-    if not self[k] then
+    if not has(self, k) then
       return false
     end
   end
@@ -114,7 +114,7 @@ function Set:issuperset(t)
 end
 
 function Set:contains(v)
-  return self[v] ~= nil
+  return has(self, v)
 end
 
 function Set:map(fn)
@@ -149,7 +149,7 @@ end
 
 function Set:symmetric_difference_update(t)
   for k in pairs(as_set(t)) do
-    self[k] = not self[k] and true or nil
+    self[k] = not has(self, k) and true or nil
   end
   return self
 end

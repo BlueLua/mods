@@ -150,6 +150,15 @@ describe("mods.Set", function()
     assert.is_false(s:has("__index"))
   end)
 
+  it("does not treat metatable methods as set members", function()
+    local s = Set({ "a", "b", "c" })
+    assert.is_true(s:contains("a"))
+    assert.is_false(s:contains("__tostring"))
+
+    s:add("__tostring")
+    assert.is_true(s:contains("__tostring"))
+  end)
+
   describe("metamethods", function()
     it("__call constructs a set from a list", function()
       local s = Set({ "a", "b", "c" })
