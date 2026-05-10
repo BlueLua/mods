@@ -170,5 +170,7 @@ end, set_positive, set_negative)
 
 rawset(_G, "_TEST", true)
 rawset(_G, "each", each)
+rawset(_G, "inspect", require("inspect"))
+rawset(_G, "unpack", table.unpack or unpack)
 
 return {}
