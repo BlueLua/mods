@@ -8,7 +8,7 @@ describe("mods.stringcase", function()
     -----fname----|-------------expected--------------
     { "capital"  , { "Foo_bar-baz" , "Foobar baz"  } },
     { "sentence" , { "Foo_bar-baz" , "FooBar baz"  } },
-    { "swap"     , { "FOO_BAR-BAZ" , "fOObAR BAZ"  } },
+    { "swapcase" , { "FOO_BAR-BAZ" , "fOObAR BAZ"  } },
     { "lower"    , { "foo_bar-baz" , "foobar baz"  } },
     { "upper"    , { "FOO_BAR-BAZ" , "FOOBAR BAZ"  } },
     { "acronym"  , {             "FBB"             } },

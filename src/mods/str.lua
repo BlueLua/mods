@@ -621,7 +621,7 @@ end
 M.capitalize = stringcase.capital
 M.isidentifier = keyword.isidentifier
 M.lower = lower
-M.swapcase = stringcase.swap
+M.swapcase = stringcase.swapcase
 M.upper = upper
 
 return M

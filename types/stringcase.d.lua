@@ -200,15 +200,15 @@ function M.path(s) end
 ---Swap case of each letter.
 ---
 ---```lua
----swap("foo_bar-baz") --> "FOO_BAR-BAZ"
----swap("FooBar baz")  --> "fOObAR BAZ"
+---swapcase("foo_bar-baz") --> "FOO_BAR-BAZ"
+---swapcase("FooBar baz")  --> "fOObAR BAZ"
 ---```
 ---
 ---@section Letter Case
 ---@param s string Input string.
 ---@return string swapCased Swap-cased string.
 ---@nodiscard
-function M.swap(s) end
+function M.swapcase(s) end
 
 ---
 ---Capitalize the first letter and lowercase the rest.

@@ -33,7 +33,7 @@ function M.kebab(s)    return delimit(s, "-") end
 function M.dot(s)      return delimit(s, ".") end
 function M.space(s)    return delimit(s, " ") end
 function M.path(s)     return delimit(s, "/") end
-function M.swap(s)     return (gsub(s, "%a", function(c) local l = lower(c); return l == c and upper(c) or l end)) end
+function M.swapcase(s) return (gsub(s, "%a", function(c) local l = lower(c); return l == c and upper(c) or l end)) end
 function M.capital(s)  return upper(sub(s, 1, 1)) .. lower(sub(s, 2)) end
 function M.sentence(s) return upper(sub(s, 1, 1)) .. sub(s, 2) end
 -- stylua: ignore end
