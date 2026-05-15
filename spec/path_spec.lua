@@ -10,7 +10,7 @@ local helpers = require "spec.helpers"
 local mods = require "mods"
 
 local fs = mods.fs
-local Set = mods.Set
+local Set = mods.set
 local ntpath = mods.ntpath
 local path = mods.path
 local posixpath = mods.posixpath

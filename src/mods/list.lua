@@ -128,7 +128,7 @@ function List:count(v)
 end
 
 function List:difference(t)
-  local set = getmetatable(t) == mods.Set and t or mods.Set(t)
+  local set = getmetatable(t) == mods.set and t or mods.set(t)
   return collect_by_membership(self, set, false)
 end
 
@@ -155,7 +155,7 @@ function List:equals(ls)
 end
 
 function List:extend(t)
-  if getmetatable(t) == mods.Set then
+  if getmetatable(t) == mods.set then
     for k in pairs(t) do
       self[#self + 1] = k
     end
@@ -257,7 +257,7 @@ function List:insert(pos, v)
 end
 
 function List:intersection(t)
-  local set = getmetatable(t) == mods.Set and t or mods.Set(t)
+  local set = getmetatable(t) == mods.set and t or mods.set(t)
   return collect_by_membership(self, set, true)
 end
 
@@ -428,7 +428,7 @@ end
 function List:zip(t)
   local res = List()
 
-  if getmetatable(t) == mods.Set then
+  if getmetatable(t) == mods.set then
     local limit = #self
     for k in pairs(t) do
       local i = #res + 1
@@ -470,7 +470,7 @@ List.__tostring = stringify
 return setmetatable(List, {
   __index = function(t, k)
     if k == "toset" then
-      local fn = mods.Set
+      local fn = mods.set
       rawset(t, k, fn)
       return fn
     end

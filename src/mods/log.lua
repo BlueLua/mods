@@ -3,7 +3,7 @@
 local mods = require "mods"
 
 local utils = mods.utils
-local Set = mods.Set
+local Set = mods.set
 
 local assert_arg = utils.assert_arg
 local validate = utils.validate

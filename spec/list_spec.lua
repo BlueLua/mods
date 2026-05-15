@@ -3,7 +3,7 @@
 local mods = require "mods"
 
 local List = mods.list
-local Set = mods.Set
+local Set = mods.set
 
 local args_repr = mods.utils.args_repr
 local shallow_copy = mods.tbl.copy

@@ -20,7 +20,7 @@ local template ---@module "mods.template"
 ---@field path mods.path
 ---@field posixpath mods.posixpath
 ---@field runtime mods.runtime
----@field Set mods.Set
+---@field set mods.Set
 ---@field str mods.str
 ---@field stringcase mods.stringcase
 ---@field tbl mods.tbl

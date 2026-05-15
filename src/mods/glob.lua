@@ -1,7 +1,7 @@
 local mods = require "mods"
 
 local List = mods.list
-local Set = mods.Set
+local Set = mods.set
 local path = mods.path
 local utils = mods.utils
 

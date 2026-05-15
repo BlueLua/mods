@@ -165,7 +165,7 @@ say:set(set_positive, "Expected object to be a mods.Set.\nPassed in:\n%s\nExpect
 say:set(set_negative, "Expected object to not be a mods.Set.\nPassed in:\n%s\nDid not expect:\nmods.Set")
 
 assert:register("assertion", "set", function(_, args)
-  return getmetatable(args[1]) == require "mods.Set"
+  return getmetatable(args[1]) == require "mods.set"
 end, set_positive, set_negative)
 
 rawset(_G, "_TEST", true)

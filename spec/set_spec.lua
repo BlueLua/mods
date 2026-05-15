@@ -2,7 +2,7 @@
 
 local mods = require "mods"
 
-local Set = mods.Set
+local Set = mods.set
 local shallow_copy = mods.tbl.copy
 local runtime = mods.runtime
 
@@ -10,7 +10,7 @@ local upper = string.upper
 local fmt = string.format
 local load = loadstring or load
 
-describe("mods.Set", function()
+describe("mods.set", function()
   local patterns = [[
     _____ a____ ___de _b_d_ _bcd_ a_c__ __c__
     a_c_e a___e abc__ abcd_ abcde ab_de ABC__

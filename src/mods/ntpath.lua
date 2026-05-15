@@ -7,7 +7,7 @@
 ]]
 
 local mods = require "mods"
-local Set = mods.Set
+local Set = mods.set
 local utils = mods.utils
 
 local assert_arg = utils.assert_arg

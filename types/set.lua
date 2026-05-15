@@ -1,4 +1,4 @@
----@meta mods.Set
+---@meta mods.set
 
 ---
 ---A set class for creating, combining, and querying unique values.
