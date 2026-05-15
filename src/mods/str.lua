@@ -618,7 +618,7 @@ function M.zfill(s, width)
   return rep("0", width - #s) .. s
 end
 
-M.capitalize = stringcase.capital
+M.capitalize = stringcase.capitalize
 M.isidentifier = keyword.isidentifier
 M.lower = lower
 M.swapcase = stringcase.swapcase

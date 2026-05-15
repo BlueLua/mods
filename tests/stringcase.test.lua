@@ -6,7 +6,7 @@ describe("mods.stringcase", function()
   -- stylua: ignore
   local tests = {
     -----fname----|-------------expected--------------
-    { "capital"  , { "Foo_bar-baz" , "Foobar baz"  } },
+    { "capitalize", { "Foo_bar-baz" , "Foobar baz"  } },
     { "sentence" , { "Foo_bar-baz" , "FooBar baz"  } },
     { "swapcase" , { "FOO_BAR-BAZ" , "fOObAR BAZ"  } },
     { "lower"    , { "foo_bar-baz" , "foobar baz"  } },

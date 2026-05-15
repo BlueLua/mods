@@ -214,15 +214,15 @@ function M.swapcase(s) end
 ---Capitalize the first letter and lowercase the rest.
 ---
 ---```lua
----capital("foo_bar-baz") --> "Foo_bar-baz"
----capital("FooBar baz")  --> "Foobar baz"
+---capitalize("foo_bar-baz") --> "Foo_bar-baz"
+---capitalize("FooBar baz")  --> "Foobar baz"
 ---```
 ---
 ---@section Letter Case
 ---@param s string Input string.
 ---@return string capitalized Capitalized string.
 ---@nodiscard
-function M.capital(s) end
+function M.capitalize(s) end
 
 ---
 ---Convert string to sentence case (first letter uppercase, rest unchanged).

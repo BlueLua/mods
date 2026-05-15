@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local capitalize = mods.stringcase.capital
+local capitalize = mods.stringcase.capitalize
 local quote = mods.utils.quote
 local validate = mods.validate
 
