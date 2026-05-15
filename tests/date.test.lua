@@ -85,6 +85,42 @@ describe("mods.date", function()
     end
   end)
 
+  describe("locale-aware calendar access", function()
+    after_each(function()
+      cal.setfirstweekday(cal.MONDAY)
+    end)
+
+    it("matches weekday values when Monday is first", function()
+      cal.setfirstweekday(cal.MONDAY)
+      local d = Date("2026-03-30")
+      assert.are.equal(1, d:weekday())
+      assert.are.equal("2026-03-23 00:00:00", tostring(d:weekday(-7)))
+      assert.are.equal("2026-04-06 00:00:00", tostring(d:weekday(7)))
+    end)
+
+    it("matches weekday values when Sunday is first", function()
+      cal.setfirstweekday(cal.SUNDAY)
+      local d = Date("2026-03-30")
+      assert.are.equal(2, d:weekday())
+      assert.are.equal("2026-03-23 00:00:00", tostring(d:weekday(-7)))
+      assert.are.equal("2026-04-06 00:00:00", tostring(d:weekday(7)))
+    end)
+
+    it("keeps startof and endof week aligned with the configured first weekday", function()
+      cal.setfirstweekday(cal.SUNDAY)
+      local d = Date("2026-03-30T14:45:06.123")
+      assert.are.equal("2026-03-29 00:00:00", tostring(d:startof("week")))
+      assert.are.equal("2026-04-04 23:59:59.999", tostring(d:endof("week")))
+    end)
+
+    it("supports ISO week boundaries independently of locale week settings", function()
+      cal.setfirstweekday(cal.SUNDAY)
+      local d = Date("2026-03-30T14:45:06.123")
+      assert.are.equal("2026-03-30 00:00:00", tostring(d:startof("isoWeek")))
+      assert.are.equal("2026-04-05 23:59:59.999", tostring(d:endof("isoWeek")))
+    end)
+  end)
+
   -- stylua: ignore
   local tests = {
     add = {
@@ -636,6 +672,45 @@ weekday = {
     it("truncates sub-millisecond unix precision", function()
       local d = Date.unix(1745155206.1239)
       assert.are_equal(123, d.ms)
+    end)
+  end)
+
+  describe("locale-aware getters and setters", function()
+    it("supports quarter getter/setter", function()
+      local d = Date("2026-03-30T14:45:06")
+      assert.are.equal(1, d:quarter())
+      assert.are.equal("2026-06-30 14:45:06", tostring(d:quarter(2)))
+      assert.are.equal("2027-03-30 14:45:06", tostring(d:quarter(5)))
+    end)
+
+    it("supports day-of-year getter/setter", function()
+      local d = Date("2026-03-30T14:45:06")
+      assert.are.equal(89, d:day_of_year())
+      assert.are.equal("2026-01-01 14:45:06", tostring(d:day_of_year(1)))
+      assert.are.equal("2027-01-01 14:45:06", tostring(d:day_of_year(366)))
+    end)
+
+    it("supports week and iso_week getters/setters", function()
+      local d = Date("2026-03-30T14:45:06")
+      assert.are.equal(14, d:week())
+      assert.are.equal(14, d:iso_week())
+      assert.are.equal("2026-04-06 14:45:06", tostring(d:week(15)))
+      assert.are.equal("2026-04-06 14:45:06", tostring(d:iso_week(15)))
+    end)
+
+    it("supports locale-aware weeks_in_year", function()
+      cal.setfirstweekday(cal.MONDAY)
+      assert.are.equal(52, Date("2026-03-30T14:45:06"):weeks_in_year())
+
+      cal.setfirstweekday(cal.SUNDAY)
+      assert.are.equal(53, Date("2016-06-01T14:45:06"):weeks_in_year())
+    end)
+
+    it("supports iso_weekday getter/setter with overflow", function()
+      local d = Date("2026-03-30T14:45:06")
+      assert.are.equal(cal.MONDAY, d:iso_weekday())
+      assert.are.equal("2026-04-05 14:45:06", tostring(d:iso_weekday(7)))
+      assert.are.equal("2026-04-06 14:45:06", tostring(d:iso_weekday(8)))
     end)
   end)
 
