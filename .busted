@@ -173,4 +173,9 @@ rawset(_G, "each", each)
 rawset(_G, "inspect", require("inspect"))
 rawset(_G, "unpack", table.unpack or unpack)
 
-return {}
+return {
+  _all = {
+    ROOT = { "tests" },
+    pattern = "%.test%.lua$",
+  },
+}
