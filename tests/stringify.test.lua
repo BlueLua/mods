@@ -29,23 +29,32 @@ describe("mods.stringify", function()
 
     for i = 1, #tests do
       local input, expected = unpack(tests[i] --[[@as {[1]:any, [2]:string}]], 1, 2)
-      assert.are_equal(expected, stringify(input))
+      assert.are.equal(expected, stringify(input))
     end
   end)
 
-  it("renders arrays as keyed tables", function()
-    assert.are_equal('{\n  [1] = "a",\n  [2] = "b",\n  [3] = "c"\n}', stringify({ "a", "b", "c" }))
-    assert.are_equal('{[1]="a",[2]="b",[3]="c"}', stringify({ "a", "b", "c" }, nil, ""))
+  it("renders arrays as implicit entries by default", function()
+    assert.are.equal('{\n  "a",\n  "b",\n  "c"\n}', stringify({ "a", "b", "c" }))
+    assert.are.equal('{"a","b","c"}', stringify({ "a", "b", "c" }, { newline = "" }))
+  end)
+
+  it("optionally keeps contiguous array keys explicit", function()
+    local opts = { omit_array_keys = false }
+    assert.are.equal('{\n  [1] = "a",\n  [2] = "b",\n  [3] = "c"\n}', stringify({ "a", "b", "c" }, opts))
+    assert.are.equal(
+      '{[1]="a",[2]="b",[3]="c"}',
+      stringify({ "a", "b", "c" }, { omit_array_keys = false, newline = "" })
+    )
   end)
 
   it("renders empty arrays as empty braces", function()
-    assert.are_equal("{}", stringify({}))
+    assert.are.equal("{}", stringify({}))
   end)
 
   it("renders dictionaries with indentation by default", function()
     local input = { hello = "world", answer = 42 }
     local expected = '{\n  answer = 42,\n  hello = "world"\n}'
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("renders non-identifier keys with brackets", function()
@@ -60,7 +69,7 @@ describe("mods.stringify", function()
   ["with space"] = "x",
   [false] = "no"
 }]]
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("renders mixed tables as keyed tables", function()
@@ -75,15 +84,15 @@ describe("mods.stringify", function()
     }
     local expected = [[
 {
-  [1] = "a",
-  [2] = "b",
+  "a",
+  "b",
   name = "Ada",
   nested = {
-    [1] = "x",
+    "x",
     role = "Scientist"
   }
 }]]
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("renders sparse numeric tables without nil placeholders", function()
@@ -94,17 +103,37 @@ describe("mods.stringify", function()
     }
     local expected = [[
 {
-  [1] = "a",
+  "a",
   [3] = "c",
   name = "Ada"
 }]]
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("renders arrays with gaps as keyed tables", function()
     local input = { "a", nil, "b" }
-    local expected = '{\n  [1] = "a",\n  [3] = "b"\n}'
-    assert.are_equal(expected, stringify(input))
+    local expected = '{\n  "a",\n  [3] = "b"\n}'
+    assert.are.equal(expected, stringify(input))
+  end)
+
+  it("keeps integer keys after gaps when omitting array keys", function()
+    local input = {
+      "a",
+      nil,
+      "b",
+      nested = { "x", "y", nil, "z" },
+    }
+    local expected = [[
+{
+  "a",
+  [3] = "b",
+  nested = {
+    "x",
+    "y",
+    [4] = "z"
+  }
+}]]
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("renders sparse mixed tables as keyed tables", function()
@@ -117,15 +146,15 @@ describe("mods.stringify", function()
     }
     local expected = [[
 {
-  [1] = "a",
+  "a",
   [3] = "b",
   nested = {
-    [1] = "x",
+    "x",
     [3] = "y"
   },
   role = "Scientist"
 }]]
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("renders empty tables and nested tables", function()
@@ -138,14 +167,14 @@ describe("mods.stringify", function()
 {
   empty = {},
   list = {
-    [1] = "x",
-    [2] = "y"
+    "x",
+    "y"
   },
   user = {
     name = "Ada"
   }
 }]]
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("ignores metatables when rendering tables", function()
@@ -167,13 +196,13 @@ describe("mods.stringify", function()
     ok = true
   }
 }]]
-    assert.are_equal(expected, stringify(input))
+    assert.are.equal(expected, stringify(input))
   end)
 
   it("errors on non-function replacer", function()
     assert.has_error(function()
-      stringify({}, true)
-    end, "bad argument #2 (function expected, got boolean)")
+      stringify({}, { replacer = true })
+    end, "stringify.opts.replacer: function expected, got boolean")
   end)
 
   it("supports replacer functions for filtering", function()
@@ -206,8 +235,8 @@ describe("mods.stringify", function()
 
     local expected = [[
 {
-  [1] = "one",
-  [2] = "two",
+  "one",
+  "two",
   [9] = "nine",
   name = "ADA",
   nested = {
@@ -220,7 +249,7 @@ describe("mods.stringify", function()
   [false] = "no",
   [true] = "yes"
 }]]
-    assert.are_equal(expected, stringify(input, replacer))
+    assert.are.equal(expected, stringify(input, { replacer = replacer }))
   end)
 
   it("supports custom indentation", function()
@@ -231,19 +260,41 @@ describe("mods.stringify", function()
 ....inner = true
 ..}
 }]]
-    assert.are_equal(expected, stringify(input, nil, ".."))
+    assert.are.equal(expected, stringify(input, { indent = ".." }))
   end)
 
   it("errors on invalid indentation types", function()
     assert.has_error(function()
-      stringify({}, nil, true)
-    end, "bad argument #3 (number or string expected, got boolean)")
+      stringify({}, { indent = true })
+    end, "stringify.opts.indent: string expected, got boolean")
+  end)
+
+  it("supports custom newlines", function()
+    local input = { outer = { inner = true } }
+    local expected = "{\r\n  outer = {\r\n    inner = true\r\n  }\r\n}"
+    assert.are.equal(expected, stringify(input, { newline = "\r\n" }))
+  end)
+
+  it("errors on invalid newline types", function()
+    assert.has_error(function()
+      stringify({}, { newline = true })
+    end, "stringify.opts.newline: string expected, got boolean")
+  end)
+
+  it("errors on invalid option types", function()
+    assert.has_error(function()
+      stringify({}, true)
+    end, "bad argument #2 (table expected, got boolean)")
+
+    assert.has_error(function()
+      stringify({}, { omit_array_keys = "yes" })
+    end, "stringify.opts.omit_array_keys: boolean expected, got string")
   end)
 
   it("supports inline formatting", function()
     local input = { key = "value", key2 = { nested = { inner = true } }, ["not-valid"] = true }
     local expected = '{key="value",key2={nested={inner=true}},["not-valid"]=true}'
-    assert.are_equal(expected, stringify(input, nil, ""))
+    assert.are.equal(expected, stringify(input, { newline = "" }))
   end)
 
   it("renders circular references without crashing", function()
@@ -262,13 +313,13 @@ describe("mods.stringify", function()
   self = <cycle>,
   title = "root"
 }]]
-    assert.are_equal(expected, stringify(root))
+    assert.are.equal(expected, stringify(root))
   end)
 
   for _, v in ipairs(kw.kwlist()) do
     it(fmt("brackets reserved keys for %q", v), function()
       local expected = '{\n  ["' .. v .. '"] = true\n}'
-      assert.are_equal(expected, stringify({ [v] = true }))
+      assert.are.equal(expected, stringify({ [v] = true }))
     end)
   end
 end)

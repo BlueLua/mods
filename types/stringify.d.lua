@@ -18,8 +18,8 @@
 ---
 ---print(stringify(t))
 -----> {
------>   [1] = "first",
------>   [2] = "second",
+----->   "first",
+----->   "second",
 ----->   name = "Ada",
 ----->   nested = {
 ----->     value = 42
@@ -54,35 +54,67 @@
 -----> }
 ---```
 ---
----## Replacers
+---## Options
 ---
----A replacer can transform or remove values during rendering.
+---### `omit_array_keys`
+---
+---Contiguous positive integer keys render as implicit array entries by
+---default. Set `omit_array_keys = false` to keep them explicit.
+---
+---```lua
+---print(stringify({ "first", nil, "third" }, { omit_array_keys = false }))
+-----> {
+----->   [1] = "first",
+----->   [3] = "third"
+-----> }
+---```
+---
+---### `indent`
+---
+---`indent` controls the repeated indentation prefix. It defaults to two
+---spaces.
+---
+---```lua
+---print(stringify({ a = { b = true } }, { indent = ".." }))
+-----> {
+----->   a = {
+----->     b = true
+----->   }
+-----> }
+---```
+---
+---### `newline`
+---
+---`newline` controls the line separator. Use `newline = ""` for inline
+---output.
+---
+---```lua
+---print(stringify({ a = 1, b = 2 }, { newline = "" }))
+-----> {a=1,b=2}
+---```
+---
+---### `replacer`
+---
+---`replacer` can transform or remove values before they are rendered.
 ---
 ---```lua
 ---local function replacer(k, v)
----  if k ~= "secret" then
----    return v
+---  if k == "secret" then
+---    return nil
 ---  end
+---  return v
 ---end
 ---
----print(stringify({ name = "Ada", secret = "hidden" }, replacer))
+---print(stringify({ name = "Ada", secret = "hidden" }, { replacer = replacer }))
 -----> {
 ----->   name = "Ada"
 -----> }
 ---```
 ---
----## Spacing
----
----`space` controls indentation: `nil` uses the default two-space indent, a
----positive number uses that many spaces up to 10, `0` or less produces inline
----output, a string uses that string up to 10 characters, and `""` also
----produces inline output.
----
 ---@param value any Lua value to render.
----@param replacer? fun(k:any, v:any):result:any Optional function that can transform or remove entries.
----@param space? integer|string Custom table indentation.
+---@param opts? {omit_array_keys?:boolean, indent?:string, newline?:string, replacer?:fun(k,v):(result:any)} Rendering options.
 ---@return string out Readable string representation.
 ---@nodiscard
-local function stringify(value, replacer, space) end
+local function stringify(value, opts) end
 
 return stringify
