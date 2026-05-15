@@ -1,4 +1,4 @@
-local repr = require "mods.repr"
+local stringify = require "mods.stringify"
 local utils = require "mods.utils"
 
 local assert_arg = utils.assert_arg
@@ -73,7 +73,7 @@ local function render(tmpl, view)
     if v == nil then
       out[#out + 1] = ""
     elseif type(v) == "table" then
-      out[#out + 1] = repr(v)
+      out[#out + 1] = stringify(v)
     else
       out[#out + 1] = tostring(v)
     end

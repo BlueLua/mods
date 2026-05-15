@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local repr = mods.repr
+local stringify = mods.stringify
 
 local args_repr = mods.utils.args_repr
 local template = mods.template
@@ -40,8 +40,8 @@ describe("mods.template", function()
     { "{{ prize }} is great"                  , "A free trip is great"         },
 
     -- Lookup
-    { "{{.}}"                                 , repr(view)                     },
-    { "{{user}}"                              , repr(view.user)                },
+    { "{{.}}"                                 , stringify(view)                },
+    { "{{user}}"                              , stringify(view.user)           },
     { "{{user.name}}"                         , "Ada"                          },
     { "{{user.meta.role}}"                    , "Engineer"                     },
     { "{{user.missing}}"                      , ""                             },
@@ -80,7 +80,7 @@ describe("mods.template", function()
     { "{{   }}"          , view                , ""                 },
     { "{{}}"             , view                , ""                 },
     { "{{fn}}"           , { fn = nil_func }   , ""                 },
-    { "{{fn}}"           , { fn = table_func } , repr({ x = 1 })    },
+    { "{{fn}}"           , { fn = table_func } , stringify({ x = 1 }) },
     { "{{.name}}"        , view                , ""                 },
     { "{{user.}}"        , view                , ""                 },
     { "{{.user}}"        , view                , ""                 },

@@ -139,8 +139,8 @@ function M.validate(path, v, validator, optional, msg) end
 ---local fs = utils.lazy_module("mods.fs")
 ---print(fs.exists("README.md"))
 ---
----local repr = utils.lazy_module("mods.repr")
----print(repr({ a = 1 }))
+---local stringify = utils.lazy_module("mods.stringify")
+---print(stringify({ a = 1 }))
 ---```
 ---
 ---> [!NOTE]

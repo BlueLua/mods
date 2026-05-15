@@ -76,7 +76,7 @@ local function template(tmpl, view) end
 ---
 ---## Table Values
 ---
----Table placeholders are rendered using `mods.repr`.
+---Table placeholders are rendered using `mods.stringify`.
 ---
 ---```lua
 ---view = { data = { a = 1, b = true } }

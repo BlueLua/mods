@@ -1,6 +1,6 @@
 ---@meta mods
 
-local repr ---@module "mods.repr"
+local stringify ---@module "mods.stringify"
 local template ---@module "mods.template"
 
 ---
@@ -27,7 +27,7 @@ local template ---@module "mods.template"
 ---@field utils mods.utils
 ---@field validate mods.validate
 local M = {
-  repr = repr,
+  stringify = stringify,
   template = template,
 }
 

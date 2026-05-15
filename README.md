@@ -65,7 +65,7 @@ luarocks install mods
 | [`operator`]   | Lua operators exposed as functions.                                        |
 | [`path`]       | Cross-platform path operations with host-platform semantics.               |
 | [`posixpath`]  | POSIX-style path operations.                                               |
-| [`repr`]       | Readable string rendering for Lua values.                                  |
+| [`stringify`]  | Readable string rendering for Lua values.                                  |
 | [`runtime`]    | Lua runtime metadata and version compatibility flags.                      |
 | [`Set`]        | A set class for creating, combining, and querying unique values.           |
 | [`str`]        | String operations for searching, splitting, trimming, and formatting text. |
@@ -111,7 +111,7 @@ Thanks to these Lua ecosystem projects:
 [`operator`]: https://luamod.github.io/mods/modules/operator
 [`path`]: https://luamod.github.io/mods/modules/path
 [`posixpath`]: https://luamod.github.io/mods/modules/posixpath
-[`repr`]: https://luamod.github.io/mods/modules/repr
+[`stringify`]: https://luamod.github.io/mods/modules/stringify
 [`runtime`]: https://luamod.github.io/mods/modules/runtime
 [`Set`]: https://luamod.github.io/mods/modules/set
 [`str`]: https://luamod.github.io/mods/modules/str

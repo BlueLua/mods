@@ -1,4 +1,4 @@
----@meta mods.repr
+---@meta mods.stringify
 
 ---
 ---Render Lua values as readable source-like text.
@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----local repr = require("mods").repr
+---local stringify = require("mods").stringify
 ---
 ---local t = {
 ---  "first",
@@ -16,7 +16,7 @@
 ---  nested = { value = 42 },
 ---}
 ---
----print(repr(t))
+---print(stringify(t))
 -----> {
 ----->   [1] = "first",
 ----->   [2] = "second",
@@ -33,7 +33,7 @@
 ---Strings are quoted and reserved keys use bracket notation.
 ---
 ---```lua
----print(repr({ name = "Ada", ["with space"] = true }))
+---print(stringify({ name = "Ada", ["with space"] = true }))
 -----> {
 ----->   ["with space"] = true,
 ----->   name = "Ada"
@@ -48,7 +48,7 @@
 ---local t = {}
 ---t.self = t
 ---
----print(repr(t))
+---print(stringify(t))
 -----> {
 ----->   self = <cycle>
 -----> }
@@ -65,7 +65,7 @@
 ---  end
 ---end
 ---
----print(repr({ name = "Ada", secret = "hidden" }, replacer))
+---print(stringify({ name = "Ada", secret = "hidden" }, replacer))
 -----> {
 ----->   name = "Ada"
 -----> }
@@ -83,6 +83,6 @@
 ---@param space? integer|string Custom table indentation.
 ---@return string out Readable string representation.
 ---@nodiscard
-local function repr(value, replacer, space) end
+local function stringify(value, replacer, space) end
 
-return repr
+return stringify
