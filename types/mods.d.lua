@@ -27,6 +27,7 @@ local template ---@module "mods.template"
 ---@field utils mods.utils
 ---@field validate mods.validate
 ---@field date mods.Date
+---@field duration mods.Duration
 local M = {
   stringify = stringify,
   template = template,
