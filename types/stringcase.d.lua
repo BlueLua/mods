@@ -70,19 +70,19 @@ function M.snake(s) end
 function M.camel(s) end
 
 ---
----Normalize to snake_case, then replace underscores with a separator.
+---Normalize to snake_case, then delimit words with a separator.
 ---
 ---```lua
----replace("foo_bar-baz", "-") --> "foo-bar-baz"
----replace("FooBar baz", "-")  --> "foo-bar-baz"
+---delimit("foo_bar-baz", "-") --> "foo-bar-baz"
+---delimit("FooBar baz", "-")  --> "foo-bar-baz"
 ---```
 ---
 ---@section Word Case
 ---@param s string Input string.
 ---@param sep? string Optional separator value (defaults to `""`).
----@return string replaced String with underscores replaced by `sep`.
+---@return string delimited String with normalized words separated by `sep`.
 ---@nodiscard
-function M.replace(s, sep) end
+function M.delimit(s, sep) end
 
 ---
 ---Get acronym of words in string (first letters only).

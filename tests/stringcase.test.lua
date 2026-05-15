@@ -15,6 +15,7 @@ describe("mods.stringcase", function()
     { "camel"    , {          "fooBarBaz"          } },
     { "pascal"   , {          "FooBarBaz"          } },
     { "snake"    , {         "foo_bar_baz"         } },
+    { "delimit"  , {          "foobarbaz"          } },
     { "kebab"    , {         "foo-bar-baz"         } },
     { "title"    , {         "Foo Bar Baz"         } },
     { "dot"      , {         "foo.bar.baz"         } },
