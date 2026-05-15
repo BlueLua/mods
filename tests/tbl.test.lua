@@ -25,7 +25,6 @@ describe("mods.tbl", function()
   local x1_y3_z4    = { x = 1    ,  y = 3    , z = 4    }
   local y3_z4       = { y = 3    ,  z = 4    ,          }
 
-  local multi    = function(v) return v * 2 end
   local not_b    = function(v) return v ~= "b" end
   local gt_2     = function(v) return v > 2 end
   local gt_5     = function(v) return v > 5 end
@@ -58,7 +57,7 @@ describe("mods.tbl", function()
     { "deepcopy" , { a1_b2_c3           } , a1_b2_c3    , false },
     { "find_if"  , { a1_b2_cc, is_equal } , "c"         , false },
     { "keys"     , { a1_b2_c3,          } , abc         , false },
-    { "pairmap"  , { a1_b2_c3, concat   } , aa1_bb2_cc3 , false },
+    { "map"      , { a1_b2_c3, concat   } , aa1_bb2_cc3 , false },
     { "values"   , { a1_b2_c3           } , n123        , false },
   }
   -- stylua: ignore end

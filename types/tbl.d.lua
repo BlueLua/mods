@@ -219,7 +219,7 @@ function M.keys(t) end
 ---Return a new table by mapping each key-value pair.
 ---
 ---```lua
----t = pairmap({ a = 1, b = 2 }, function(k, v)
+---t = map({ a = 1, b = 2 }, function(k, v)
 ---  return k .. v
 ---end) --> { a = "a1", b = "b2" }
 ---```
@@ -234,7 +234,7 @@ function M.keys(t) end
 ---@param fn fun(key:K, value:V):T Key-value mapping function.
 ---@return table<K,T> mapped New table with mapped values.
 ---@nodiscard
-function M.pairmap(t, fn) end
+function M.map(t, fn) end
 
 ---
 ---Merge entries from `t2` into `t1` and return `t1`.

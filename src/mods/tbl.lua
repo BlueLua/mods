@@ -190,7 +190,7 @@ function M.foreach(t, fn)
   end
 end
 
-function M.pairmap(t, fn)
+function M.map(t, fn)
   local res = {}
   for k, v in pairs(t) do
     res[k] = fn(k, v)
