@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local tbl = mods.tbl
 
 local args_repr = mods.utils.args_repr

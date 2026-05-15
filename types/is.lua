@@ -1,6 +1,6 @@
 ---@meta mods.is
 
----@module 'mods.List'
+---@module 'mods.list'
 local List
 
 ---@alias modsValidatorName

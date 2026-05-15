@@ -1,7 +1,7 @@
 local helpers = require "spec.helpers"
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local Set = mods.Set
 local fs = mods.fs
 local glob = mods.glob

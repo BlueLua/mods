@@ -156,7 +156,7 @@ say:set(list_positive, "Expected object to be a mods.List.\nPassed in:\n%s\nExpe
 say:set(list_negative, "Expected object to not be a mods.List.\nPassed in:\n%s\nDid not expect:\nmods.List")
 
 assert:register("assertion", "list", function(_, args)
-  return getmetatable(args[1]) == require "mods.List"
+  return getmetatable(args[1]) == require "mods.list"
 end, list_positive, list_negative)
 
 local set_positive = "assertion.set.positive"

@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local Set = mods.Set
 local runtime = mods.runtime
 

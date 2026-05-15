@@ -2,7 +2,7 @@
 
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local Set = mods.Set
 
 local args_repr = mods.utils.args_repr
@@ -13,7 +13,7 @@ local upper = string.upper
 local len = string.len
 local unpack = table.unpack
 
-describe("mods.List", function()
+describe("mods.list", function()
   local L = List
   local patterns = [[
     _____ ____e ___de __c__ _b_d_ _bc__ _bcd_ a___e a_c__

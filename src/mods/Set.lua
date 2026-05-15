@@ -14,7 +14,7 @@ Set.__index = Set
 local List
 local function as_set(t)
   if not List then
-    List = mods.List
+    List = mods.list
   end
   return getmetatable(t) == List and Set(t) or t
 end

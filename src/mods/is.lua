@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local lfs = mods.utils.lazy_module("lfs") ---@module 'lfs'
 
 ---@type mods.is

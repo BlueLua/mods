@@ -2,9 +2,10 @@ local mods = require "mods"
 
 local kw = mods.keyword
 local ver = mods.runtime.version
+local List = mods.list
 
 -- stylua: ignore
-local keywords =  mods.List({
+local keywords =  List({
   "and"   , "break" , "do"  , "else"    , "elseif",
   "end"   , "false" , "for" , "function", "if"    ,
   "in"    , "local" , "nil" , "not"     , "or"    ,

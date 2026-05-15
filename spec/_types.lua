@@ -3,7 +3,7 @@
 ---@class luassert.internal
 local internal = {}
 
----Assert that a value is a `mods.List`.
+---Assert that a value is a `mods.list`.
 function internal.list(v) end
 
 ---Assert that a value is a `mods.Set`.

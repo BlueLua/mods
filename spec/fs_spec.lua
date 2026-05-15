@@ -2,7 +2,7 @@ local helpers = require "spec.helpers"
 local lfs = require "lfs"
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local fs = mods.fs
 local path = mods.path
 

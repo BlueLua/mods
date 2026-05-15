@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local List = mods.List
+local List = mods.list
 local keyword = mods.keyword
 local stringcase = mods.stringcase
 
