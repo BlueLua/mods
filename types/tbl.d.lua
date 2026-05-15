@@ -216,23 +216,6 @@ function M.isempty(t) end
 function M.keys(t) end
 
 ---
----Return a new table by mapping each value (keys preserved).
----
----```lua
----t = map({ a = 1, b = 2 }, function(v)
----  return v * 10
----end) --> { a = 10, b = 20 }
----```
----
----@section Transforms
----@generic T,K,V
----@param t table<K,V> Input table.
----@param fn fun(value:V):T Mapping function.
----@return table<K,T> mapped New table with mapped values.
----@nodiscard
-function M.map(t, fn) end
-
----
 ---Return a new table by mapping each key-value pair.
 ---
 ---```lua

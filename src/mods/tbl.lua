@@ -184,14 +184,6 @@ function M.spairs(t)
   end
 end
 
-function M.map(t, fn)
-  local res = {}
-  for k, v in pairs(t) do
-    res[k] = fn(v)
-  end
-  return res
-end
-
 function M.foreach(t, fn)
   for k, v in pairs(t) do
     fn(v, k)

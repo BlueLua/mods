@@ -58,7 +58,6 @@ describe("mods.tbl", function()
     { "deepcopy" , { a1_b2_c3           } , a1_b2_c3    , false },
     { "find_if"  , { a1_b2_cc, is_equal } , "c"         , false },
     { "keys"     , { a1_b2_c3,          } , abc         , false },
-    { "map"      , { a1_b2_c3, multi    } , a2_b4_c6    , false },
     { "pairmap"  , { a1_b2_c3, concat   } , aa1_bb2_cc3 , false },
     { "values"   , { a1_b2_c3           } , n123        , false },
   }
