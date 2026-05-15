@@ -6,7 +6,7 @@
   Copyright (c) 2001 Python Software Foundation; All Rights Reserved.
 ]]
 
-local helpers = require "spec.helpers"
+local helpers = require "tests.helpers"
 local mods = require "mods"
 
 local fs = mods.fs

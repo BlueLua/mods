@@ -11,7 +11,7 @@ local mods = require "mods"
 
 mods.runtime.is_windows = false -- Make mods.path use mods.posixpath.
 
-local helpers = require "spec.helpers"
+local helpers = require "tests.helpers"
 
 local posixpath = mods.posixpath
 local path = mods.path

@@ -1,4 +1,4 @@
-local helpers = require "spec.helpers"
+local helpers = require "tests.helpers"
 local mods = require "mods"
 
 local cal = mods.calendar

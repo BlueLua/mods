@@ -11,7 +11,7 @@ local mods = require "mods"
 
 mods.runtime.is_windows = true -- Make mods.path use mods.ntpath.
 
-local helpers = require "spec.helpers"
+local helpers = require "tests.helpers"
 
 local ntpath = mods.ntpath
 local path = mods.path

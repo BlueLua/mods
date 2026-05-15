@@ -1,4 +1,4 @@
-local helpers = require "spec.helpers"
+local helpers = require "tests.helpers"
 local lfs = require "lfs"
 local mods = require "mods"
 
@@ -18,7 +18,7 @@ describe("mods.fs", function()
   local is_unix = not mods.runtime.is_windows
   local cwd = path.cwd() --[[@as string]]
   local readme_file = join(cwd, "README.md")
-  local spec_file = join(cwd, "spec", "fs_spec.lua")
+  local spec_file = join(cwd, "tests", "_types.lua")
 
   for _, fname in ipairs({ "getsize", "getatime", "getmtime", "getctime" }) do
     it(fmt("%s() returns a number for an existing path", fname), function()
