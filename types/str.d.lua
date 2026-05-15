@@ -444,22 +444,6 @@ function M.replace(s, old, new, count) end
 function M.rfind(s, sub, start, stop) end
 
 ---
----Like `rfind` but raises an error when the substring is not found.
----
----```lua
----i = rindex("ababa", "ba") --> 4
----```
----
----@section Split & Replace
----@param s string Input string.
----@param sub string Substring to search.
----@param start? integer Optional start index (defaults to `1`).
----@param stop? integer Optional inclusive end index (defaults to `#s`).
----@return integer index Last match index.
----@nodiscard
-function M.rindex(s, sub, start, stop) end
-
----
 ---Right-justify string in a field of given width.
 ---
 ---```lua

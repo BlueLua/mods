@@ -401,14 +401,6 @@ function M.rfind(s, subp, start, stop)
   return a + last - 1
 end
 
-function M.rindex(s, subp, start, stop)
-  local i = M.rfind(s, subp, start, stop)
-  if i == nil then
-    error("substring not found")
-  end
-  return i
-end
-
 function M.rjust(s, width, fillchar)
   if width <= #s then
     return s
