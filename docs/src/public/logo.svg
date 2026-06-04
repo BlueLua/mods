@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Mods logo">
-  <defs>
-    <linearGradient id="ga" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0ea5e9"/>
-      <stop offset="1" stop-color="#22c55e"/>
-    </linearGradient>
-  </defs>
-  <path d="M52 180V76h26l50 78 50-78h26v104h-26v-58l-50 74-50-74v58H52z" fill="url(#ga)"/>
-</svg>
