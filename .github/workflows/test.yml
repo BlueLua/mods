@@ -6,11 +6,13 @@ on:
       - "src/**"
       - "tests/**"
       - "scripts/**"
+      - "rockspecs/**"
       - ".github/workflows/test.yml"
   pull_request:
     paths:
       - "src/**"
       - "tests/**"
+      - "rockspecs/**"
       - "scripts/**"
       - ".github/workflows/test.yml"
   workflow_dispatch:
