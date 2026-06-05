@@ -20,6 +20,10 @@ describe("mods.fs", function()
   local readme_file = join(cwd, "README.md")
   local spec_file = join(cwd, "tests", "_types.lua")
 
+  after_each(function()
+    fs.cd(cwd)
+  end)
+
   for _, fname in ipairs({ "getsize", "getatime", "getmtime", "getctime" }) do
     it(fmt("%s() returns a number for an existing path", fname), function()
       assert.is_number(fs[fname](readme_file))
@@ -81,8 +85,15 @@ describe("mods.fs", function()
 
     it("changes the current working directory", function()
       local root = make_tmp_dir()
+      local canonical_root = root
+      local tmp = lfs.currentdir()
+      if tmp and lfs.chdir(root) then
+        canonical_root = lfs.currentdir()
+        lfs.chdir(tmp)
+      end
+
       assert.is_true(fs.cd(root))
-      assert.are_equal(root, path.cwd())
+      assert.are_equal(canonical_root, path.cwd())
       assert.is_true(fs.cd(cwd))
       assert.is_true(fs.rm(root, true))
     end)
