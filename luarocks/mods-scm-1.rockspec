@@ -3,12 +3,12 @@ rockspec_format = "3.0"
 package = "mods"
 version = "scm-1"
 source = {
-  url = "git+https://github.com/luamod/mods.git",
+  url = "git+https://github.com/BlueLua/mods.git",
 }
 
 description = {
   summary = "Pure Lua modules",
-  homepage = "https://luamod.github.io/mods",
+  homepage = "https://BlueLua.github.io/mods",
   license = "MIT",
   detailed = [[
 Mods provides small, focused Lua modules:
