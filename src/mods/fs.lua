@@ -362,9 +362,15 @@ function M.rm(p, recursive)
       return remove(p)
     end
 
+    local ok, err
+    ok, err = check_dir(p)
+    if not ok then
+      return nil, err
+    end
+
     local items = {}
 
-    local ok, err = scan_dir(p, items, false)
+    ok, err = scan_dir(p, items, false)
     if not ok then
       return nil, err
     end
