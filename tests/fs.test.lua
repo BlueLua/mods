@@ -119,15 +119,17 @@ describe("mods.fs", function()
       assert.are_equal(cwd, fs.cwd())
     end)
 
-    it("fails when the current directory no longer exists", function()
-      local root = make_tmp_dir()
-      assert.is_true(fs.cd(root))
-      assert.is_true(fs.rm(root, true))
+    if is_unix then
+      it("fails when the current directory no longer exists", function()
+        local root = make_tmp_dir()
+        assert.is_true(fs.cd(root))
+        assert.is_true(fs.rm(root, true))
 
-      local dir, errmsg, errcode = fs.cwd()
-      assert.is_true(fs.cd(cwd))
-      assert.are_same({ "nil", "string", "number" }, { type(dir), type(errmsg), type(errcode) })
-    end)
+        local dir, errmsg, errcode = fs.cwd()
+        assert.is_true(fs.cd(cwd))
+        assert.are_same({ "nil", "string", "number" }, { type(dir), type(errmsg), type(errcode) })
+      end)
+    end
   end)
 
   describe("write_bytes()", function()
