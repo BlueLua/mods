@@ -1,122 +1,48 @@
 # Mods
 
-**Mods** is a Lua utility library with predictable APIs, 💤 lazy-loaded
-inter-module dependencies, and support for Lua 5.1, 5.2, 5.3, 5.4, and LuaJIT.
+[![LuaRocks](https://img.shields.io/luarocks/v/BlueLua/mods?color=blue&style=flat-square)](https://luarocks.org/modules/BlueLua/mods)
+[![Test Status](https://img.shields.io/github/actions/workflow/status/BlueLua/mods/test.yml?style=flat-square)](https://github.com/BlueLua/mods/actions/workflows/test.yml)
+![Lua Versions](https://img.shields.io/badge/lua-5.1%20%7C%205.2%20%7C%205.3%20%7C%205.4%20%7C%205.5%20%7C%20LuaJIT-blue?style=flat-square)
+![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue?style=flat-square)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://github.com/BlueLua/mods/blob/main/LICENSE)
 
-> [!IMPORTANT]
->
-> This library is not stable yet, and APIs may change between releases.
+`mods` is a comprehensive Lua utility library featuring lazy-loaded modules and
+wide runtime compatibility.
 
-This project is inspired by
-[Penlight (pl)](https://github.com/lunarmodules/Penlight).
+See the [documentation] for full API references and guides.
 
-If this project helps you, consider starring the repo ⭐.
+## ✨ Features
 
-## Table of Contents
+- **Predictable APIs**: A cohesive collection of helper utilities for common
+  programming tasks and data structures.
+- **Lazy Loading**: Automatic lazy loading of sub-modules to keep startup times
+  fast.
+- **Cross-Platform**: Works consistently across Windows, macOS, and Linux.
+- **Multiple Lua Versions**: Compatible with LuaJIT, Lua 5.1, 5.2, 5.3, 5.4, and
+  5.5.
+- **Lightweight**: Pure Lua with no dependencies, except optional [LFS] for file
+  operations.
+- **Autocomplete**: [LuaLS] type annotations.
 
-- [Documentation](#documentation)
-- [Installation](#installation)
-- [Modules](#modules)
-- [Development Status](#development-status)
-- [Acknowledgments](#acknowledgments)
-
-## Documentation
-
-Guides, module overviews, and examples live in the
-[docs](https://luamod.github.io/mods).
-
-## Installation
-
-### LuaRocks
+## 📦 Installation
 
 ```sh
 luarocks install mods
 ```
 
-### Manual
+## 🚀 Usage
 
-- **Unix (🐧 Linux / 🍎 macOS)**:
+```lua
+local mods = require "mods"
 
-  ```sh
-  git clone https://github.com/luamod/mods.git
-  cd mods
-  mkdir -p /usr/local/share/lua/5.x/
-  cp -r src/mods /usr/local/share/lua/5.x/
-  ```
+local stripped = mods.str.strip("   hello world   ")
+print(stripped) -- Output: "hello world"
 
-- **🪟 Windows**:
+local items = mods.list({ 1, 2, 3 })
+local reversed = items:reverse()
+print(reversed:join(", ")) -- Output: "3, 2, 1"
+```
 
-  Copy all files from [`src/mods/`](src/mods/) to
-  `C:\Program Files\Lua\5.x\lua\mods\`.
-
-> [!IMPORTANT]
->
-> Replace `5.x` with your Lua version (for example, `5.4`).
-
-## Modules
-
-| Module         | Description                                                                |
-| -------------- | -------------------------------------------------------------------------- |
-| [`fs`]         | Filesystem I/O, metadata, and filesystem path operations.                  |
-| [`is`]         | Type predicates for Lua values and filesystem path types.                  |
-| [`keyword`]    | Helpers for Lua keywords and identifiers.                                  |
-| [`List`]       | A list class for creating, transforming, and querying sequences of values. |
-| [`ntpath`]     | Windows/NT-style path operations.                                          |
-| [`operator`]   | Lua operators exposed as functions.                                        |
-| [`path`]       | Cross-platform path operations with host-platform semantics.               |
-| [`posixpath`]  | POSIX-style path operations.                                               |
-| [`stringify`]  | Readable string rendering for Lua values.                                  |
-| [`runtime`]    | Lua runtime metadata and version compatibility flags.                      |
-| [`Set`]        | A set class for creating, combining, and querying unique values.           |
-| [`str`]        | String operations for searching, splitting, trimming, and formatting text. |
-| [`stringcase`] | String case conversion and word splitting.                                 |
-| [`tbl`]        | Table operations for querying, copying, merging, and transforming tables.  |
-| [`template`]   | String template rendering with `{{...}}` placeholders.                     |
-| [`utils`]      | Shared utility helpers used across the Mods library.                       |
-| [`validate`]   | Validation helpers for Lua values and filesystem path types.               |
-
-> [!NOTE]
->
-> We are still working on adding new modules and improving the docs.
-
-## Development Status
-
-This project is still under active development. We are also building supporting
-tools in parallel, including a type parser to improve autogenerated docs and a
-better test toolchain.
-
-Since release `v0.6.0`, tests and documentation have been changing frequently.
-That means contributors may occasionally run into bugs while working with the
-latest commits. We also add new modules before each formal release, so the
-repository may contain changes that are not available in the published version
-yet. Please work from the most recent code in the repository, as the next
-release will include fixes for issues discovered during this phase.
-
-**Mods** will act as a core helper library for our upcoming lua projects.
-
-## Acknowledgments
-
-Thanks to these Lua ecosystem projects:
-
-- [lfs](https://github.com/lunarmodules/luafilesystem) for filesystem utilities.
-- [inspect](https://github.com/kikito/inspect.lua) for readable table
-  representation.
-- [busted](https://github.com/lunarmodules/busted) for test framework support.
-
-[`fs`]: https://luamod.github.io/mods/modules/fs
-[`is`]: https://luamod.github.io/mods/modules/is
-[`keyword`]: https://luamod.github.io/mods/modules/keyword
-[`List`]: https://luamod.github.io/mods/modules/list
-[`ntpath`]: https://luamod.github.io/mods/modules/ntpath
-[`operator`]: https://luamod.github.io/mods/modules/operator
-[`path`]: https://luamod.github.io/mods/modules/path
-[`posixpath`]: https://luamod.github.io/mods/modules/posixpath
-[`stringify`]: https://luamod.github.io/mods/modules/stringify
-[`runtime`]: https://luamod.github.io/mods/modules/runtime
-[`Set`]: https://luamod.github.io/mods/modules/set
-[`str`]: https://luamod.github.io/mods/modules/str
-[`stringcase`]: https://luamod.github.io/mods/modules/stringcase
-[`tbl`]: https://luamod.github.io/mods/modules/tbl
-[`template`]: https://luamod.github.io/mods/modules/template
-[`utils`]: https://luamod.github.io/mods/modules/utils
-[`validate`]: https://luamod.github.io/mods/modules/validate
+[documentation]: https://bluelua.github.io/mods
+[LFS]: https://github.com/lunarmodules/luafilesystem
+[LuaLS]: https://github.com/LuaLS/lua-language-server
