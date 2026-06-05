@@ -375,7 +375,7 @@ local function prepare_glob(name, root, pattern, opts)
   validate(name .. ".opts.recursive", opts.recursive, "boolean", true)
 
   if opts.recursive then
-    pattern = join("**", pattern)
+    pattern = "**/" .. pattern
   end
 
   local ignorecase = opts.ignorecase == nil and is_windows or opts.ignorecase
