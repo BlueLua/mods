@@ -7,7 +7,7 @@ local stringify = mods.stringify
 local fmt = string.format
 
 describe("mods.stringify", function()
-  local nan = is_luajit and "nan" or "-nan"
+  local nan = tostring(0/0)
 
   it("renders primitives", function()
     local fn = function() end
