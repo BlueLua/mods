@@ -425,6 +425,14 @@ function M.dir(p, opts)
   assert_arg(2, opts, "table", true)
   opts = normalize_dir_opts("dir", opts)
 
+  local mode, err = lfs.attributes(p, "mode")
+  if not mode then
+    return nil, err
+  end
+  if mode ~= "directory" then
+    return nil, "Not a directory"
+  end
+
   local items = {}
   local ok, err = collect_dir_items(p, opts, items, false)
   if not ok then
