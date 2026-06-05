@@ -3,6 +3,8 @@
 local stringify ---@module "mods.stringify"
 local template ---@module "mods.template"
 
+local version = "mods 0.6.0" -- x-release-please-version
+
 ---
 ---Entry point that exposes all modules under one 💤 lazily loaded table.
 ---
@@ -29,6 +31,7 @@ local template ---@module "mods.template"
 ---@field date mods.Date
 ---@field duration mods.Duration
 local M = {
+  _VERSION = version,
   stringify = stringify,
   template = template,
 }
