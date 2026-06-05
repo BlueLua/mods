@@ -68,6 +68,17 @@ local function open_dir(p)
   return iter, dir_obj
 end
 
+local function check_dir(p)
+  local mode, err = lfs.attributes(p, "mode")
+  if not mode then
+    return nil, err
+  end
+  if mode ~= "directory" then
+    return nil, "Not a directory"
+  end
+  return true
+end
+
 ---@param name LuaFileSystem.AttributeName
 local function get_attr(p, name)
   local value, errmsg, errcode = lfs.attributes(p, name)
@@ -426,8 +437,14 @@ function M.listdir(p, opts)
   assert_arg(2, opts, "table", true)
   opts = normalize_dir_opts("listdir", opts)
 
+  local ok, err
+  ok, err = check_dir(p)
+  if not ok then
+    return nil, err
+  end
+
   local items = {}
-  local ok, err = collect_dir_items(p, opts, items, not opts.names)
+  ok, err = collect_dir_items(p, opts, items, not opts.names)
   if not ok then
     return nil, err
   end
@@ -444,16 +461,14 @@ function M.dir(p, opts)
   assert_arg(2, opts, "table", true)
   opts = normalize_dir_opts("dir", opts)
 
-  local mode, err = lfs.attributes(p, "mode")
-  if not mode then
+  local ok, err
+  ok, err = check_dir(p)
+  if not ok then
     return nil, err
-  end
-  if mode ~= "directory" then
-    return nil, "Not a directory"
   end
 
   local items = {}
-  local ok, err = collect_dir_items(p, opts, items, false)
+  ok, err = collect_dir_items(p, opts, items, false)
   if not ok then
     return nil, err
   end
