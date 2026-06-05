@@ -10,15 +10,16 @@ local args_repr = mods.utils.args_repr
 local spairs = mods.tbl.spairs
 local make_tmp_dir = helpers.make_tmp_dir
 local join = mods.path.join
-
 local fmt = string.format
 
 describe("mods.glob", function()
-  local set_windows_semantics = glob._set_windows_semantics --[[@as fun()]]
-  local set_posix_semantics = glob._set_posix_semantics --[[@as fun()]]
-  local restore_semantics = mods.runtime.is_windows and set_windows_semantics or set_posix_semantics
+  local is_windows = mods.runtime.is_windows
   local cwd = fs.cwd() --[[@as string]]
   local modes = Set({ "common", "posix", "windows" })
+
+  local set_windows_semantics = glob._set_windows_semantics --[[@as fun()]]
+  local set_posix_semantics = glob._set_posix_semantics --[[@as fun()]]
+  local restore_semantics = is_windows and set_windows_semantics or set_posix_semantics
 
   local function make_recursive_txt_fixture()
     local root = make_tmp_dir()
@@ -329,7 +330,7 @@ describe("mods.glob", function()
       local matches = glob.glob("*.txt")
       assert.is_true(fs.cd(cwd))
       assert.is_true(fs.rm(root, true))
-      assert.same({ "./data.txt" }, matches)
+      assert.same({ join(".", "data.txt") }, matches)
     end)
 
     it("supports hidden", function()
@@ -357,7 +358,7 @@ describe("mods.glob", function()
 
       assert.is_true(fs.touch(mixed))
 
-      assert.same({}, glob.glob(root, "*.txt"))
+      assert.same({}, glob.glob(root, "*.txt", { ignorecase = false }))
       assert.same({ mixed }, glob.glob(root, "*.txt", { ignorecase = true }))
 
       assert.is_true(fs.rm(root, true))
@@ -380,17 +381,20 @@ describe("mods.glob", function()
       local file1 = join(root, "file1.txt")
       local file2 = join(root, "file2.txt")
       local note = join(root, "file1.md")
-      local literal = join(root, "a*b.txt")
 
       assert.is_true(fs.touch(file1))
       assert.is_true(fs.touch(file2))
       assert.is_true(fs.touch(note))
-      assert.is_true(fs.touch(literal))
 
       assert.same({ file1, file2 }, glob.glob(root, "file?.txt"):sort())
       assert.same({ file1, file2 }, glob.glob(root, "file[1-2].txt"):sort())
       assert.same({ note, file1 }, glob.glob(root, "file1.{txt,md}"):sort())
-      assert.same({ literal }, glob.glob(root, glob.escape("a*b.txt")))
+
+      if not is_windows then
+        local literal = join(root, "a*b.txt")
+        assert.is_true(fs.touch(literal))
+        assert.same({ literal }, glob.glob(root, glob.escape("a*b.txt")))
+      end
 
       assert.is_true(fs.rm(root, true))
     end)
@@ -503,7 +507,7 @@ describe("mods.glob", function()
 
       assert.is_true(fs.cd(cwd))
       assert.is_true(fs.rm(root, true))
-      assert.same({ "./data.txt" }, ls)
+      assert.same({ join(".", "data.txt") }, ls)
     end)
 
     it("supports ignorecase and directory-only patterns", function()
