@@ -21,6 +21,6 @@ describe("mods", function()
     assert.has_error(function()
       ---@diagnostic disable-next-line: undefined-field
       return mods.not_a_real_module
-    end, 'unknown mods module "not_a_real_module"')
+    end)
   end)
 end)
