@@ -255,6 +255,10 @@ function M.samefile(path_a, path_b)
     return nil, errmsg, errcode
   end
 
+  if a.ino == 0 or b.ino == 0 then
+    return path.normcase(path.abspath(path_a)) == path.normcase(path.abspath(path_b))
+  end
+
   return a.dev == b.dev and a.ino == b.ino
 end
 
