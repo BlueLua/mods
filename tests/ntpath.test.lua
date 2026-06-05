@@ -175,10 +175,6 @@ describe("mods.ntpath", function()
     expanduser = {
       {{ "test"            }, { "test"                           }},
       {{ [[C:\Users\eric]] }, { [[C:\Users\eric]]                }},
-      {{ "~"               }, { nil, "home directory is not set" }},
-      {{ [[~\foo\bar]]     }, { nil, "home directory is not set" }},
-      {{ "~test"           }, { nil, "home directory is not set" }},
-      {{ [[~test\foo\bar]] }, { nil, "home directory is not set" }},
     },
     isabs = {
       {{ [[foo\bar]]             }, { false }},
@@ -477,11 +473,12 @@ describe("mods.ntpath", function()
     expanduser = {
       {
         env = {},
-        { "test", { "test" }},
-      },
-      {
-        env = {},
-        { "~test", { nil, "home directory is not set" }},
+        { "test"            , { "test"                           }},
+        { [[C:\Users\eric]] , { [[C:\Users\eric]]                }},
+        { "~"               , { nil, "home directory is not set" }},
+        { [[~\foo\bar]]     , { nil, "home directory is not set" }},
+        { "~test"           , { nil, "home directory is not set" }},
+        { [[~test\foo\bar]] , { nil, "home directory is not set" }},
       },
       {
         env = { HOMEDRIVE = [[C:\]], HOMEPATH = [[Users\eric]], USERNAME = "eric" },
