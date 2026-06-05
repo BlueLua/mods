@@ -1,4 +1,0 @@
-MD033: false # Allow inline HTML used by generated module docs.
-MD051: false # Ignore fragment-link checks for generated headings and anchors.
-MD013: false # Do not enforce line wrapping in generated docs.
-MD028: false # Allow generated adjacent blockquote callouts.
