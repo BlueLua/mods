@@ -17,7 +17,7 @@ local isdir = is.dir
 local islink = is.link
 
 local open = io.open
-local remove = os.remove
+local os_remove = os.remove
 local rename = os.rename
 
 ---@type mods.fs
@@ -25,6 +25,7 @@ local M = {}
 
 local CURDIR = "."
 local PARDIR = ".."
+local is_windows = mods.runtime.is_windows
 local entry_types = {
   ["block device"] = "block",
   ["char device"] = "char",
@@ -37,6 +38,24 @@ end
 
 local function is_hidden(entry)
   return entry:sub(1, 1) == "."
+end
+
+local function remove(item)
+  if islink(item) then
+    if is_windows then
+      local ok = lfs.rmdir(item)
+      if ok then
+        return true
+      end
+    end
+    return os_remove(item)
+  end
+
+  if isdir(item) then
+    return lfs.rmdir(item)
+  end
+
+  return os_remove(item)
 end
 
 -- `lfs.dir` throws on failure, so use `pcall` to preserve its error text as `false, err`.
@@ -333,24 +352,20 @@ function M.rm(p, recursive)
     end
 
     local items = {}
-    local ok, err
 
-    ok, err = scan_dir(p, items, false)
+    local ok, err = scan_dir(p, items, false)
     if not ok then
       return nil, err
     end
 
-    local rmdir = lfs.rmdir
     for i = #items, 1, -1 do
-      local item = items[i]
-      local fn = (isdir(item) and not islink(item)) and rmdir or remove
-      ok, err = fn(item)
+      ok, err = remove(items[i]) ---@diagnostic disable-line: cast-local-type
       if not ok then
         return nil, err
       end
     end
 
-    return rmdir(p)
+    return remove(p)
   end
 
   return remove(p)
