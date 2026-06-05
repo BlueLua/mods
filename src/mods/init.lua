@@ -5,9 +5,8 @@ return setmetatable({ _VERSION = "mods 0.6.0" }, { -- x-release-please-version
     local modname = "mods." .. tostring(k)
     local ok, v = pcall(require, modname)
     if not ok then
-      error('unknown mods module "' .. tostring(k) .. '"', 2)
+      error(v, 2)
     end
-    rawset(t, k, v)
-    return v
+    return rawset(t, k, v)[k]
   end,
 })
