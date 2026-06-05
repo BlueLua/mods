@@ -5,12 +5,12 @@ version = "1.0.0-1"
 source = {
   branch = "main",
   tag = "v1.0.0",
-  url = "git+https://github.com/luamod/mods.git",
+  url = "git+https://github.com/BlueLua/mods.git",
 }
 
 description = {
   summary = "Pure Lua modules",
-  homepage = "https://luamod.github.io/mods",
+  homepage = "https://BlueLua.github.io/mods",
   license = "MIT",
   detailed = [[
 Mods provides small, focused Lua modules:
