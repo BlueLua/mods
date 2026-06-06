@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Enables manual triggering from the GitHub Actions UI with custom options
+  workflow_dispatch:
+    inputs:
+      linux:
+        description: "Linux"
+        type: boolean
+        default: true
+      macos:
+        description: "macOS"
+        type: boolean
+        default: false
+      windows:
+        description: "Windows"
+        type: boolean
+        default: false
+      stylua:
+        description: "StyLua"
+        type: boolean
+        default: false
+      luacheck:
+        description: "Luacheck"
+        type: boolean
+        default: false
+      prettier:
+        description: "Prettier"
+        type: boolean
+        default: false
+      tests:
+        description: "Tests"
+        type: boolean
+        default: false
+
+jobs:
+  ci:
+    uses: BlueLua/.github/.github/workflows/ci.yml@main
+    with:
+      # Forward OS selections if triggered manually, otherwise use defaults for push/pr triggers
+      linux: ${{ (github.event_name == 'workflow_dispatch' && inputs.linux == true) || (github.event_name != 'workflow_dispatch' && true) }}
+      macos: ${{ (github.event_name == 'workflow_dispatch' && inputs.macos == true) || (github.event_name != 'workflow_dispatch' && false) }}
+      windows: ${{ (github.event_name == 'workflow_dispatch' && inputs.windows == true) || (github.event_name != 'workflow_dispatch' && false) }}
+
+      # Forward manual force-run triggers, otherwise default to false on push/pr (allowing auto-triggering)
+      stylua: ${{ (github.event_name == 'workflow_dispatch' && inputs.stylua == true) || false }}
+      luacheck: ${{ (github.event_name == 'workflow_dispatch' && inputs.luacheck == true) || false }}
+      prettier: ${{ (github.event_name == 'workflow_dispatch' && inputs.prettier == true) || false }}
+      tests: ${{ (github.event_name == 'workflow_dispatch' && inputs.tests == true) || false }}
