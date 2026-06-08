@@ -5,13 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  # Enables manual triggering from the GitHub Actions UI with custom options
   workflow_dispatch:
     inputs:
       linux:
         description: "Linux"
         type: boolean
-        default: true
+        default: false
       macos:
         description: "macOS"
         type: boolean
@@ -28,26 +27,44 @@ on:
         description: "Luacheck"
         type: boolean
         default: false
-      prettier:
-        description: "Prettier"
+      markdownlint:
+        description: "Markdownlint"
         type: boolean
         default: false
       tests:
         description: "Tests"
         type: boolean
         default: false
-
+      docs:
+        description: "Docs"
+        type: boolean
+        default: false
+      release-please:
+        description: "Release Please"
+        type: boolean
+        default: false
+      luarocks-upload:
+        description: "Upload to LuaRocks"
+        type: boolean
+        default: false
 jobs:
   ci:
     uses: BlueLua/.github/.github/workflows/ci.yml@main
+    secrets: inherit
+    # prettier-ignore
     with:
-      # Forward OS selections if triggered manually, otherwise use defaults for push/pr triggers
-      linux: ${{ (github.event_name == 'workflow_dispatch' && inputs.linux == true) || (github.event_name != 'workflow_dispatch' && true) }}
-      macos: ${{ (github.event_name == 'workflow_dispatch' && inputs.macos == true) || (github.event_name != 'workflow_dispatch' && false) }}
-      windows: ${{ (github.event_name == 'workflow_dispatch' && inputs.windows == true) || (github.event_name != 'workflow_dispatch' && false) }}
+      package: "bluelua-${{ github.event.repository.name }}"
 
-      # Forward manual force-run triggers, otherwise default to false on push/pr (allowing auto-triggering)
-      stylua: ${{ (github.event_name == 'workflow_dispatch' && inputs.stylua == true) || false }}
-      luacheck: ${{ (github.event_name == 'workflow_dispatch' && inputs.luacheck == true) || false }}
-      prettier: ${{ (github.event_name == 'workflow_dispatch' && inputs.prettier == true) || false }}
-      tests: ${{ (github.event_name == 'workflow_dispatch' && inputs.tests == true) || false }}
+      linux:   ${{ inputs.linux   || github.event_name != 'workflow_dispatch' }}
+      macos:   ${{ inputs.macos   || github.event_name != 'workflow_dispatch' }}
+      windows: ${{ inputs.windows || github.event_name != 'workflow_dispatch' }}
+
+      stylua:       ${{ inputs.stylua       || false }}
+      luacheck:     ${{ inputs.luacheck     || false }}
+      markdownlint: ${{ inputs.markdownlint || false }}
+
+      tests: ${{ inputs.tests || false }}
+      docs:  ${{ inputs.docs  || false }}
+
+      release-please:  ${{ inputs.release-please  || false }}
+      luarocks-upload: ${{ inputs.luarocks-upload || false }}
