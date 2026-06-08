@@ -53,7 +53,7 @@ jobs:
     secrets: inherit
     # prettier-ignore
     with:
-      package: "bluelua-${{ github.event.repository.name }}"
+      package: ${{ github.event.repository.name }}
 
       linux:   ${{ inputs.linux   || github.event_name != 'workflow_dispatch' }}
       macos:   ${{ inputs.macos   || github.event_name != 'workflow_dispatch' }}
