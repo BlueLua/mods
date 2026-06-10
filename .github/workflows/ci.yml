@@ -10,15 +10,15 @@ on:
       linux:
         description: "Linux"
         type: boolean
-        default: false
+        default: true
       macos:
         description: "macOS"
         type: boolean
-        default: false
+        default: true
       windows:
         description: "Windows"
         type: boolean
-        default: false
+        default: true
       stylua:
         description: "StyLua"
         type: boolean
