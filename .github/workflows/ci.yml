@@ -57,8 +57,6 @@ jobs:
     secrets: inherit
     # prettier-ignore
     with:
-      package: ${{ github.event.repository.name }}
-
       linux:   ${{ inputs.linux   || github.event_name != 'workflow_dispatch' }}
       macos:   ${{ inputs.macos   || github.event_name != 'workflow_dispatch' }}
       windows: ${{ inputs.windows || github.event_name != 'workflow_dispatch' }}
