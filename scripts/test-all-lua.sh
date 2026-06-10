@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 interpreters=()
-for bin in lua5.1 lua5.2 lua5.3 lua5.4 luajit lua; do
+for bin in lua5.1 lua5.2 lua5.3 lua5.4 lua5.5 luajit lua; do
   if command -v "$bin" >/dev/null 2>&1; then
     case " ${interpreters[*]} " in
       *" $(command -v "$bin") "*) ;;
