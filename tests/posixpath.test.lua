@@ -18,6 +18,7 @@ local path = mods.path
 local tbl = mods.tbl
 
 local args_repr = mods.utils.args_repr
+local stringify = mods.stringify
 local with_env = helpers.with_env
 local fmt = string.format
 
@@ -285,7 +286,7 @@ describe("mods.posixpath", function()
       for _, v in ipairs(e) do
         local input, expected = v[1], v[2]
         local input_repr = (input and ("'" .. input .. "'") or "")
-        it(fmt("%s(%s) with env %s", fname, input_repr, inspect(env)), function()
+        it(fmt("%s(%s) with env %s", fname, input_repr, stringify(env, { newline = "" })), function()
           with_env(env, function()
             assert.are_same(expected, { posixpath[fname](input) })
           end)

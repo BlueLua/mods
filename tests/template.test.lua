@@ -93,7 +93,7 @@ describe("mods.template", function()
 
   for i = 1, #tests do
     local tmpl, v, expected = unpack(tests[i] --[[@as {[1]:string, [2]:table, [3]:string}]], 1, 3)
-    it(fmt("template(%q, %s) handles edge case", tmpl, inspect(v)), function()
+    it(fmt("template(%q, %s) handles edge case", tmpl, stringify(v, { newline = "" })), function()
       local res = template(tmpl, v)
       assert.are_equal(expected, res)
     end)

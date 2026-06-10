@@ -6,6 +6,7 @@ local List = mods.list
 local Set = mods.set
 
 local args_repr = mods.utils.args_repr
+local stringify = mods.stringify
 local shallow_copy = mods.tbl.copy
 
 local fmt = string.format
@@ -144,7 +145,7 @@ describe("mods.list", function()
       unpack(tests[i] --[[@as {[1]:string,[2]:mods.List,[3]:{},[4]:any,[5]:boolean?}]], 1, 5)
 
     -- First argument is a List.
-    it(fmt("List(%s):%s(%s)", inspect(ls), fname, args_repr(params)), function()
+    it(fmt("List(%s):%s(%s)", stringify(ls, { newline = "" }), fname, args_repr(params)), function()
       local l = ls:copy()
       local res = List[fname](l, unpack(params))
       assert.are_same(expected, res)

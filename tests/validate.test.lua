@@ -3,6 +3,7 @@ local mods = require "mods"
 local capitalize = mods.stringcase.capitalize
 local quote = mods.utils.quote
 local validate = mods.validate
+local stringify = mods.stringify
 
 local fmt = string.format
 
@@ -81,12 +82,12 @@ describe("mods.validate", function()
       assert.Function(validate[fname])
     end)
 
-    it(fmt("validate.%s(%s) returns true", fname, inspect(valid)), function()
+    it(fmt("validate.%s(%s) returns true", fname, stringify(valid, { newline = "" })), function()
       assert.are_same({ true }, { validate[fname](valid) })
       assert.are_same({ true }, { validate(valid, tp) })
     end)
 
-    it(fmt("validate.%s(%s) returns false", fname, inspect(invalid)), function()
+    it(fmt("validate.%s(%s) returns false", fname, stringify(invalid, { newline = "" })), function()
       assert.are_same({ false, msg }, { validate[fname](invalid) })
       assert.are_same({ false, msg }, { validate(invalid, tp) })
     end)
