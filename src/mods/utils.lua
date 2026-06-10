@@ -1,6 +1,6 @@
 local mods = require "mods"
 
-local inspect ---@module "inspect"
+local stringify ---@module "mods.stringify"
 local validate ---@module "mods.validate"
 
 local concat = table.concat
@@ -15,12 +15,6 @@ local M = {}
 local function isidentifier(v)
   isidentifier = mods.keyword.isidentifier
   return isidentifier(v)
-end
-
-local function remove_mt(item, path)
-  if path[#path] ~= inspect.METATABLE then
-    return item
-  end
 end
 
 function M.quote(v)
@@ -51,10 +45,14 @@ function M.keypath(...)
 end
 
 function M.args_repr(v)
-  if v == nil then
+  if v == nil or next(v) == nil then
     return ""
   end
-  return inspect(v, { process = remove_mt }):gsub("^%s*{%s*(.-)%s*}%s*$", "%1")
+  local parts = {}
+  for i = 1, #v do
+    parts[i] = stringify(v[i], { newline = "" })
+  end
+  return concat(parts, ", ")
 end
 
 function M.assert_arg(argn, v, validator, optional, lv)
@@ -115,7 +113,7 @@ function M.lazy_module(name, err)
   return setmetatable({}, mt)
 end
 
-inspect = M.lazy_module("inspect")
+stringify = M.lazy_module("mods.stringify")
 validate = M.lazy_module("mods.validate")
 
 return M
