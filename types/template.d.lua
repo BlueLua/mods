@@ -31,15 +31,6 @@
 ---> template("Hi {{ name }}", { name = "Ada" }) --> "Hi Ada"
 ---> ```
 ---
----@param tmpl string Template string with placeholders.
----@param view table Input data used to resolve placeholders.
----@return string out Rendered output string.
----@nodiscard
-local function template(tmpl, view) end
-
----
----@include
----
 ---## Dot Paths
 ---
 ---Use dot notation to access nested values in `view`.
@@ -111,5 +102,10 @@ local function template(tmpl, view) end
 ---template("Hi {{name", view) --> "Hi {{name"
 ---```
 ---
+---@param tmpl string Template string with placeholders.
+---@param view table Input data used to resolve placeholders.
+---@return string out Rendered output string.
+---@nodiscard
+local function template(tmpl, view) end
 
 return template
