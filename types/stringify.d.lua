@@ -1,9 +1,24 @@
 ---@meta mods.stringify
-
 ---
 ---Render Lua values as readable source-like text.
 ---
 ---## Usage
+---
+---```lua
+---local stringify = require("mods").stringify
+---
+---local t = { "first", name = "Ada"}
+---
+---print(stringify(t))
+-----> {
+----->   "first",
+----->   name = "Ada"
+-----> }
+---```
+
+---
+---Render Lua values as readable source-like text.
+---
 ---
 ---```lua
 ---local stringify = require("mods").stringify
