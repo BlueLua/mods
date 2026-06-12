@@ -431,9 +431,9 @@ end
 ---@type fun(unix_ms:integer):(dt:mods.Date)
 local function from_unix_ms(ts)
   local seconds = idiv(ts, MS_PER_SECOND)
-  local now = osdate("!*t", seconds) --[[@as table<string,integer>]]
-  now.ms, now.wday = posmod(ts, MS_PER_SECOND), nil
-  return setmetatable(now, Date)
+  local dt = osdate("!*t", seconds) --[[@as table<string,integer>]]
+  dt.ms, dt.wday = posmod(ts, MS_PER_SECOND), nil
+  return setmetatable(dt, Date)
 end
 
 ---@type fun():(dt:mods.Date)

@@ -10,7 +10,6 @@ local validate = utils.validate
 local listdir = mods.fs.listdir
 local isdir = mods.is.dir
 local as_posix = path.as_posix
-local join = path.join
 local relpath = path.relpath
 
 local concat = table.concat

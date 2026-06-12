@@ -393,9 +393,9 @@ function List:sort(comp)
 end
 
 function List:shuffle(rng)
-  local random = rng or random
+  rng = rng or random
   for i = #self, 2, -1 do
-    local j = random(1, i)
+    local j = rng(1, i)
     self[i], self[j] = self[j], self[i]
   end
   return self

@@ -97,10 +97,10 @@ local function days_from_civil(year, month, day)
   return era * 146097 + doe - 719468
 end
 
-local function civil_from_days(days)
-  days = days + 719468
-  local era = floor_div(days >= 0 and days or days - 146096, 146097)
-  local doe = days - era * 146097
+local function civil_from_days(d)
+  d = d + 719468
+  local era = floor_div(d >= 0 and d or d - 146096, 146097)
+  local doe = d - era * 146097
   local yoe = floor((doe - floor(doe / 1460) + floor(doe / 36524) - floor(doe / 146096)) / 365)
   local year = yoe + era * 400
   local doy = doe - (365 * yoe + floor(yoe / 4) - floor(yoe / 100))

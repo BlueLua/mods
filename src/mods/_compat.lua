@@ -155,8 +155,6 @@ if runtime.version < 503 then
 end
 
 if runtime.version < 504 then
-  local pack = table.pack
-
   -- Some runtimes or libraries may already provide utf8;
   -- keep the table and normalize char.
   local utf8 = rawget(_G, "utf8")

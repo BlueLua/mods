@@ -36,7 +36,8 @@ local SECONDS_PER_DAY    = 24 * SECONDS_PER_HOUR
 local MS_PER_SECOND      = 1000
 local MS_PER_DAY         = SECONDS_PER_DAY * MS_PER_SECOND
 
-local HUMANIZE_UNIT_ORDER = { "years", "quarters", "months", "weeks", "days", "hours", "minutes", "seconds", "milliseconds" }
+local HUMANIZE_UNIT_ORDER =
+  { "years", "quarters", "months", "weeks", "days", "hours", "minutes", "seconds", "milliseconds" }
 local HUMANIZE_UNIT_INDEX = List(HUMANIZE_UNIT_ORDER):invert()
 local HUMANIZE_UNITS = {
   years        = { singular = "year"       , plural = "years"       , short = "y"  },
@@ -366,13 +367,13 @@ local function parse_iso_duration(input, lvl)
   return new_duration(parts)
 end
 
-local function format_iso_seconds(total_ms)
-  if total_ms == 0 then
-    return nil
+local function format_iso_seconds(ms)
+  if ms == 0 then
+    return
   end
 
-  local sign = total_ms < 0 and "-" or ""
-  local value = abs(total_ms) / MS_PER_SECOND
+  local sign = ms < 0 and "-" or ""
+  local value = abs(ms) / MS_PER_SECOND
   return sign .. format_number(value) .. "S"
 end
 
@@ -449,7 +450,6 @@ function Duration:humanize(with_suffix, opts)
     end
   end
 
-  local opts
   if type(with_suffix) == "table" then
     opts = with_suffix
   else
@@ -479,11 +479,16 @@ function Duration:equals(other)
 end
 
 -- stylua: ignore start
-function Duration:clone()           return clone_duration(self)                                                         end
-function Duration:normalize()       return new_duration(compact_duration(copy_duration_fields(self)))                   end
-function Duration:add(v, unit)      return unit and add_duration(self, M.new(v, unit),  1) or add_duration(self, v, 1)  end
-function Duration:subtract(v, unit) return unit and add_duration(self, M.new(v, unit), -1) or add_duration(self, v, -1) end
+function Duration:clone()     return clone_duration(self) end
+function Duration:normalize() return new_duration(compact_duration(copy_duration_fields(self))) end
 -- stylua: ignore end
+
+function Duration:add(v, unit)
+  return unit and add_duration(self, M.new(v, unit), 1) or add_duration(self, v, 1)
+end
+function Duration:subtract(v, unit)
+  return unit and add_duration(self, M.new(v, unit), -1) or add_duration(self, v, -1)
+end
 
 function Duration:compare(d)
   local a = total_ms(self)
