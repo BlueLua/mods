@@ -7,6 +7,11 @@
 ---
 ---Calendar and date helpers.
 ---
+---> [!WARNING]
+--->
+---> This module is still under development and may not be stable.
+---> The API is incomplete and may change in future versions.
+---
 ---## Usage
 ---
 ---```lua
@@ -73,6 +78,7 @@ local M = {}
 ---Return the default first weekday.
 ---
 ---```lua
+---local cal = mods.calendar
 ---print(cal.getfirstweekday()) --> 1
 ---```
 ---
@@ -88,6 +94,7 @@ function M.getfirstweekday() end
 ---Set the default first weekday.
 ---
 ---```lua
+---local cal = mods.calendar
 ---cal.setfirstweekday(cal.SUNDAY)
 ---```
 ---
@@ -103,6 +110,7 @@ function M.setfirstweekday(firstweekday) end
 ---Iterate weekday numbers for one full week.
 ---
 ---```lua
+---local cal = mods.calendar
 ---local weekdays = {}
 ---for day in cal.weekdays() do
 ---  weekdays[#weekdays + 1] = day
@@ -120,6 +128,7 @@ function M.weekdays(firstweekday) end
 ---Return `true` for leap years.
 ---
 ---```lua
+---local cal = mods.calendar
 ---print(cal.isleap(2024)) --> true
 ---```
 ---
@@ -133,6 +142,7 @@ function M.isleap(year) end
 ---Return the number of leap years from `y1` up to but not including `y2`.
 ---
 ---```lua
+---local cal = mods.calendar
 ---print(cal.leapdays(2000, 2025)) --> 7
 ---```
 ---
@@ -147,6 +157,7 @@ function M.leapdays(y1, y2) end
 ---Return weekday number where Monday is `1` and Sunday is `7`.
 ---
 ---```lua
+---local cal = mods.calendar
 ---print(cal.weekday(2026, 3, 26)) --> 4
 ---```
 ---
@@ -162,6 +173,7 @@ function M.weekday(year, month, day) end
 ---Return the first weekday and number of days for a month.
 ---
 ---```lua
+---local cal = mods.calendar
 ---wday, ndays = cal.monthrange(2026, 2)
 ---print(wday, ndays) --> 7 28
 ---```
@@ -177,9 +189,7 @@ function M.monthrange(year, month) end
 ---Iterate `(year, month, day, weekday)` tuples for a full calendar grid.
 ---
 ---```lua
----local mods = require "mods"
----
----local List = mods.List
+---local List = mods.list
 ---local cal = mods.calendar
 ---local str = mods.str
 ---
@@ -220,6 +230,8 @@ function M.monthdays(year, month, firstweekday) end
 ---Return the formatted weekday header string.
 ---
 ---```lua
+---local cal = mods.calendar
+---
 ---print(cal.weekheader(1, cal.SUNDAY)) --> "S M T W T F S"
 ---print(cal.weekheader(2, cal.SUNDAY)) --> "Su Mo Tu We Th Fr Sa"
 ---print(cal.weekheader(3, cal.SUNDAY)) --> "Sun Mon Tue Wed Thu Fri Sat"
