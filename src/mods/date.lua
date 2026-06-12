@@ -3,7 +3,7 @@
 -- TODO: refactor this module later and add more test cases.
 
 local mods = require "mods"
-local _, mstime = pcall(require, "mstime")
+local _, time = pcall(require, "timeutil")
 
 local Set = mods.set
 local calendar = mods.calendar
@@ -33,7 +33,7 @@ local modf = math.modf
 local osdate = os.date
 local sub = string.sub
 
----@type mods.dateMod
+---@type mods.date
 local M = {}
 
 local now, day_of_year, days_from_civil, iso_week_parts, ordinal, to_unix_ms, week_of_year, week_parts
@@ -437,9 +437,9 @@ local function from_unix_ms(ts)
 end
 
 ---@type fun():(dt:mods.Date)
-if type(mstime) == "function" then
+if type(time) == "function" then
   function now()
-    return from_unix_ms(mstime())
+    return from_unix_ms(time())
   end
 else
   function now()
