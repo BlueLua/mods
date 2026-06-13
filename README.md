@@ -40,6 +40,5 @@ local reversed = items:reverse()
 print(reversed:join(", ")) -- Output: "3, 2, 1"
 ```
 
-[documentation]: https://bluelua.github.io/mods
 [LFS]: https://github.com/lunarmodules/luafilesystem
 [LuaLS]: https://github.com/LuaLS/lua-language-server
