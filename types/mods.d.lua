@@ -3,7 +3,7 @@
 local stringify ---@module "mods.stringify"
 local template ---@module "mods.template"
 
-local version = "mods 0.6.0" -- x-release-please-version
+local version = "mods 1.0.0" -- x-release-please-version
 
 ---
 ---Entry point that exposes all modules under one 💤 lazily loaded table.
