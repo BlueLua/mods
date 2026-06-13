@@ -1,15 +1,12 @@
 # Mods
 
 [![LuaRocks](https://img.shields.io/luarocks/v/BlueLua/mods?color=blue&style=flat-square)](https://luarocks.org/modules/BlueLua/mods)
-[![CI Status](https://img.shields.io/github/actions/workflow/status/BlueLua/mods/ci.yml?label=CI&style=flat-square)](https://github.com/BlueLua/mods/actions/workflows/ci.yml)
 ![Lua Versions](https://img.shields.io/badge/lua-5.1%20%7C%205.2%20%7C%205.3%20%7C%205.4%20%7C%205.5%20%7C%20LuaJIT-blue?style=flat-square)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://github.com/BlueLua/mods/blob/main/LICENSE)
 
 `mods` is a comprehensive Lua utility library featuring lazy-loaded modules and
 wide runtime compatibility.
-
-See the [documentation] for full API references and guides.
 
 ## ✨ Features
 
