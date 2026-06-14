@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----kw = require "mods.keyword"
+---kw = mods.keyword
 ---
 ---kw.iskeyword("local"))         --> true
 ---kw.isidentifier("hello_world") --> true

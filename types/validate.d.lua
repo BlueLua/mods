@@ -35,7 +35,7 @@
 ---## Usage
 ---
 ---```lua
----local validate = require "mods.validate"
+---local validate = mods.validate
 ---
 ---ok, err = validate.number("nope") --> false, "number expected, got string"
 ---ok, err = validate(123, "number") --> true, nil

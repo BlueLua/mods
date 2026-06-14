@@ -8,7 +8,7 @@
 ---## Usage
 ---
 ---```lua
----glob = require "mods.glob"
+---glob = mods.glob
 ---
 ---print(glob.match("src/mods/fs.lua", "**/*.lua")) --> true
 ---print(glob.match("DATA.TXT", "*.txt", true))     --> true

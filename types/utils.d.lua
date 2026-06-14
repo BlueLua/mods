@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----utils = require "mods.utils"
+---utils = mods.utils
 ---
 ---print(utils.quote('hello "world"')) --> 'hello "world"'
 ---```

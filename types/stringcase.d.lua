@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----stringcase = require "mods.stringcase"
+---stringcase = mods.stringcase
 ---
 ---print(stringcase.snake("FooBar")) --> "foo_bar"
 ---```

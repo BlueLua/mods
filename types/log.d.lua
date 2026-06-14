@@ -32,7 +32,7 @@ local LEVELS = {
 ---## Usage
 ---
 ---```lua
----log = require "mods.log"
+---log = mods.log
 ---
 ---local logger = log.new()
 ---logger:warn("config missing") --> writes: [WARN]: config missing

@@ -7,7 +7,7 @@
 ---## Usage
 ---
 ---```lua
----ntpath = require "mods.ntpath"
+---ntpath = mods.ntpath
 ---
 ---print(ntpath.join([[C:\]], "Users", "me"))    --> "C:\Users\me"
 ---print(ntpath.normcase([[A/B\C]]))             --> [[a\b\c]]

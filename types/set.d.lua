@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----Set = require "mods.Set"
+---Set = mods.set
 ---
 ---s = Set({ "a" })
 ---print(s:contains("a")) --> true

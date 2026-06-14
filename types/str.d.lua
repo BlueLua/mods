@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----str = require "mods.str"
+---str = mods.str
 ---
 ---print(str.capitalize("hello world")) --> "Hello world"
 ---```

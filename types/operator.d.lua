@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----operator = require "mods.operator"
+---operator = mods.operator
 ---
 ---print(operator.add(1, 2)) --> 3
 ---```

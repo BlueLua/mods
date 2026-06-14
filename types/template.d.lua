@@ -5,7 +5,7 @@
 ---## Usage
 ---
 ---```lua
----template = require "mods.template"
+---template = mods.template
 ---
 ---view = {
 ---  user = { name = "Ada" },

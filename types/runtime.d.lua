@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----runtime = require "mods.runtime"
+---runtime = mods.runtime
 ---
 ---print(runtime.version)  --> 501 | 502 | 503 | 504 | 505
 ---print(runtime.is_lua55)    --> true | false

@@ -9,7 +9,7 @@ local fs
 ---## Usage
 ---
 ---```lua
----path = require "mods.path"
+---path = mods.path
 ---
 ---print(path.join("src", "mods", "path.lua")) --> "src/mods/path.lua"
 ---print(path.normpath("a//b/./c"))            --> "a/b/c"

@@ -13,7 +13,7 @@
 ---## Usage
 ---
 ---```lua
----local json = require "mods.json"
+---local json = mods.json
 ---
 ---local encoded = json.encode({ ok = true, value = 42 })
 ---local decoded = json.decode(encoded)

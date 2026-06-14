@@ -30,7 +30,7 @@ local List
 ---## Usage
 ---
 ---```lua
----is = require "mods.is"
+---is = mods.is
 ---
 ---ok = is.number(3.14)       --> true
 ---ok = is("hello", "string") --> true

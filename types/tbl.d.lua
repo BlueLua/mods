@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----tbl = require "mods.tbl"
+---tbl = mods.tbl
 ---
 ---print(tbl.count({ a = 1, b = 2 })) --> 2
 ---```

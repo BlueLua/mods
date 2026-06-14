@@ -12,7 +12,7 @@
 ---## Usage
 ---
 ---```lua
----fs = require "mods.fs"
+---fs = mods.fs
 ---
 ---fs.mkdir("tmp/cache/app", true)
 ---fs.write_text("tmp/cache/app/data.txt", "hello")

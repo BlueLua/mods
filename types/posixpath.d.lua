@@ -8,7 +8,7 @@
 ---## Usage
 ---
 ---```lua
----posixpath = require "mods.posixpath"
+---posixpath = mods.posixpath
 ---
 ---print(posixpath.join("/usr", "bin"))               --> "/usr/bin"
 ---print(posixpath.normpath("/a//./b/.."))            --> "/a"

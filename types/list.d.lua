@@ -6,7 +6,7 @@
 ---## Usage
 ---
 ---```lua
----List = require "mods.List"
+---List = mods.list
 ---
 ---ls = List({ "a" }):append("b")
 ---print(ls:contains("b")) --> true
