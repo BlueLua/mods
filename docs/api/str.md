@@ -1,9 +1,8 @@
 ---
+title: "str"
 description:
   "String operations for searching, splitting, trimming, and formatting text."
 ---
-
-# `str`
 
 String operations for searching, splitting, trimming, and formatting text.
 

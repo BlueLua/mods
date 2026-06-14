@@ -1,8 +1,7 @@
 ---
+title: "path"
 description: "Cross-platform path operations with host-platform semantics."
 ---
-
-# `path`
 
 Cross-platform path operations with host-platform semantics.
 

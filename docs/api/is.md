@@ -1,8 +1,7 @@
 ---
+title: "is"
 description: "Type predicates for Lua values and filesystem path types."
 ---
-
-# `is`
 
 Type predicates for Lua values and filesystem path types.
 

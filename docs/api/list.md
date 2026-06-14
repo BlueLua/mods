@@ -1,9 +1,8 @@
 ---
+title: "List"
 description:
   "A list class for creating, transforming, and querying sequences of values."
 ---
-
-# `List`
 
 A list class for creating, transforming, and querying sequences of values.
 

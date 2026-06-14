@@ -1,8 +1,7 @@
 ---
+title: "date"
 description: "Timezone-naive date helpers and immutable date values."
 ---
-
-# `date`
 
 Timezone-naive date helpers and immutable date values.
 

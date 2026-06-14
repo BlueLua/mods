@@ -1,8 +1,7 @@
 ---
+title: "fs"
 description: "Filesystem I/O, metadata, and filesystem path operations."
 ---
-
-# `fs`
 
 Filesystem I/O, metadata, and filesystem path operations.
 

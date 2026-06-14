@@ -1,8 +1,7 @@
 ---
+title: "validate"
 description: "Validation helpers for Lua values and filesystem path types."
 ---
-
-# `validate`
 
 Validation helpers for Lua values and filesystem path types.
 

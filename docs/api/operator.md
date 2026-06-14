@@ -1,8 +1,7 @@
 ---
+title: "operator"
 description: "Lua operators exposed as functions."
 ---
-
-# `operator`
 
 Lua operators exposed as functions.
 

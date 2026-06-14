@@ -1,8 +1,7 @@
 ---
+title: "stringcase"
 description: "String case conversion and word splitting."
 ---
-
-# `stringcase`
 
 String case conversion and word splitting.
 

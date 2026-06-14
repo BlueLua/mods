@@ -1,8 +1,7 @@
 ---
+title: "set"
 description: "A set class for creating, combining, and querying unique values."
 ---
-
-# `set`
 
 A set class for creating, combining, and querying unique values.
 

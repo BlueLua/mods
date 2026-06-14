@@ -1,8 +1,7 @@
 ---
+title: "glob"
 description: "Glob-style matching and filesystem expansion helpers."
 ---
-
-# `glob`
 
 Glob-style matching and filesystem expansion helpers.
 

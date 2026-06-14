@@ -1,10 +1,9 @@
 ---
+title: "log"
 description:
   "Logger factory that emits normalized records through an optional custom
   handler."
 ---
-
-# `log`
 
 Logger factory that emits normalized records through an optional custom handler.
 When `opts.handler` is omitted, records are written to `io.stderr`.

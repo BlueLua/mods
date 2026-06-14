@@ -1,8 +1,7 @@
 ---
+title: "stringify"
 description: "Render Lua values as readable source-like text."
 ---
-
-# `stringify`
 
 Render Lua values as readable source-like text.
 

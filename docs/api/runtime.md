@@ -1,8 +1,7 @@
 ---
+title: "runtime"
 description: "Lua runtime metadata and version compatibility flags."
 ---
-
-# `runtime`
 
 Lua runtime metadata and version compatibility flags.
 

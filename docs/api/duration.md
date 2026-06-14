@@ -1,9 +1,8 @@
 ---
+title: "duration"
 description:
   "Reusable immutable duration values for date arithmetic and formatting."
 ---
-
-# `duration`
 
 Reusable immutable duration values for date arithmetic and formatting.
 

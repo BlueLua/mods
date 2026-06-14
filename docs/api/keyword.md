@@ -1,8 +1,7 @@
 ---
+title: "keyword"
 description: "Helpers for Lua keywords and identifiers."
 ---
-
-# `keyword`
 
 Helpers for Lua keywords and identifiers.
 
