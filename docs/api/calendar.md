@@ -1,8 +1,7 @@
 ---
+title: "calendar"
 description: "Calendar and date helpers."
 ---
-
-# `calendar`
 
 Calendar and date helpers.
 

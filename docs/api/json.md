@@ -1,8 +1,7 @@
 ---
+title: "json"
 description: "JSON encoding and decoding helpers."
 ---
-
-# `json`
 
 JSON encoding and decoding helpers.
 

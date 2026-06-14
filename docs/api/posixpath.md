@@ -1,8 +1,7 @@
 ---
+title: "posixpath"
 description: "POSIX-style path operations."
 ---
-
-# `posixpath`
 
 POSIX-style path operations.
 

@@ -1,8 +1,7 @@
 ---
+title: "ntpath"
 description: "Windows/NT-style path operations."
 ---
-
-# `ntpath`
 
 Windows/NT-style path operations.
 

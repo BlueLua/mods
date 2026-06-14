@@ -1,8 +1,7 @@
 ---
+title: "utils"
 description: "Shared utility helpers used across the Mods library."
 ---
-
-# `utils`
 
 Shared utility helpers used across the Mods library.
 

@@ -1,8 +1,7 @@
 ---
-description: "String template rendering with <code v-pre>{{."
+title: "template"
+description: "String template rendering with {{."
 ---
-
-# `template`
 
 String template rendering with <code v-pre>{{...}}</code> placeholders.
 

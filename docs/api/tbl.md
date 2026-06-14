@@ -1,9 +1,8 @@
 ---
+title: "tbl"
 description:
   "Table operations for querying, copying, merging, and transforming tables."
 ---
-
-# `tbl`
 
 Table operations for querying, copying, merging, and transforming tables.
 
