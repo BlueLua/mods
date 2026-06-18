@@ -104,7 +104,7 @@ return setmetatable(M, {
     end
   end,
 
-  ---@param validator modsValidatorName
+  ---@param validator mods.ValidatorName
   __call = function(_, v, validator, tmpl)
     validator = validator or "truthy"
     validate_template(3, validator, tmpl)
