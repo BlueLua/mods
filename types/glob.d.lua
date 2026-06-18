@@ -1,6 +1,6 @@
 ---@meta mods.glob
 
----@alias modsGlobOptions {hidden?:boolean, recursive?:boolean, follow?:boolean, ignorecase?:boolean}
+---@alias mods.GlobOptions {hidden?:boolean, recursive?:boolean, follow?:boolean, ignorecase?:boolean}
 
 ---
 ---Glob-style matching and filesystem expansion helpers.
@@ -166,7 +166,7 @@ function M.filter(names, pattern, ignorecase) end
 ---@section Glob Operations
 ---@param path string Input path.
 ---@param pattern? string Optional pattern to match.
----@param opts? modsGlobOptions Optional glob options.
+---@param opts? mods.GlobOptions Optional glob options.
 ---@return mods.List<string> paths Matching paths under `path`.
 ---@nodiscard
 function M.glob(path, pattern, opts) end
@@ -190,7 +190,7 @@ function M.glob(path, pattern, opts) end
 ---@section Glob Operations
 ---@param path string Input path.
 ---@param pattern? string Optional pattern to match.
----@param opts? modsGlobOptions Optional glob options.
+---@param opts? mods.GlobOptions Optional glob options.
 ---@return (fun(state:table, prev?:string): (path:string?)) iterator Iterator function.
 ---@return table state Iterator state table.
 ---@return nil initial Initial iterator value.
