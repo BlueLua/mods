@@ -1,7 +1,14 @@
 ---@meta mods.log
 
----@alias modsLogLevel string|"debug"|"info"|"warn"|"error"|"off"
----@alias modsLogHandler fun(record: mods.log.record)
+---@alias mods.LogLevel
+---| string  Any custom log level name.
+---| "debug" Debug messages.
+---| "info"  Informational messages.
+---| "warn"  Warning messages.
+---| "error" Error messages.
+---| "off"   Logging disabled.
+
+---@alias mods.LogHandler fun(record: mods.log.record)
 
 ---@enum mods.log.levelno
 local LEVELS = {
@@ -13,7 +20,7 @@ local LEVELS = {
 }
 
 ---@class mods.log.record
----@field levelname modsLogLevel Log level name.
+---@field levelname mods.LogLevel Log level name.
 ---@field levelno integer Numeric severity used for filtering.
 ---@field name string? Optional logger name.
 ---@field message string Joined message string.
@@ -21,8 +28,8 @@ local LEVELS = {
 ---@field line string Formatted plain-text log line.
 
 ---@class mods.log.new.opts
----@field handler? modsLogHandler Optional handler function that receives each emitted record.
----@field level? modsLogLevel Minimum enabled level; use `"off"` to disable logging. Defaults to `"warn"`.
+---@field handler? mods.LogHandler Optional handler function that receives each emitted record.
+---@field level? mods.LogLevel Minimum enabled level; use `"off"` to disable logging. Defaults to `"warn"`.
 ---@field name? string Optional logger name included in emitted records.
 
 ---
@@ -59,7 +66,7 @@ local Logger = {}
 ---Emit a record for `level` when it passes the logger filter.
 ---
 ---@section Logger Methods
----@param levelname modsLogLevel Log level to emit.
+---@param levelname mods.LogLevel Log level to emit.
 ---@param ... any Additional values joined with spaces.
 function Logger:log(levelname, ...) end
 
