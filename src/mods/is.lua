@@ -82,7 +82,7 @@ return setmetatable(M, {
     end
   end,
 
-  ---@param validator modsValidatorName
+  ---@param validator mods.ValidatorName
   __call = function(t, v, validator)
     local fn = rawget(t, validator)
     if fn then
