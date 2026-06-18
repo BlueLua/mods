@@ -30,7 +30,7 @@ for i, v in ipairs(months) do M[v:upper()] = i end
 for i, v in ipairs(days)   do M[v:upper()] = i end
 -- stylua: ignore end
 
----@type modsCalendarWeekday
+---@type mods.CalendarWeekday
 local default_firstweekday = M.MONDAY
 
 -- Return a positive modulo result for negative offsets too.
@@ -53,7 +53,7 @@ local function validate_month(month)
   return month
 end
 
----@return modsCalendarWeekday
+---@return mods.CalendarWeekday
 local function validate_weekday(firstweekday)
   if firstweekday < 1 or firstweekday > 7 then
     error(fmt("bad weekday number %s; must be 1 (Monday) to 7 (Sunday)", firstweekday), 3)
