@@ -3,26 +3,24 @@
 ---@module 'mods.list'
 local List
 
----@alias modsValidatorName
----|type
----|string
----
----|'callable'
----|'false'
----|'falsy'
----|'integer'
----|'true'
----|'truthy'
----
----|'block'
----|'char'
----|'device'
----|'dir'
----|'fifo'
----|'file'
----|'link'
----|'path'
----|'socket'
+---@alias mods.ValidatorName
+---| type       Any standard Lua type name (e.g., `"table"`, `"number"`).
+---| string     Any validator name.
+---| 'callable' A function or table with a `__call` metamethod.
+---| 'false'    The boolean value false.
+---| 'falsy'    A falsy value (nil or false).
+---| 'integer'  An integer number.
+---| 'true'     The boolean value true.
+---| 'truthy'   A truthy value (not nil and not false).
+---| 'block'    A block device path.
+---| 'char'     A character device path.
+---| 'device'   A character or block device path.
+---| 'dir'      A directory path.
+---| 'fifo'     A named pipe (FIFO) path.
+---| 'file'     A regular file path.
+---| 'link'     A symbolic link path.
+---| 'path'     Any existing path or symbolic link.
+---| 'socket'   A socket path.
 
 ---
 ---Type predicates for Lua values and filesystem path types.
@@ -68,7 +66,7 @@ local List
 ---```
 ---
 ---@class mods.is
----@overload fun(v:any, tp:modsValidatorName):boolean
+---@overload fun(v:any, tp:mods.ValidatorName):boolean
 local M = {}
 
 ---@private
