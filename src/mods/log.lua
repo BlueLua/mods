@@ -60,12 +60,9 @@ local function join_args(args)
   return concat(parts, " ")
 end
 
----@param levelname modsLogLevel
----@param name string
----@param msg string
----@return string
-local function format_line(levelname, name, msg)
-  local prefix = "[" .. levelname:upper() .. "]"
+---@type fun(level_name:mods.LogLevel,name:string,msg:string):string
+local function format_line(level_name, name, msg)
+  local prefix = "[" .. level_name:upper() .. "]"
   if name ~= nil then
     prefix = prefix .. " (" .. name .. ")"
   end
