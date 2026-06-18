@@ -28,8 +28,8 @@ local version = "mods 0.6.0" -- x-release-please-version
 ---@field tbl mods.tbl
 ---@field utils mods.utils
 ---@field validate mods.validate
----@field date mods.Date
----@field duration mods.Duration
+---@field date mods.date
+---@field duration mods.duration
 local M = {
   _VERSION = version,
   stringify = stringify,
