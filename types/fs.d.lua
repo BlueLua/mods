@@ -1,6 +1,14 @@
 ---@meta mods.fs
 
----@alias modsFsEntryType "file"|"directory"|"link"|"fifo"|"socket"|"char"|"block"|"unknown"
+---@alias mods.FsEntryType
+---| "file"      A regular file.
+---| "directory" A directory.
+---| "link"      A symbolic link.
+---| "fifo"      A named pipe (FIFO).
+---| "socket"    A socket.
+---| "char"      A character device.
+---| "block"     A block device.
+---| "unknown"   An unknown or unsupported entry type.
 
 ---
 ---Filesystem I/O, metadata, and filesystem path operations.
@@ -70,8 +78,8 @@ function M.read_text(path) end
 ---
 ---@section Reading
 ---@param path string Input path.
----@param opts? {hidden?:boolean, recursive?:boolean, follow?:boolean, type?:modsFsEntryType} Optional traversal options.
----@return (fun(state:table, prev?:string):basename:string?, type:modsFsEntryType?)? iterator Iterator, or `nil` on failure.
+---@param opts? {hidden?:boolean, recursive?:boolean, follow?:boolean, type?:mods.FsEntryType} Optional traversal options.
+---@return (fun(state:table, prev?:string):basename:string?, type:mods.FsEntryType?)? iterator Iterator, or `nil` on failure.
 ---@return table|string state Iterator state on success, or error message on failure.
 function M.dir(path, opts) end
 
@@ -93,7 +101,7 @@ function M.dir(path, opts) end
 ---
 ---@section Reading
 ---@param path string Input path.
----@param opts? {hidden?:boolean, recursive?:boolean, follow?:boolean, type?:modsFsEntryType, names?:boolean} Optional traversal options.
+---@param opts? {hidden?:boolean, recursive?:boolean, follow?:boolean, type?:mods.FsEntryType, names?:boolean} Optional traversal options.
 ---@return mods.List<string>? paths Direct child paths, or basenames when `opts.names` is `true`.
 ---@return string? err Error message when traversal setup fails.
 ---@nodiscard
