@@ -36,10 +36,6 @@ on:
         description: "Tests"
         type: boolean
         default: false
-      docs:
-        description: "Docs"
-        type: boolean
-        default: false
       release-please:
         description: "Release Please"
         type: boolean
@@ -67,12 +63,10 @@ jobs:
       macos:   ${{ inputs.macos   || github.event_name != 'workflow_dispatch' }}
       windows: ${{ inputs.windows || github.event_name != 'workflow_dispatch' }}
 
+      tests:        ${{ inputs.tests        || false }}
       stylua:       ${{ inputs.stylua       || false }}
       luacheck:     ${{ inputs.luacheck     || false }}
       markdownlint: ${{ inputs.markdownlint || false }}
-
-      tests: ${{ inputs.tests || false }}
-      docs:  ${{ inputs.docs  || false }}
 
       release-please:  ${{ inputs.release-please  || false }}
       publish-dev:     ${{ inputs.publish-dev     || false }}
