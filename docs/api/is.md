@@ -1,15 +1,14 @@
 ---
+title: "is"
 description: "Type predicates for Lua values and filesystem path types."
 ---
-
-# `is`
 
 Type predicates for Lua values and filesystem path types.
 
 ## Usage
 
 ```lua
-is = require "mods.is"
+is = mods.is
 
 ok = is.number(3.14)       --> true
 ok = is("hello", "string") --> true
@@ -30,9 +29,8 @@ ok = is.table({})          --> true
 
 > [!IMPORTANT]
 >
-> Path checks require **LuaFileSystem**
-> ([`lfs`](https://github.com/lunarmodules/luafilesystem)) and raise an error if
-> it is not installed.
+> Path checks require **LuaFileSystem** ([`lfs`]) and raise an error if it is
+> not installed.
 
 <!-- markdownlint-enable MD028 -->
 
@@ -51,47 +49,45 @@ is("hello", "STRING") --> true
 
 **Path Checks**:
 
-| Function                  | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| [`block(v)`](#fn-block)   | Returns `true` when `v` is a block device path.              |
-| [`char(v)`](#fn-char)     | Returns `true` when `v` is a character device path.          |
-| [`device(v)`](#fn-device) | Returns `true` when `v` is a block or character device path. |
-| [`dir(v)`](#fn-dir)       | Returns `true` when `v` is a directory path.                 |
-| [`fifo(v)`](#fn-fifo)     | Returns `true` when `v` is a FIFO path.                      |
-| [`file(v)`](#fn-file)     | Returns `true` when `v` is a file path.                      |
-| [`link(v)`](#fn-link)     | Returns `true` when `v` is a symlink path.                   |
-| [`path(v)`](#fn-path)     | Returns `true` when `v` is a valid filesystem path.          |
-| [`socket(v)`](#fn-socket) | Returns `true` when `v` is a socket path.                    |
+| Function      | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| [`block(v)`]  | Returns `true` when `v` is a block device path.              |
+| [`char(v)`]   | Returns `true` when `v` is a character device path.          |
+| [`device(v)`] | Returns `true` when `v` is a block or character device path. |
+| [`dir(v)`]    | Returns `true` when `v` is a directory path.                 |
+| [`fifo(v)`]   | Returns `true` when `v` is a FIFO path.                      |
+| [`file(v)`]   | Returns `true` when `v` is a file path.                      |
+| [`link(v)`]   | Returns `true` when `v` is a symlink path.                   |
+| [`path(v)`]   | Returns `true` when `v` is a valid filesystem path.          |
+| [`socket(v)`] | Returns `true` when `v` is a socket path.                    |
 
 **Type Checks**:
 
-| Function                      | Description                            |
-| ----------------------------- | -------------------------------------- |
-| [`boolean(v)`](#fn-boolean)   | Returns `true` when `v` is a boolean.  |
-| [`function(v)`](#fn-function) | Returns `true` when `v` is a function. |
-| [`nil(v)`](#fn-nil)           | Returns `true` when `v` is `nil`.      |
-| [`number(v)`](#fn-number)     | Returns `true` when `v` is a number.   |
-| [`string(v)`](#fn-string)     | Returns `true` when `v` is a string.   |
-| [`table(v)`](#fn-table)       | Returns `true` when `v` is a table.    |
-| [`thread(v)`](#fn-thread)     | Returns `true` when `v` is a thread.   |
-| [`userdata(v)`](#fn-userdata) | Returns `true` when `v` is userdata.   |
+| Function        | Description                            |
+| --------------- | -------------------------------------- |
+| [`boolean(v)`]  | Returns `true` when `v` is a boolean.  |
+| [`function(v)`] | Returns `true` when `v` is a function. |
+| [`nil(v)`]      | Returns `true` when `v` is `nil`.      |
+| [`number(v)`]   | Returns `true` when `v` is a number.   |
+| [`string(v)`]   | Returns `true` when `v` is a string.   |
+| [`table(v)`]    | Returns `true` when `v` is a table.    |
+| [`thread(v)`]   | Returns `true` when `v` is a thread.   |
+| [`userdata(v)`] | Returns `true` when `v` is userdata.   |
 
 **Value Checks**:
 
-| Function                      | Description                                 |
-| ----------------------------- | ------------------------------------------- |
-| [`callable(v)`](#fn-callable) | Returns `true` when `v` is callable.        |
-| [`false(v)`](#fn-false)       | Returns `true` when `v` is exactly `false`. |
-| [`falsy(v)`](#fn-falsy)       | Returns `true` when `v` is falsy.           |
-| [`integer(v)`](#fn-integer)   | Returns `true` when `v` is an integer.      |
-| [`true(v)`](#fn-true)         | Returns `true` when `v` is exactly `true`.  |
-| [`truthy(v)`](#fn-truthy)     | Returns `true` when `v` is truthy.          |
+| Function        | Description                                 |
+| --------------- | ------------------------------------------- |
+| [`callable(v)`] | Returns `true` when `v` is callable.        |
+| [`false(v)`]    | Returns `true` when `v` is exactly `false`. |
+| [`falsy(v)`]    | Returns `true` when `v` is falsy.           |
+| [`integer(v)`]  | Returns `true` when `v` is an integer.      |
+| [`true(v)`]     | Returns `true` when `v` is exactly `true`.  |
+| [`truthy(v)`]   | Returns `true` when `v` is truthy.          |
 
 ### Path Checks
 
-<a id="fn-block"></a>
-
-#### `block(v)`
+#### `block(v)` {#block}
 
 Returns `true` when `v` is a block device path.
 
@@ -99,7 +95,7 @@ Returns `true` when `v` is a block device path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isBlock` (`boolean`): Whether the check succeeds.
 
@@ -109,9 +105,9 @@ Returns `true` when `v` is a block device path.
 is.block("/dev/sda")
 ```
 
-<a id="fn-char"></a>
+---
 
-#### `char(v)`
+#### `char(v)` {#char}
 
 Returns `true` when `v` is a character device path.
 
@@ -119,7 +115,7 @@ Returns `true` when `v` is a character device path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isChar` (`boolean`): Whether the check succeeds.
 
@@ -129,9 +125,9 @@ Returns `true` when `v` is a character device path.
 is.char("/dev/null")
 ```
 
-<a id="fn-device"></a>
+---
 
-#### `device(v)`
+#### `device(v)` {#device}
 
 Returns `true` when `v` is a block or character device path.
 
@@ -139,7 +135,7 @@ Returns `true` when `v` is a block or character device path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isDevice` (`boolean`): Whether the check succeeds.
 
@@ -149,9 +145,9 @@ Returns `true` when `v` is a block or character device path.
 is.device("/dev/null")
 ```
 
-<a id="fn-dir"></a>
+---
 
-#### `dir(v)`
+#### `dir(v)` {#dir}
 
 Returns `true` when `v` is a directory path.
 
@@ -159,7 +155,7 @@ Returns `true` when `v` is a directory path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isDir` (`boolean`): Whether the check succeeds.
 
@@ -169,9 +165,9 @@ Returns `true` when `v` is a directory path.
 is.dir("/tmp")
 ```
 
-<a id="fn-fifo"></a>
+---
 
-#### `fifo(v)`
+#### `fifo(v)` {#fifo}
 
 Returns `true` when `v` is a FIFO path.
 
@@ -179,7 +175,7 @@ Returns `true` when `v` is a FIFO path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isFifo` (`boolean`): Whether the check succeeds.
 
@@ -189,9 +185,9 @@ Returns `true` when `v` is a FIFO path.
 is.fifo("/path/to/fifo")
 ```
 
-<a id="fn-file"></a>
+---
 
-#### `file(v)`
+#### `file(v)` {#file}
 
 Returns `true` when `v` is a file path.
 
@@ -199,7 +195,7 @@ Returns `true` when `v` is a file path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isFile` (`boolean`): Whether the check succeeds.
 
@@ -209,9 +205,9 @@ Returns `true` when `v` is a file path.
 is.file("README.md")
 ```
 
-<a id="fn-link"></a>
+---
 
-#### `link(v)`
+#### `link(v)` {#link}
 
 Returns `true` when `v` is a symlink path.
 
@@ -219,7 +215,7 @@ Returns `true` when `v` is a symlink path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isLink` (`boolean`): Whether the check succeeds.
 
@@ -229,9 +225,9 @@ Returns `true` when `v` is a symlink path.
 is.link("/path/to/link")
 ```
 
-<a id="fn-path"></a>
+---
 
-#### `path(v)`
+#### `path(v)` {#path}
 
 Returns `true` when `v` is a valid filesystem path.
 
@@ -239,7 +235,7 @@ Returns `true` when `v` is a valid filesystem path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isPath` (`boolean`): Whether the check succeeds.
 
@@ -253,9 +249,9 @@ is.path("README.md")
 >
 > Returns `true` for broken symlinks.
 
-<a id="fn-socket"></a>
+---
 
-#### `socket(v)`
+#### `socket(v)` {#socket}
 
 Returns `true` when `v` is a socket path.
 
@@ -263,7 +259,7 @@ Returns `true` when `v` is a socket path.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isSocket` (`boolean`): Whether the check succeeds.
 
@@ -273,11 +269,11 @@ Returns `true` when `v` is a socket path.
 is.socket("/path/to/socket")
 ```
 
+---
+
 ### Type Checks
 
-<a id="fn-boolean"></a>
-
-#### `boolean(v)`
+#### `boolean(v)` {#boolean}
 
 Returns `true` when `v` is a boolean.
 
@@ -285,7 +281,7 @@ Returns `true` when `v` is a boolean.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isBoolean` (`boolean`): Whether the check succeeds.
 
@@ -295,9 +291,9 @@ Returns `true` when `v` is a boolean.
 is.boolean(true)
 ```
 
-<a id="fn-function"></a>
+---
 
-#### `function(v)`
+#### `function(v)` {#function}
 
 Returns `true` when `v` is a function.
 
@@ -305,7 +301,7 @@ Returns `true` when `v` is a function.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isFunction` (`boolean`): Whether the check succeeds.
 
@@ -315,9 +311,9 @@ Returns `true` when `v` is a function.
 is.Function(function() end)
 ```
 
-<a id="fn-nil"></a>
+---
 
-#### `nil(v)`
+#### `nil(v)` {#nil}
 
 Returns `true` when `v` is `nil`.
 
@@ -325,7 +321,7 @@ Returns `true` when `v` is `nil`.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isNil` (`boolean`): Whether the check succeeds.
 
@@ -335,9 +331,9 @@ Returns `true` when `v` is `nil`.
 is.Nil(nil)
 ```
 
-<a id="fn-number"></a>
+---
 
-#### `number(v)`
+#### `number(v)` {#number}
 
 Returns `true` when `v` is a number.
 
@@ -345,7 +341,7 @@ Returns `true` when `v` is a number.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isNumber` (`boolean`): Whether the check succeeds.
 
@@ -355,9 +351,9 @@ Returns `true` when `v` is a number.
 is.number(3.14)
 ```
 
-<a id="fn-string"></a>
+---
 
-#### `string(v)`
+#### `string(v)` {#string}
 
 Returns `true` when `v` is a string.
 
@@ -365,7 +361,7 @@ Returns `true` when `v` is a string.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isString` (`boolean`): Whether the check succeeds.
 
@@ -375,9 +371,9 @@ Returns `true` when `v` is a string.
 is.string("hello")
 ```
 
-<a id="fn-table"></a>
+---
 
-#### `table(v)`
+#### `table(v)` {#table}
 
 Returns `true` when `v` is a table.
 
@@ -385,7 +381,7 @@ Returns `true` when `v` is a table.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isTable` (`boolean`): Whether the check succeeds.
 
@@ -395,9 +391,9 @@ Returns `true` when `v` is a table.
 is.table({})
 ```
 
-<a id="fn-thread"></a>
+---
 
-#### `thread(v)`
+#### `thread(v)` {#thread}
 
 Returns `true` when `v` is a thread.
 
@@ -405,7 +401,7 @@ Returns `true` when `v` is a thread.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isThread` (`boolean`): Whether the check succeeds.
 
@@ -415,9 +411,9 @@ Returns `true` when `v` is a thread.
 is.thread(coroutine.create(function() end))
 ```
 
-<a id="fn-userdata"></a>
+---
 
-#### `userdata(v)`
+#### `userdata(v)` {#userdata}
 
 Returns `true` when `v` is userdata.
 
@@ -425,7 +421,7 @@ Returns `true` when `v` is userdata.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isUserdata` (`boolean`): Whether the check succeeds.
 
@@ -435,11 +431,11 @@ Returns `true` when `v` is userdata.
 is.userdata(io.stdout)
 ```
 
+---
+
 ### Value Checks
 
-<a id="fn-callable"></a>
-
-#### `callable(v)`
+#### `callable(v)` {#callable}
 
 Returns `true` when `v` is callable.
 
@@ -447,7 +443,7 @@ Returns `true` when `v` is callable.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isCallable` (`boolean`): Whether the check succeeds.
 
@@ -457,9 +453,9 @@ Returns `true` when `v` is callable.
 is.callable(function() end)
 ```
 
-<a id="fn-false"></a>
+---
 
-#### `false(v)`
+#### `false(v)` {#false}
 
 Returns `true` when `v` is exactly `false`.
 
@@ -467,7 +463,7 @@ Returns `true` when `v` is exactly `false`.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isFalse` (`boolean`): Whether the check succeeds.
 
@@ -477,9 +473,9 @@ Returns `true` when `v` is exactly `false`.
 is.False(false)
 ```
 
-<a id="fn-falsy"></a>
+---
 
-#### `falsy(v)`
+#### `falsy(v)` {#falsy}
 
 Returns `true` when `v` is falsy.
 
@@ -487,7 +483,7 @@ Returns `true` when `v` is falsy.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isFalsy` (`boolean`): Whether the check succeeds.
 
@@ -497,9 +493,9 @@ Returns `true` when `v` is falsy.
 is.falsy(false)
 ```
 
-<a id="fn-integer"></a>
+---
 
-#### `integer(v)`
+#### `integer(v)` {#integer}
 
 Returns `true` when `v` is an integer.
 
@@ -507,7 +503,7 @@ Returns `true` when `v` is an integer.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isInteger` (`boolean`): Whether the check succeeds.
 
@@ -517,9 +513,9 @@ Returns `true` when `v` is an integer.
 is.integer(42)
 ```
 
-<a id="fn-true"></a>
+---
 
-#### `true(v)`
+#### `true(v)` {#true}
 
 Returns `true` when `v` is exactly `true`.
 
@@ -527,7 +523,7 @@ Returns `true` when `v` is exactly `true`.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isTrue` (`boolean`): Whether the check succeeds.
 
@@ -537,9 +533,9 @@ Returns `true` when `v` is exactly `true`.
 is.True(true)
 ```
 
-<a id="fn-truthy"></a>
+---
 
-#### `truthy(v)`
+#### `truthy(v)` {#truthy}
 
 Returns `true` when `v` is truthy.
 
@@ -547,7 +543,7 @@ Returns `true` when `v` is truthy.
 
 - `v` (`any`): Value to validate.
 
-**Return**:
+**Returns**:
 
 - `isTruthy` (`boolean`): Whether the check succeeds.
 
@@ -556,3 +552,30 @@ Returns `true` when `v` is truthy.
 ```lua
 is.truthy("non-empty")
 ```
+
+<!-- prettier-ignore-start -->
+[`block(v)`]: #block
+[`boolean(v)`]: #boolean
+[`callable(v)`]: #callable
+[`char(v)`]: #char
+[`device(v)`]: #device
+[`dir(v)`]: #dir
+[`false(v)`]: #false
+[`falsy(v)`]: #falsy
+[`fifo(v)`]: #fifo
+[`file(v)`]: #file
+[`function(v)`]: #function
+[`integer(v)`]: #integer
+[`lfs`]: https://github.com/lunarmodules/luafilesystem
+[`link(v)`]: #link
+[`nil(v)`]: #nil
+[`number(v)`]: #number
+[`path(v)`]: #path
+[`socket(v)`]: #socket
+[`string(v)`]: #string
+[`table(v)`]: #table
+[`thread(v)`]: #thread
+[`true(v)`]: #true
+[`truthy(v)`]: #truthy
+[`userdata(v)`]: #userdata
+<!-- prettier-ignore-end -->

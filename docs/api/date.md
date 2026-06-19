@@ -1,8 +1,7 @@
 ---
+title: "date"
 description: "Timezone-naive date helpers and immutable date values."
 ---
-
-# `date`
 
 Timezone-naive date helpers and immutable date values.
 
@@ -30,9 +29,8 @@ print(f)                               --> 2026-01-01 00:00:00
 
 > [!NOTE]
 >
-> - String inputs accept [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
->   forms, variants using a space instead of `T`, and custom formats via
->   `Date(input, pattern)`:
+> - String inputs accept [ISO 8601] forms, variants using a space instead of
+>   `T`, and custom formats via `Date(input, pattern)`:
 >
 >   ```lua
 >   Date("2026-03-30T14:45:06")
@@ -41,7 +39,7 @@ print(f)                               --> 2026-01-01 00:00:00
 >   ```
 >
 > - When `input` is a number, it is treated as Unix milliseconds. Use
->   [`Date.unix(ts)`](#fn-unix) if you have a timestamp in seconds.
+>   [`Date.unix(ts)`] if you have a timestamp in seconds.
 >
 >   ```lua
 >   local a = Date(1745155206123)       -- Milliseconds
@@ -49,120 +47,218 @@ print(f)                               --> 2026-01-01 00:00:00
 >   print(a == b)                      --> true
 >   ```
 >
-> - When calling `Date` without arguments, it uses
->   [mstime](https://github.com/luamod/mstime) for millisecond precision if
->   installed; otherwise it falls back to
->   [`os.time`](https://www.lua.org/manual/5.1/manual.html#pdf-os.time).
+> - When calling `Date` without arguments, it uses [mstime] for millisecond
+>   precision if installed; otherwise it falls back to [`os.time`].
+
+## Fields
+
+| Field     | Description                                                  |
+| --------- | ------------------------------------------------------------ |
+| [`day`]   | Day-of-month component.                                      |
+| [`hour`]  | Hour component.                                              |
+| [`min`]   | Minute component.                                            |
+| [`month`] | Month component.                                             |
+| [`ms`]    | Millisecond component.                                       |
+| [`sec`]   | Second component.                                            |
+| [`wday`]  | ISO weekday component where Monday is `1` and Sunday is `7`. |
+| [`yday`]  | Day-of-year component starting at `1`.                       |
+| [`year`]  | Year component.                                              |
+
+### `day` (`modsCalendarMonthday`) {#day}
+
+Day-of-month component.
+
+```lua
+print(Date("2026-03-30").day) --> 30
+```
+
+---
+
+### `hour` (`integer`) {#hour}
+
+Hour component.
+
+```lua
+print(Date("2026-03-30T14:45:06").hour) --> 14
+```
+
+---
+
+### `min` (`integer`) {#min}
+
+Minute component.
+
+```lua
+print(Date("2026-03-30T14:45:06").min) --> 45
+```
+
+---
+
+### `month` (`modsCalendarMonth`) {#month}
+
+Month component.
+
+```lua
+print(Date("2026-03-30").month) --> 3
+```
+
+---
+
+### `ms` (`integer`) {#ms}
+
+Millisecond component.
+
+```lua
+print(Date("2026-03-30T14:45:06.123").ms) --> 123
+```
+
+---
+
+### `sec` (`integer`) {#sec}
+
+Second component.
+
+```lua
+print(Date("2026-03-30T14:45:06").sec) --> 6
+```
+
+---
+
+### `wday` (`modsCalendarWeekday`) {#wday}
+
+ISO weekday component where Monday is `1` and Sunday is `7`.
+
+```lua
+print(Date("2026-03-30").wday) --> 1
+```
+
+---
+
+### `yday` (`integer`) {#yday}
+
+Day-of-year component starting at `1`.
+
+```lua
+print(Date("2026-03-30").yday) --> 89
+```
+
+---
+
+### `year` (`integer`) {#year}
+
+Year component.
+
+```lua
+print(Date("2026-03-30").year) --> 2026
+```
 
 ## Functions
 
-| Function                          | Description                                                              |
-| --------------------------------- | ------------------------------------------------------------------------ |
-| [`new(input, pattern?)`](#fn-new) | Create a Date from a string using an optional pattern.                   |
-| [`new(input?)`](#fn-new)          | Create a Date from a Unix timestamp (milliseconds) or a DateParts table. |
+| Function                 | Description                                                              |
+| ------------------------ | ------------------------------------------------------------------------ |
+| [`new(input, pattern?)`] | Create a Date from a string using an optional pattern.                   |
+| [`new(input?)`]          | Create a Date from a Unix timestamp (milliseconds) or a DateParts table. |
 
 **Arithmetic**:
 
-| Function                                  | Description                                                         |
-| ----------------------------------------- | ------------------------------------------------------------------- |
-| [`add(amount, unit?)`](#fn-add)           | Return a copy shifted by the given amount and unit.                 |
-| [`diff(date, unit?)`](#fn-diff)           | Return the signed difference to another Date in the requested unit. |
-| [`subtract(amount, unit?)`](#fn-subtract) | Return a copy shifted backward by the given amount and unit.        |
+| Function                    | Description                                                         |
+| --------------------------- | ------------------------------------------------------------------- |
+| [`add(amount, unit?)`]      | Return a copy shifted by the given amount and unit.                 |
+| [`diff(date, unit?)`]       | Return the signed difference to another Date in the requested unit. |
+| [`subtract(amount, unit?)`] | Return a copy shifted backward by the given amount and unit.        |
 
 **Boundaries**:
 
-| Function                       | Description                                   |
-| ------------------------------ | --------------------------------------------- |
-| [`endof(unit)`](#fn-endof)     | Return the end boundary for the given unit.   |
-| [`startof(unit)`](#fn-startof) | Return the start boundary for the given unit. |
+| Function          | Description                                   |
+| ----------------- | --------------------------------------------- |
+| [`endof(unit)`]   | Return the end boundary for the given unit.   |
+| [`startof(unit)`] | Return the start boundary for the given unit. |
 
 **Calendar**:
 
-| Function                                              | Description                                                                 |
-| ----------------------------------------------------- | --------------------------------------------------------------------------- |
-| [`day_of_year(day_of_year_number?)`](#fn-day-of-year) | Return or set the day of the year.                                          |
-| [`is_leap_year()`](#fn-is-leap-year)                  | Return `true` when the value's year is a leap year.                         |
-| [`iso_week(iso_week_number?)`](#fn-iso-week)          | Return or set the ISO week-of-year number.                                  |
-| [`iso_week_year()`](#fn-iso-week-year)                | Return the ISO week-year for the current date.                              |
-| [`iso_weekday(iso_weekday_number?)`](#fn-iso-weekday) | Return or set the ISO weekday number where Monday is `1` and Sunday is `7`. |
-| [`iso_weeks_in_year()`](#fn-iso-weeks-in-year)        | Return the number of ISO weeks in the current date's calendar year.         |
-| [`month_days()`](#fn-month-days)                      | Return the number of days in the value's month.                             |
-| [`quarter(quarter_number?)`](#fn-quarter)             | Return or set the quarter of the year.                                      |
-| [`week(week_number?)`](#fn-week)                      | Return or set the non-ISO week-of-year number.                              |
-| [`week_year()`](#fn-week-year)                        | Return the non-ISO week-year for the current date.                          |
-| [`weekday(weekday_number?)`](#fn-weekday)             | Return or set the locale-relative weekday like Day.js `weekday()`.          |
-| [`weeks_in_year()`](#fn-weeks-in-year)                | Return the number of weeks in the current locale week-year.                 |
+| Function                             | Description                                                                 |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| [`day_of_year(day_of_year_number?)`] | Return or set the day of the year.                                          |
+| [`is_leap_year()`]                   | Return `true` when the value's year is a leap year.                         |
+| [`iso_week(iso_week_number?)`]       | Return or set the ISO week-of-year number.                                  |
+| [`iso_week_year()`]                  | Return the ISO week-year for the current date.                              |
+| [`iso_weekday(iso_weekday_number?)`] | Return or set the ISO weekday number where Monday is `1` and Sunday is `7`. |
+| [`iso_weeks_in_year()`]              | Return the number of ISO weeks in the current date's calendar year.         |
+| [`month_days()`]                     | Return the number of days in the value's month.                             |
+| [`quarter(quarter_number?)`]         | Return or set the quarter of the year.                                      |
+| [`week(week_number?)`]               | Return or set the non-ISO week-of-year number.                              |
+| [`week_year()`]                      | Return the non-ISO week-year for the current date.                          |
+| [`weekday(weekday_number?)`]         | Return or set the locale-relative weekday like Day.js `weekday()`.          |
+| [`weeks_in_year()`]                  | Return the number of weeks in the current locale week-year.                 |
 
 **Compare**:
 
-| Function                    | Description                                                 |
-| --------------------------- | ----------------------------------------------------------- |
-| [`max(...)`](#fn-max)       | Return the latest value from the given dates.               |
-| [`min(...)`](#fn-min)       | Return the earliest value from the given dates.             |
-| [`minmax(...)`](#fn-minmax) | Return the earliest and latest values from the given dates. |
+| Function        | Description                                                 |
+| --------------- | ----------------------------------------------------------- |
+| [`max(...)`]    | Return the latest value from the given dates.               |
+| [`min(...)`]    | Return the earliest value from the given dates.             |
+| [`minmax(...)`] | Return the earliest and latest values from the given dates. |
 
 **Comparison**:
 
-| Function                                                         | Description                                                       |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [`is_after(date)`](#fn-is-after)                                 | Return `true` when the value is later than `other`.               |
-| [`is_before(date)`](#fn-is-before)                               | Return `true` when the value is earlier than `other`.             |
-| [`is_between(start_date, end_date, inclusive?)`](#fn-is-between) | Return `true` when the value lies between two bounds.             |
-| [`is_same(date)`](#fn-is-same)                                   | Return `true` when the value is equal to `other`.                 |
-| [`is_same_or_after(date)`](#fn-is-same-or-after)                 | Return `true` when the value is later than or equal to `other`.   |
-| [`is_same_or_before(date)`](#fn-is-same-or-before)               | Return `true` when the value is earlier than or equal to `other`. |
-| [`is_today()`](#fn-is-today)                                     | Return `true` when the value falls on the current local day.      |
-| [`is_tomorrow()`](#fn-is-tomorrow)                               | Return `true` when the value falls on the next local day.         |
-| [`is_yesterday()`](#fn-is-yesterday)                             | Return `true` when the value falls on the previous local day.     |
+| Function                                         | Description                                                       |
+| ------------------------------------------------ | ----------------------------------------------------------------- |
+| [`is_after(date)`]                               | Return `true` when the value is later than `other`.               |
+| [`is_before(date)`]                              | Return `true` when the value is earlier than `other`.             |
+| [`is_between(start_date, end_date, inclusive?)`] | Return `true` when the value lies between two bounds.             |
+| [`is_same(date)`]                                | Return `true` when the value is equal to `other`.                 |
+| [`is_same_or_after(date)`]                       | Return `true` when the value is later than or equal to `other`.   |
+| [`is_same_or_before(date)`]                      | Return `true` when the value is earlier than or equal to `other`. |
+| [`is_today()`]                                   | Return `true` when the value falls on the current local day.      |
+| [`is_tomorrow()`]                                | Return `true` when the value falls on the next local day.         |
+| [`is_yesterday()`]                               | Return `true` when the value falls on the previous local day.     |
 
 **Duration**:
 
-| Function                                | Description                                                                 |
-| --------------------------------------- | --------------------------------------------------------------------------- |
-| [`is_duration(value)`](#fn-is-duration) | Return `true` when the value is a duration created by `date.duration(...)`. |
+| Function               | Description                                                                 |
+| ---------------------- | --------------------------------------------------------------------------- |
+| [`is_duration(value)`] | Return `true` when the value is a duration created by `date.duration(...)`. |
 
 **Formatting**:
 
-| Function                        | Description                                                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| [`format(pattern)`](#fn-format) | Format the Date with tokens like `YYYY`, `MMM`, `dddd`, `Do`, `Q`, `hh`, `k`, `X`, `x`, `A`, and `SSS`. |
-| [`tostring()`](#fn-tostring)    | Return the default string form `YYYY-MM-DD HH:mm:ss`.                                                   |
+| Function            | Description                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| [`format(pattern)`] | Format the Date with tokens like `YYYY`, `MMM`, `dddd`, `Do`, `Q`, `hh`, `k`, `X`, `x`, `A`, and `SSS`. |
+| [`tostring()`]      | Return the default string form `YYYY-MM-DD HH:mm:ss`.                                                   |
 
 **Relative Time**:
 
-| Function                                    | Description                                                    |
-| ------------------------------------------- | -------------------------------------------------------------- |
-| [`from(date, without_suffix?)`](#fn-from)   | Return relative time from another Date to this one.            |
-| [`from_now(without_suffix?)`](#fn-from-now) | Return relative time from the current local time to this Date. |
-| [`to(date, without_suffix?)`](#fn-to)       | Return relative time from this Date to another one.            |
-| [`to_now(without_suffix?)`](#fn-to-now)     | Return relative time from this Date to the current local time. |
+| Function                        | Description                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| [`from(date, without_suffix?)`] | Return relative time from another Date to this one.            |
+| [`from_now(without_suffix?)`]   | Return relative time from the current local time to this Date. |
+| [`to(date, without_suffix?)`]   | Return relative time from this Date to another one.            |
+| [`to_now(without_suffix?)`]     | Return relative time from this Date to the current local time. |
 
 **Unix**:
 
-| Function                      | Description                                                         |
-| ----------------------------- | ------------------------------------------------------------------- |
-| [`unix(timestamp)`](#fn-unix) | Create a Date from a Unix timestamp in whole or fractional seconds. |
+| Function            | Description                                                         |
+| ------------------- | ------------------------------------------------------------------- |
+| [`unix(timestamp)`] | Create a Date from a Unix timestamp in whole or fractional seconds. |
 
 **Validation**:
 
-| Function                                     | Description                                                 |
-| -------------------------------------------- | ----------------------------------------------------------- |
-| [`is_valid(input?, pattern?)`](#fn-is-valid) | Return `true` when the input can be parsed as a valid Date. |
+| Function                       | Description                                                 |
+| ------------------------------ | ----------------------------------------------------------- |
+| [`is_valid(input?, pattern?)`] | Return `true` when the input can be parsed as a valid Date. |
 
 **Metamethods**:
 
-| Function                       | Description                                                             |
-| ------------------------------ | ----------------------------------------------------------------------- |
-| [`__add(a, b)`](#fn-add)       | Return a copy shifted by integer milliseconds.                          |
-| [`__eq(date)`](#fn-eq)         | Return `true` when both Date values have identical components.          |
-| [`__le(date)`](#fn-le)         | Return `true` when the left Date is earlier than or equal to the right. |
-| [`__lt(date)`](#fn-lt)         | Return `true` when the left Date is earlier than the right.             |
-| [`__sub(a, b)`](#fn-sub)       | Return either a shifted copy or a millisecond delta.                    |
-| [`__tostring()`](#fn-tostring) | Return the same result as `tostring()` when coerced to a string.        |
+| Function         | Description                                                             |
+| ---------------- | ----------------------------------------------------------------------- |
+| [`__add(a, b)`]  | Return a copy shifted by integer milliseconds.                          |
+| [`__eq(date)`]   | Return `true` when both Date values have identical components.          |
+| [`__le(date)`]   | Return `true` when the left Date is earlier than or equal to the right. |
+| [`__lt(date)`]   | Return `true` when the left Date is earlier than the right.             |
+| [`__sub(a, b)`]  | Return either a shifted copy or a millisecond delta.                    |
+| [`__tostring()`] | Return the same result as `tostring()` when coerced to a string.        |
 
-<a id="fn-new"></a>
-
-### `new(input, pattern?)`
+### `new(input, pattern?)` {#new-1}
 
 Create a Date from a string using an optional pattern.
 
@@ -171,9 +267,9 @@ Create a Date from a string using an optional pattern.
 - `input` (`string`): The date string to parse.
 - `pattern?` (`string`): The format pattern.
 
-**Return**:
+**Returns**:
 
-- **value** (`mods.Date`)
+- **value** ([`mods.Date`])
 
 **Example**:
 
@@ -182,20 +278,20 @@ local d1 = Date("2026-03-30")
 local d2 = Date("12-25-1995", "MM-DD-YYYY")
 ```
 
-<a id="fn-new"></a>
+---
 
-### `new(input?)`
+### `new(input?)` {#new}
 
 Create a Date from a Unix timestamp (milliseconds) or a DateParts table.
 
 **Parameters**:
 
-- `input?` (`number|mods.DateParts`): Unix timestamp (ms) or table of date
+- `input?` (`number` | [`mods.DateParts`]): Unix timestamp (ms) or table of date
   components.
 
-**Return**:
+**Returns**:
 
-- **value** (`mods.Date`)
+- **value** ([`mods.Date`])
 
 **Example**:
 
@@ -204,25 +300,23 @@ local d1 = Date(1745155206123)
 local d2 = Date({ year = 2026, month = 3 })
 ```
 
+---
+
 ### Arithmetic
 
-<a id="fn-add"></a>
-
-#### `add(amount, unit?)`
+#### `add(amount, unit?)` {#add}
 
 Return a copy shifted by the given amount and unit.
 
 **Parameters**:
 
-- `amount` (`integer|mods.DateDurationParts`): Signed amount to add, or a
+- `amount` (`integer` | [`mods.DateDurationParts`]): Signed amount to add, or a
   duration-style table.
-- `unit?`
-  (`'ms'|'milliseconds'|'millisecond'|'s'|'secs'|'sec'|'seconds'|'second'|'m'|'mins'|'min'|'minutes'|'minute'|'h'|'hours'|'hour'|'d'|'days'|'day'|'w'|'weeks'|'week'|'M'|'months'|'month'|'q'|'quarters'|'quarter'|'y'|'years'|'year'`):
-  Unit for the addition.
+- `unit?` ([`mods.DateUnit`]): Unit for the addition.
 
-**Return**:
+**Returns**:
 
-- `shifted` (`mods.Date`): Shifted date value.
+- `shifted` ([`mods.Date`]): Shifted date value.
 
 **Example**:
 
@@ -236,20 +330,18 @@ print(d:add(250, "ms"))              --> 2026-03-30 14:45:06.250
 print(d:add({ month = 1, day = 2 })) --> 2026-05-02 14:45:06
 ```
 
-<a id="fn-diff"></a>
+---
 
-#### `diff(date, unit?)`
+#### `diff(date, unit?)` {#diff}
 
 Return the signed difference to another Date in the requested unit.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
-- `unit?`
-  (`'ms'|'milliseconds'|'millisecond'|'s'|'secs'|'sec'|'seconds'|'second'|'m'|'mins'|'min'|'minutes'|'minute'|'h'|'hours'|'hour'|'d'|'days'|'day'|'w'|'weeks'|'week'|'M'|'months'|'month'|'q'|'quarters'|'quarter'|'y'|'years'|'year'`):
-  Unit used for the difference. Defaults to `"ms"`.
+- `date` ([`mods.Date`]): Date to compare against.
+- `unit?` ([`mods.DateUnit`]): Unit used for the difference. Defaults to `"ms"`.
 
-**Return**:
+**Returns**:
 
 - `delta` (`integer`): Signed difference in whole units.
 
@@ -262,23 +354,21 @@ print(a:diff(b, "month")) --> 1
 print(a:diff(b, "day"))   --> 30
 ```
 
-<a id="fn-subtract"></a>
+---
 
-#### `subtract(amount, unit?)`
+#### `subtract(amount, unit?)` {#subtract}
 
 Return a copy shifted backward by the given amount and unit.
 
 **Parameters**:
 
-- `amount` (`integer|mods.DateDurationParts`): Signed amount to subtract, or a
-  duration-style table.
-- `unit?`
-  (`'ms'|'milliseconds'|'millisecond'|'s'|'secs'|'sec'|'seconds'|'second'|'m'|'mins'|'min'|'minutes'|'minute'|'h'|'hours'|'hour'|'d'|'days'|'day'|'w'|'weeks'|'week'|'M'|'months'|'month'|'q'|'quarters'|'quarter'|'y'|'years'|'year'`):
-  Unit for the subtraction.
+- `amount` (`integer` | [`mods.DateDurationParts`]): Signed amount to subtract,
+  or a duration-style table.
+- `unit?` ([`mods.DateUnit`]): Unit for the subtraction.
 
-**Return**:
+**Returns**:
 
-- `shifted` (`mods.Date`): Shifted date value.
+- `shifted` ([`mods.Date`]): Shifted date value.
 
 **Example**:
 
@@ -291,21 +381,21 @@ print(d:subtract(250, "ms"))              --> 2026-03-30 14:45:05.750
 print(d:subtract({ month = 1, day = 1 })) --> 2026-02-27 14:45:06
 ```
 
+---
+
 ### Boundaries
 
-<a id="fn-endof"></a>
-
-#### `endof(unit)`
+#### `endof(unit)` {#endof}
 
 Return the end boundary for the given unit.
 
 **Parameters**:
 
-- `unit` (`mods.DateUnit|"isoWeek"`): Boundary unit.
+- `unit` ([`mods.DateUnit`] | `"isoWeek"`): Boundary unit.
 
-**Return**:
+**Returns**:
 
-- `bounded` (`mods.Date`): Date clamped to the end of the unit.
+- `bounded` ([`mods.Date`]): Date clamped to the end of the unit.
 
 **Example**:
 
@@ -318,19 +408,19 @@ print(d:endof("isoWeek")) --> 2026-04-05 23:59:59
 
 `"isoWeek"` is also supported here as a boundary-only unit.
 
-<a id="fn-startof"></a>
+---
 
-#### `startof(unit)`
+#### `startof(unit)` {#startof}
 
 Return the start boundary for the given unit.
 
 **Parameters**:
 
-- `unit` (`mods.DateUnit|"isoWeek"`): Boundary unit.
+- `unit` ([`mods.DateUnit`] | `"isoWeek"`): Boundary unit.
 
-**Return**:
+**Returns**:
 
-- `bounded` (`mods.Date`): Date clamped to the start of the unit.
+- `bounded` ([`mods.Date`]): Date clamped to the start of the unit.
 
 **Example**:
 
@@ -343,11 +433,11 @@ print(d:startof("isoWeek")) --> 2026-03-30 00:00:00
 
 `"isoWeek"` is also supported here as a boundary-only unit.
 
+---
+
 ### Calendar
 
-<a id="fn-day-of-year"></a>
-
-#### `day_of_year(day_of_year_number?)`
+#### `day_of_year(day_of_year_number?)` {#day-of-year}
 
 Return or set the day of the year.
 
@@ -355,10 +445,10 @@ Return or set the day of the year.
 
 - `day_of_year_number?` (`integer`): Day-of-year to set.
 
-**Return**:
+**Returns**:
 
-- `dayOrDate` (`integer|mods.Date`): Current day-of-year number, or a shifted
-  Date when `day_of_year_number` is provided.
+- `dayOrDate` (`integer` | [`mods.Date`]): Current day-of-year number, or a
+  shifted Date when `day_of_year_number` is provided.
 
 **Example**:
 
@@ -368,13 +458,13 @@ print(d:day_of_year())  --> 89
 print(d:day_of_year(1)) --> 2026-01-01 00:00:00
 ```
 
-<a id="fn-is-leap-year"></a>
+---
 
-#### `is_leap_year()`
+#### `is_leap_year()` {#is-leap-year}
 
 Return `true` when the value's year is a leap year.
 
-**Return**:
+**Returns**:
 
 - `isLeapYear` (`boolean`): Whether the year is a leap year.
 
@@ -384,9 +474,9 @@ Return `true` when the value's year is a leap year.
 print(Date("2024-02-29"):is_leap_year()) --> true
 ```
 
-<a id="fn-iso-week"></a>
+---
 
-#### `iso_week(iso_week_number?)`
+#### `iso_week(iso_week_number?)` {#iso-week}
 
 Return or set the ISO week-of-year number.
 
@@ -394,10 +484,10 @@ Return or set the ISO week-of-year number.
 
 - `iso_week_number?` (`integer`): ISO week number to set.
 
-**Return**:
+**Returns**:
 
-- `isoWeekOrDate` (`integer|mods.Date`): Current ISO week number, or a shifted
-  Date when `iso_week_number` is provided.
+- `isoWeekOrDate` (`integer` | [`mods.Date`]): Current ISO week number, or a
+  shifted Date when `iso_week_number` is provided.
 
 **Example**:
 
@@ -407,13 +497,13 @@ print(d:iso_week())   --> 14
 print(d:iso_week(15)) --> 2026-04-06 00:00:00
 ```
 
-<a id="fn-iso-week-year"></a>
+---
 
-#### `iso_week_year()`
+#### `iso_week_year()` {#iso-week-year}
 
 Return the ISO week-year for the current date.
 
-**Return**:
+**Returns**:
 
 - `isoWeekYear` (`integer`): ISO week-year.
 
@@ -423,9 +513,9 @@ Return the ISO week-year for the current date.
 print(Date("2021-01-01"):iso_week_year()) --> 2020
 ```
 
-<a id="fn-iso-weekday"></a>
+---
 
-#### `iso_weekday(iso_weekday_number?)`
+#### `iso_weekday(iso_weekday_number?)` {#iso-weekday}
 
 Return or set the ISO weekday number where Monday is `1` and Sunday is `7`.
 
@@ -433,10 +523,10 @@ Return or set the ISO weekday number where Monday is `1` and Sunday is `7`.
 
 - `iso_weekday_number?` (`integer`): ISO weekday to set.
 
-**Return**:
+**Returns**:
 
-- `isoWeekdayOrDate` (`modsCalendarWeekday|mods.Date`): Current ISO weekday
-  number, or a shifted Date when `iso_weekday_number` is provided.
+- `isoWeekdayOrDate` (`modsCalendarWeekday` | [`mods.Date`]): Current ISO
+  weekday number, or a shifted Date when `iso_weekday_number` is provided.
 
 **Example**:
 
@@ -446,13 +536,13 @@ print(d:iso_weekday())  --> 1
 print(d:iso_weekday(7)) --> 2026-04-05 00:00:00
 ```
 
-<a id="fn-iso-weeks-in-year"></a>
+---
 
-#### `iso_weeks_in_year()`
+#### `iso_weeks_in_year()` {#iso-weeks-in-year}
 
 Return the number of ISO weeks in the current date's calendar year.
 
-**Return**:
+**Returns**:
 
 - `isoWeeksInYear` (`integer`): Number of ISO weeks in the current date's
   calendar year.
@@ -465,13 +555,13 @@ print(Date("2016-01-01"):iso_weeks_in_year()) --> 52
 print(Date("2016-06-01"):iso_weeks_in_year()) --> 52
 ```
 
-<a id="fn-month-days"></a>
+---
 
-#### `month_days()`
+#### `month_days()` {#month-days}
 
 Return the number of days in the value's month.
 
-**Return**:
+**Returns**:
 
 - `ndays` (`modsCalendarMonthday`): Number of days in the current month.
 
@@ -481,9 +571,9 @@ Return the number of days in the value's month.
 print(Date("2024-02-01"):month_days()) --> 29
 ```
 
-<a id="fn-quarter"></a>
+---
 
-#### `quarter(quarter_number?)`
+#### `quarter(quarter_number?)` {#quarter}
 
 Return or set the quarter of the year.
 
@@ -491,10 +581,10 @@ Return or set the quarter of the year.
 
 - `quarter_number?` (`integer`): Quarter to set.
 
-**Return**:
+**Returns**:
 
-- `quarterOrDate` (`integer|mods.Date`): Current quarter number, or a shifted
-  Date when `quarter_number` is provided.
+- `quarterOrDate` (`integer` | [`mods.Date`]): Current quarter number, or a
+  shifted Date when `quarter_number` is provided.
 
 **Example**:
 
@@ -504,9 +594,9 @@ print(d:quarter())  --> 1
 print(d:quarter(2)) --> 2026-06-30 00:00:00
 ```
 
-<a id="fn-week"></a>
+---
 
-#### `week(week_number?)`
+#### `week(week_number?)` {#week}
 
 Return or set the non-ISO week-of-year number.
 
@@ -514,10 +604,10 @@ Return or set the non-ISO week-of-year number.
 
 - `week_number?` (`integer`): Week number to set.
 
-**Return**:
+**Returns**:
 
-- `weekOrDate` (`integer|mods.Date`): Current week-of-year number, or a shifted
-  Date when `week_number` is provided.
+- `weekOrDate` (`integer` | [`mods.Date`]): Current week-of-year number, or a
+  shifted Date when `week_number` is provided.
 
 **Example**:
 
@@ -527,13 +617,13 @@ print(d:week())   --> 14
 print(d:week(15)) --> 2026-04-06 00:00:00
 ```
 
-<a id="fn-week-year"></a>
+---
 
-#### `week_year()`
+#### `week_year()` {#week-year}
 
 Return the non-ISO week-year for the current date.
 
-**Return**:
+**Returns**:
 
 - `weekYear` (`integer`): Week-year.
 
@@ -543,9 +633,9 @@ Return the non-ISO week-year for the current date.
 print(Date("2021-01-01"):week_year()) --> 2021
 ```
 
-<a id="fn-weekday"></a>
+---
 
-#### `weekday(weekday_number?)`
+#### `weekday(weekday_number?)` {#weekday}
 
 Return or set the locale-relative weekday like Day.js `weekday()`.
 
@@ -553,10 +643,10 @@ Return or set the locale-relative weekday like Day.js `weekday()`.
 
 - `weekday_number?` (`integer`): Locale-relative weekday to set.
 
-**Return**:
+**Returns**:
 
-- `weekdayOrDate` (`integer|mods.Date`): Current locale-relative weekday number,
-  or a shifted Date when `weekday_number` is provided.
+- `weekdayOrDate` (`integer` | [`mods.Date`]): Current locale-relative weekday
+  number, or a shifted Date when `weekday_number` is provided.
 
 **Example**:
 
@@ -568,17 +658,17 @@ print(d:weekday(-7)) --> 2026-03-23 00:00:00
 ```
 
 The getter returns a number in the range `0..6`, relative to the current
-`mods.calendar.firstweekday`. Passing an integer returns a shifted copy in the
+[`mods.calendar.firstweekday`]. Passing an integer returns a shifted copy in the
 same locale-relative week space, with negative and overflow values moving into
 previous or next weeks.
 
-<a id="fn-weeks-in-year"></a>
+---
 
-#### `weeks_in_year()`
+#### `weeks_in_year()` {#weeks-in-year}
 
 Return the number of weeks in the current locale week-year.
 
-**Return**:
+**Returns**:
 
 - `weeksInYear` (`integer`): Number of weeks.
 
@@ -588,22 +678,22 @@ Return the number of weeks in the current locale week-year.
 print(Date("2026-03-30"):weeks_in_year()) --> 52
 ```
 
+---
+
 ### Compare
 
-<a id="fn-max"></a>
-
-#### `max(...)`
+#### `max(...)` {#max}
 
 Return the latest value from the given dates.
 
 **Parameters**:
 
-- `...` (`mods.Date|mods.Date[]`): Date values to compare. Each argument may be
-  a date or a list of dates.
+- `...` ([`mods.Date`] | [`mods.Date`]`[]`): Date values to compare. Each
+  argument may be a date or a list of dates.
 
-**Return**:
+**Returns**:
 
-- `date` (`mods.Date`): Latest date value.
+- `date` ([`mods.Date`]): Latest date value.
 
 **Example**:
 
@@ -614,20 +704,20 @@ print(Date.max(a, b))     --> 2026-03-31 00:00:00
 print(Date.max({ a, b })) --> 2026-03-31 00:00:00
 ```
 
-<a id="fn-min"></a>
+---
 
-#### `min(...)`
+#### `min(...)` {#min-1}
 
 Return the earliest value from the given dates.
 
 **Parameters**:
 
-- `...` (`mods.Date|mods.Date[]`): Date values to compare. Each argument may be
-  a date or a list of dates.
+- `...` ([`mods.Date`] | [`mods.Date`]`[]`): Date values to compare. Each
+  argument may be a date or a list of dates.
 
-**Return**:
+**Returns**:
 
-- `date` (`mods.Date`): Earliest date value.
+- `date` ([`mods.Date`]): Earliest date value.
 
 **Example**:
 
@@ -638,21 +728,21 @@ print(Date.min(a, b))     --> 2026-03-28 00:00:00
 print(Date.min({ a, b })) --> 2026-03-28 00:00:00
 ```
 
-<a id="fn-minmax"></a>
+---
 
-#### `minmax(...)`
+#### `minmax(...)` {#minmax}
 
 Return the earliest and latest values from the given dates.
 
 **Parameters**:
 
-- `...` (`mods.Date|mods.Date[]`): Date values to compare. Each argument may be
-  a date or a list of dates.
+- `...` ([`mods.Date`] | [`mods.Date`]`[]`): Date values to compare. Each
+  argument may be a date or a list of dates.
 
-**Return**:
+**Returns**:
 
-- `minDate` (`mods.Date`): Earliest date value.
-- `maxDate` (`mods.Date`): Latest date value.
+- `minDate` ([`mods.Date`]): Earliest date value.
+- `maxDate` ([`mods.Date`]): Latest date value.
 
 **Example**:
 
@@ -665,19 +755,19 @@ print(min_date) --> 2026-03-28 00:00:00
 print(max_date) --> 2026-03-31 00:00:00
 ```
 
+---
+
 ### Comparison
 
-<a id="fn-is-after"></a>
-
-#### `is_after(date)`
+#### `is_after(date)` {#is-after}
 
 Return `true` when the value is later than `other`.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isAfter` (`boolean`): Whether the value is later than `date`.
 
@@ -689,17 +779,17 @@ local b = Date("2026-03-30T12:00:00")
 print(a:is_after(b)) --> true
 ```
 
-<a id="fn-is-before"></a>
+---
 
-#### `is_before(date)`
+#### `is_before(date)` {#is-before}
 
 Return `true` when the value is earlier than `other`.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isBefore` (`boolean`): Whether the value is earlier than `date`.
 
@@ -711,9 +801,9 @@ local b = Date("2026-03-31T12:00:00")
 print(a:is_before(b)) --> true
 ```
 
-<a id="fn-is-between"></a>
+---
 
-#### `is_between(start_date, end_date, inclusive?)`
+#### `is_between(start_date, end_date, inclusive?)` {#is-between}
 
 Return `true` when the value lies between two bounds.
 
@@ -722,12 +812,12 @@ pass `true` as the third argument to include the endpoints.
 
 **Parameters**:
 
-- `start_date` (`mods.Date`): One bound.
-- `end_date` (`mods.Date`): The other bound.
+- `start_date` ([`mods.Date`]): One bound.
+- `end_date` ([`mods.Date`]): The other bound.
 - `inclusive?` (`boolean`): Whether to include the endpoints. Defaults to
   `false`.
 
-**Return**:
+**Returns**:
 
 - `isBetween` (`boolean`): Whether the value lies between the two bounds.
 
@@ -742,17 +832,17 @@ print(a:is_between(a, b))        --> false
 print(a:is_between(a, b, true))  --> true
 ```
 
-<a id="fn-is-same"></a>
+---
 
-#### `is_same(date)`
+#### `is_same(date)` {#is-same}
 
 Return `true` when the value is equal to `other`.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isSame` (`boolean`): Whether the value is equal to `date`.
 
@@ -764,17 +854,17 @@ local b = Date("2026-03-30T12:00:00")
 print(a:is_same(b)) --> true
 ```
 
-<a id="fn-is-same-or-after"></a>
+---
 
-#### `is_same_or_after(date)`
+#### `is_same_or_after(date)` {#is-same-or-after}
 
 Return `true` when the value is later than or equal to `other`.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isSameOrAfter` (`boolean`): Whether the value is later than or equal to
   `date`.
@@ -789,17 +879,17 @@ print(a:is_same_or_after(b)) --> true
 print(a:is_same_or_after(c)) --> true
 ```
 
-<a id="fn-is-same-or-before"></a>
+---
 
-#### `is_same_or_before(date)`
+#### `is_same_or_before(date)` {#is-same-or-before}
 
 Return `true` when the value is earlier than or equal to `other`.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isSameOrBefore` (`boolean`): Whether the value is earlier than or equal to
   `date`.
@@ -814,13 +904,13 @@ print(a:is_same_or_before(b)) --> true
 print(a:is_same_or_before(c)) --> true
 ```
 
-<a id="fn-is-today"></a>
+---
 
-#### `is_today()`
+#### `is_today()` {#is-today}
 
 Return `true` when the value falls on the current local day.
 
-**Return**:
+**Returns**:
 
 - `isToday` (`boolean`): Whether the value is on today in local time.
 
@@ -830,13 +920,13 @@ Return `true` when the value falls on the current local day.
 print(Date():is_today()) --> true
 ```
 
-<a id="fn-is-tomorrow"></a>
+---
 
-#### `is_tomorrow()`
+#### `is_tomorrow()` {#is-tomorrow}
 
 Return `true` when the value falls on the next local day.
 
-**Return**:
+**Returns**:
 
 - `isTomorrow` (`boolean`): Whether the value is on tomorrow in local time.
 
@@ -846,13 +936,13 @@ Return `true` when the value falls on the next local day.
 print(Date():add(1, "day"):is_tomorrow()) --> true
 ```
 
-<a id="fn-is-yesterday"></a>
+---
 
-#### `is_yesterday()`
+#### `is_yesterday()` {#is-yesterday}
 
 Return `true` when the value falls on the previous local day.
 
-**Return**:
+**Returns**:
 
 - `isYesterday` (`boolean`): Whether the value is on yesterday in local time.
 
@@ -862,11 +952,11 @@ Return `true` when the value falls on the previous local day.
 print(Date():subtract(1, "day"):is_yesterday()) --> true
 ```
 
+---
+
 ### Duration
 
-<a id="fn-is-duration"></a>
-
-#### `is_duration(value)`
+#### `is_duration(value)` {#is-duration}
 
 Return `true` when the value is a duration created by `date.duration(...)`.
 
@@ -874,9 +964,9 @@ Return `true` when the value is a duration created by `date.duration(...)`.
 
 - `value` (`any`): Value to test.
 
-**Return**:
+**Returns**:
 
-- `isDuration` (`boolean`): Whether the value is a `mods.Duration`.
+- `isDuration` (`boolean`): Whether the value is a [`mods.Duration`].
 
 **Example**:
 
@@ -886,11 +976,11 @@ print(date.is_duration(shift)) --> true
 print(date.is_duration({ day = 2 })) --> false
 ```
 
+---
+
 ### Formatting
 
-<a id="fn-format"></a>
-
-#### `format(pattern)`
+#### `format(pattern)` {#format}
 
 Format the Date with tokens like `YYYY`, `MMM`, `dddd`, `Do`, `Q`, `hh`, `k`,
 `X`, `x`, `A`, and `SSS`.
@@ -899,7 +989,7 @@ Format the Date with tokens like `YYYY`, `MMM`, `dddd`, `Do`, `Q`, `hh`, `k`,
 
 - `pattern` (`string`): Format pattern using supported tokens.
 
-**Return**:
+**Returns**:
 
 - `formatted` (`string`): Formatted datetime string.
 
@@ -988,13 +1078,13 @@ English preset aliases:
 | `lll`  | `MMM D, YYYY h:mm A`        |
 | `llll` | `ddd, MMM D, YYYY h:mm A`   |
 
-<a id="fn-tostring"></a>
+---
 
-#### `tostring()`
+#### `tostring()` {#tostring}
 
 Return the default string form `YYYY-MM-DD HH:mm:ss`.
 
-**Return**:
+**Returns**:
 
 - `s` (`string`): Default datetime string.
 
@@ -1004,11 +1094,11 @@ Return the default string form `YYYY-MM-DD HH:mm:ss`.
 print(Date("2026-03-30T14:45:06.123")) --> 2026-03-30 14:45:06.123
 ```
 
+---
+
 ### Relative Time
 
-<a id="fn-from"></a>
-
-#### `from(date, without_suffix?)`
+#### `from(date, without_suffix?)` {#from}
 
 Return relative time from another Date to this one.
 
@@ -1017,10 +1107,10 @@ By default the result includes a suffix like `ago` or a prefix like `in`. Pass
 
 **Parameters**:
 
-- `date` (`mods.Date`): Reference date.
+- `date` ([`mods.Date`]): Reference date.
 - `without_suffix?` (`boolean`): Whether to omit `ago` / `in`.
 
-**Return**:
+**Returns**:
 
 - `relative` (`string`): Relative time string.
 
@@ -1033,9 +1123,9 @@ print(a:from(b))       --> in 2 hours
 print(a:from(b, true)) --> 2 hours
 ```
 
-<a id="fn-from-now"></a>
+---
 
-#### `from_now(without_suffix?)`
+#### `from_now(without_suffix?)` {#from-now}
 
 Return relative time from the current local time to this Date.
 
@@ -1043,7 +1133,7 @@ Return relative time from the current local time to this Date.
 
 - `without_suffix?` (`boolean`): Whether to omit `ago` / `in`.
 
-**Return**:
+**Returns**:
 
 - `relative` (`string`): Relative time string.
 
@@ -1054,9 +1144,9 @@ local d = date():add(1, "day")
 print(d:from_now()) --> in a day
 ```
 
-<a id="fn-to"></a>
+---
 
-#### `to(date, without_suffix?)`
+#### `to(date, without_suffix?)` {#to}
 
 Return relative time from this Date to another one.
 
@@ -1065,10 +1155,10 @@ By default the result includes a suffix like `ago` or a prefix like `in`. Pass
 
 **Parameters**:
 
-- `date` (`mods.Date`): Reference date.
+- `date` ([`mods.Date`]): Reference date.
 - `without_suffix?` (`boolean`): Whether to omit `ago` / `in`.
 
-**Return**:
+**Returns**:
 
 - `relative` (`string`): Relative time string.
 
@@ -1081,9 +1171,9 @@ print(a:to(b))       --> in 2 hours
 print(a:to(b, true)) --> 2 hours
 ```
 
-<a id="fn-to-now"></a>
+---
 
-#### `to_now(without_suffix?)`
+#### `to_now(without_suffix?)` {#to-now}
 
 Return relative time from this Date to the current local time.
 
@@ -1091,7 +1181,7 @@ Return relative time from this Date to the current local time.
 
 - `without_suffix?` (`boolean`): Whether to omit `ago` / `in`.
 
-**Return**:
+**Returns**:
 
 - `relative` (`string`): Relative time string.
 
@@ -1102,11 +1192,11 @@ local d = date():subtract(1, "day")
 print(d:to_now()) --> in a day
 ```
 
+---
+
 ### Unix
 
-<a id="fn-unix"></a>
-
-#### `unix(timestamp)`
+#### `unix(timestamp)` {#unix}
 
 Create a Date from a Unix timestamp in whole or fractional seconds.
 
@@ -1114,9 +1204,9 @@ Create a Date from a Unix timestamp in whole or fractional seconds.
 
 - `timestamp` (`number`): Unix timestamp in whole or fractional seconds.
 
-**Return**:
+**Returns**:
 
-- `date` (`mods.Date`): Date value for the given Unix timestamp.
+- `date` ([`mods.Date`]): Date value for the given Unix timestamp.
 
 **Example**:
 
@@ -1125,11 +1215,11 @@ print(Date.unix(1318781876))          --> 2011-10-16 18:17:56
 print(Date.unix(1318781876.721).year) --> 2011
 ```
 
+---
+
 ### Validation
 
-<a id="fn-is-valid"></a>
-
-#### `is_valid(input?, pattern?)`
+#### `is_valid(input?, pattern?)` {#is-valid}
 
 Return `true` when the input can be parsed as a valid Date.
 
@@ -1138,11 +1228,11 @@ Unlike `Date(...)`, this helper never raises for invalid input; it just returns
 
 **Parameters**:
 
-- `input?` (`string|number|mods.DateParts`): Value accepted by `Date(...)`.
-  `nil` returns `false`.
+- `input?` (`string` | `number` | [`mods.DateParts`]): Value accepted by
+  `Date(...)`. `nil` returns `false`.
 - `pattern?` (`string`): Custom parse pattern used for string input.
 
-**Return**:
+**Returns**:
 
 - `isValid` (`boolean`): Whether the input is parseable as a valid Date.
 
@@ -1155,11 +1245,11 @@ print(Date.is_valid("2026-02-29"))               --> false
 print(Date.is_valid("12-25-1995", "MM-DD-YYYY")) --> true
 ```
 
+---
+
 ### Metamethods
 
-<a id="fn-add"></a>
-
-#### `__add(a, b)`
+#### `__add(a, b)` {#add-1}
 
 Return a copy shifted by integer milliseconds.
 
@@ -1167,12 +1257,12 @@ This works as either `date + ms` or `ms + date`.
 
 **Parameters**:
 
-- `a` (`integer|mods.Date`): Milliseconds to add, or another Date.
-- `b` (`integer|mods.Date`): Milliseconds to add, or another Date.
+- `a` (`integer` | [`mods.Date`]): Milliseconds to add, or another Date.
+- `b` (`integer` | [`mods.Date`]): Milliseconds to add, or another Date.
 
-**Return**:
+**Returns**:
 
-- `sum` (`mods.Date`): Sum of the two dates.
+- `sum` ([`mods.Date`]): Sum of the two dates.
 
 **Example**:
 
@@ -1182,17 +1272,17 @@ print((d + 250)) --> 2026-03-30 14:45:06.250
 print((250 + d)) --> 2026-03-30 14:45:06.250
 ```
 
-<a id="fn-eq"></a>
+---
 
-#### `__eq(date)`
+#### `__eq(date)` {#eq}
 
 Return `true` when both Date values have identical components.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isEqual` (`boolean`): `true` if both dates are equal, `false` otherwise.
 
@@ -1202,17 +1292,17 @@ Return `true` when both Date values have identical components.
 print(Date("2026-03-30") == Date("2026-03-30")) --> true
 ```
 
-<a id="fn-le"></a>
+---
 
-#### `__le(date)`
+#### `__le(date)` {#le}
 
 Return `true` when the left Date is earlier than or equal to the right.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isEarlierOrEqual` (`boolean`): `true` if the left date is earlier or equal,
   `false` otherwise.
@@ -1223,17 +1313,17 @@ Return `true` when the left Date is earlier than or equal to the right.
 print(Date("2026-03-30") <= Date("2026-03-30")) --> true
 ```
 
-<a id="fn-lt"></a>
+---
 
-#### `__lt(date)`
+#### `__lt(date)` {#lt}
 
 Return `true` when the left Date is earlier than the right.
 
 **Parameters**:
 
-- `date` (`mods.Date`): Date to compare against.
+- `date` ([`mods.Date`]): Date to compare against.
 
-**Return**:
+**Returns**:
 
 - `isEarlier` (`boolean`): `true` if the left date is earlier, `false`
   otherwise.
@@ -1244,9 +1334,9 @@ Return `true` when the left Date is earlier than the right.
 print(Date("2026-03-30") < Date("2026-03-31")) --> true
 ```
 
-<a id="fn-sub"></a>
+---
 
-#### `__sub(a, b)`
+#### `__sub(a, b)` {#sub}
 
 Return either a shifted copy or a millisecond delta.
 
@@ -1255,12 +1345,12 @@ subtracting another Date, it returns the signed millisecond difference.
 
 **Parameters**:
 
-- `a` (`integer|mods.Date`): Milliseconds to subtract, or another Date.
-- `b` (`integer|mods.Date`): Milliseconds to subtract, or another Date.
+- `a` (`integer` | [`mods.Date`]): Milliseconds to subtract, or another Date.
+- `b` (`integer` | [`mods.Date`]): Milliseconds to subtract, or another Date.
 
-**Return**:
+**Returns**:
 
-- `delta` (`mods.Date|integer`): Difference between dates.
+- `delta` ([`mods.Date`] | `integer`): Difference between dates.
 
 **Example**:
 
@@ -1271,13 +1361,13 @@ print((a - 250)) --> 2026-03-30 14:45:06
 print(a - b)     --> 250
 ```
 
-<a id="fn-tostring"></a>
+---
 
-#### `__tostring()`
+#### `__tostring()` {#tostring-1}
 
 Return the same result as `tostring()` when coerced to a string.
 
-**Return**:
+**Returns**:
 
 - `string` (`string`): representation of the date.
 
@@ -1287,106 +1377,70 @@ Return the same result as `tostring()` when coerced to a string.
 print(Date("2026-03-30T14:45:06")) --> 2026-03-30 14:45:06
 ```
 
-## Fields
-
-| Field             | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| [`day`](#day)     | Day-of-month component.                                      |
-| [`hour`](#hour)   | Hour component.                                              |
-| [`min`](#min)     | Minute component.                                            |
-| [`month`](#month) | Month component.                                             |
-| [`ms`](#ms)       | Millisecond component.                                       |
-| [`sec`](#sec)     | Second component.                                            |
-| [`wday`](#wday)   | ISO weekday component where Monday is `1` and Sunday is `7`. |
-| [`yday`](#yday)   | Day-of-year component starting at `1`.                       |
-| [`year`](#year)   | Year component.                                              |
-
-<a id="day"></a>
-
-### `day` (`modsCalendarMonthday`)
-
-Day-of-month component.
-
-```lua
-print(Date("2026-03-30").day) --> 30
-```
-
-<a id="hour"></a>
-
-### `hour` (`integer`)
-
-Hour component.
-
-```lua
-print(Date("2026-03-30T14:45:06").hour) --> 14
-```
-
-<a id="min"></a>
-
-### `min` (`integer`)
-
-Minute component.
-
-```lua
-print(Date("2026-03-30T14:45:06").min) --> 45
-```
-
-<a id="month"></a>
-
-### `month` (`modsCalendarMonth`)
-
-Month component.
-
-```lua
-print(Date("2026-03-30").month) --> 3
-```
-
-<a id="ms"></a>
-
-### `ms` (`integer`)
-
-Millisecond component.
-
-```lua
-print(Date("2026-03-30T14:45:06.123").ms) --> 123
-```
-
-<a id="sec"></a>
-
-### `sec` (`integer`)
-
-Second component.
-
-```lua
-print(Date("2026-03-30T14:45:06").sec) --> 6
-```
-
-<a id="wday"></a>
-
-### `wday` (`modsCalendarWeekday`)
-
-ISO weekday component where Monday is `1` and Sunday is `7`.
-
-```lua
-print(Date("2026-03-30").wday) --> 1
-```
-
-<a id="yday"></a>
-
-### `yday` (`integer`)
-
-Day-of-year component starting at `1`.
-
-```lua
-print(Date("2026-03-30").yday) --> 89
-```
-
-<a id="year"></a>
-
-### `year` (`integer`)
-
-Year component.
-
-```lua
-print(Date("2026-03-30").year) --> 2026
-```
+<!-- prettier-ignore-start -->
+[ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
+[`Date.unix(ts)`]: #fn-unix
+[`__add(a, b)`]: #add-1
+[`__eq(date)`]: #eq
+[`__le(date)`]: #le
+[`__lt(date)`]: #lt
+[`__sub(a, b)`]: #sub
+[`__tostring()`]: #tostring-1
+[`add(amount, unit?)`]: #add
+[`day_of_year(day_of_year_number?)`]: #day-of-year
+[`day`]: #day
+[`diff(date, unit?)`]: #diff
+[`endof(unit)`]: #endof
+[`format(pattern)`]: #format
+[`from(date, without_suffix?)`]: #from
+[`from_now(without_suffix?)`]: #from-now
+[`hour`]: #hour
+[`is_after(date)`]: #is-after
+[`is_before(date)`]: #is-before
+[`is_between(start_date, end_date, inclusive?)`]: #is-between
+[`is_duration(value)`]: #is-duration
+[`is_leap_year()`]: #is-leap-year
+[`is_same(date)`]: #is-same
+[`is_same_or_after(date)`]: #is-same-or-after
+[`is_same_or_before(date)`]: #is-same-or-before
+[`is_today()`]: #is-today
+[`is_tomorrow()`]: #is-tomorrow
+[`is_valid(input?, pattern?)`]: #is-valid
+[`is_yesterday()`]: #is-yesterday
+[`iso_week(iso_week_number?)`]: #iso-week
+[`iso_week_year()`]: #iso-week-year
+[`iso_weekday(iso_weekday_number?)`]: #iso-weekday
+[`iso_weeks_in_year()`]: #iso-weeks-in-year
+[`max(...)`]: #max
+[`min(...)`]: #min-1
+[`min`]: #min
+[`minmax(...)`]: #minmax
+[`mods.DateDurationParts`]: /mods/types#mods-datedurationparts
+[`mods.DateParts`]: /mods/types#mods-dateparts
+[`mods.DateUnit`]: /mods/types#mods-dateunit
+[`mods.Date`]: /mods/api/date
+[`mods.Duration`]: /mods/api/duration
+[`mods.calendar.firstweekday`]: /mods/api/calendar#firstweekday
+[`month_days()`]: #month-days
+[`month`]: #month
+[`ms`]: #ms
+[`new(input, pattern?)`]: #new-1
+[`new(input?)`]: #new
+[`os.time`]: https://www.lua.org/manual/5.1/manual.html#pdf-os.time
+[`quarter(quarter_number?)`]: #quarter
+[`sec`]: #sec
+[`startof(unit)`]: #startof
+[`subtract(amount, unit?)`]: #subtract
+[`to(date, without_suffix?)`]: #to
+[`to_now(without_suffix?)`]: #to-now
+[`tostring()`]: #tostring
+[`unix(timestamp)`]: #unix
+[`wday`]: #wday
+[`week(week_number?)`]: #week
+[`week_year()`]: #week-year
+[`weekday(weekday_number?)`]: #weekday
+[`weeks_in_year()`]: #weeks-in-year
+[`yday`]: #yday
+[`year`]: #year
+[mstime]: https://github.com/luamod/mstime
+<!-- prettier-ignore-end -->

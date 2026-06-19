@@ -1,15 +1,14 @@
 ---
+title: "operator"
 description: "Lua operators exposed as functions."
 ---
-
-# `operator`
 
 Lua operators exposed as functions.
 
 ## Usage
 
 ```lua
-operator = require "mods.operator"
+operator = mods.operator
 
 print(operator.add(1, 2)) --> 3
 ```
@@ -18,56 +17,54 @@ print(operator.add(1, 2)) --> 3
 
 **Arithmetic**:
 
-| Function                 | Description                                               |
-| ------------------------ | --------------------------------------------------------- |
-| [`add(a, b)`](#fn-add)   | Add two numbers.                                          |
-| [`div(a, b)`](#fn-div)   | Divide `a` by `b` using Lua's floating-point division.    |
-| [`idiv(a, b)`](#fn-idiv) | Divide `a` by `b` and return the floor-division quotient. |
-| [`mod(a, b)`](#fn-mod)   | Return the modulo remainder of `a` divided by `b`.        |
-| [`mul(a, b)`](#fn-mul)   | Multiply two numbers.                                     |
-| [`pow(a, b)`](#fn-pow)   | Raise `a` to the power of `b`.                            |
-| [`sub(a, b)`](#fn-sub)   | Subtract `b` from `a`.                                    |
-| [`unm(a)`](#fn-unm)      | Negate a number.                                          |
+| Function       | Description                                               |
+| -------------- | --------------------------------------------------------- |
+| [`add(a, b)`]  | Add two numbers.                                          |
+| [`div(a, b)`]  | Divide `a` by `b` using Lua's floating-point division.    |
+| [`idiv(a, b)`] | Divide `a` by `b` and return the floor-division quotient. |
+| [`mod(a, b)`]  | Return the modulo remainder of `a` divided by `b`.        |
+| [`mul(a, b)`]  | Multiply two numbers.                                     |
+| [`pow(a, b)`]  | Raise `a` to the power of `b`.                            |
+| [`sub(a, b)`]  | Subtract `b` from `a`.                                    |
+| [`unm(a)`]     | Negate a number.                                          |
 
 **Comparison**:
 
-| Function               | Description                                        |
-| ---------------------- | -------------------------------------------------- |
-| [`eq(a, b)`](#fn-eq)   | Check whether two values are equal.                |
-| [`ge(a, b)`](#fn-ge)   | Check whether `a` is greater than or equal to `b`. |
-| [`gt(a, b)`](#fn-gt)   | Check whether `a` is strictly greater than `b`.    |
-| [`le(a, b)`](#fn-le)   | Check whether `a` is less than or equal to `b`.    |
-| [`lt(a, b)`](#fn-lt)   | Check whether `a` is strictly less than `b`.       |
-| [`neq(a, b)`](#fn-neq) | Check whether two values are not equal.            |
+| Function      | Description                                        |
+| ------------- | -------------------------------------------------- |
+| [`eq(a, b)`]  | Check whether two values are equal.                |
+| [`ge(a, b)`]  | Check whether `a` is greater than or equal to `b`. |
+| [`gt(a, b)`]  | Check whether `a` is strictly greater than `b`.    |
+| [`le(a, b)`]  | Check whether `a` is less than or equal to `b`.    |
+| [`lt(a, b)`]  | Check whether `a` is strictly less than `b`.       |
+| [`neq(a, b)`] | Check whether two values are not equal.            |
 
 **Logical**:
 
-| Function                 | Description                                          |
-| ------------------------ | ---------------------------------------------------- |
-| [`land(a, b)`](#fn-land) | Evaluate `a and b` with Lua short-circuit semantics. |
-| [`lnot(a)`](#fn-lnot)    | Return the boolean negation of `a`.                  |
-| [`lor(a, b)`](#fn-lor)   | Evaluate `a or b` with Lua short-circuit semantics.  |
+| Function       | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| [`land(a, b)`] | Evaluate `a and b` with Lua short-circuit semantics. |
+| [`lnot(a)`]    | Return the boolean negation of `a`.                  |
+| [`lor(a, b)`]  | Evaluate `a or b` with Lua short-circuit semantics.  |
 
 **String & Length**:
 
-| Function                     | Description                                                      |
-| ---------------------------- | ---------------------------------------------------------------- |
-| [`concat(a, b)`](#fn-concat) | Concatenate two strings.                                         |
-| [`len(a)`](#fn-len)          | Return the length of a string or table using Lua's `#` operator. |
+| Function         | Description                                                      |
+| ---------------- | ---------------------------------------------------------------- |
+| [`concat(a, b)`] | Concatenate two strings.                                         |
+| [`len(a)`]       | Return the length of a string or table using Lua's `#` operator. |
 
 **Tables & Calls**:
 
-| Function                            | Description                                                    |
-| ----------------------------------- | -------------------------------------------------------------- |
-| [`call(f, ...)`](#fn-call)          | Call a function with variadic arguments and return its result. |
-| [`index(t, k)`](#fn-index)          | Return the value at key/index `k` in table `t`.                |
-| [`setindex(t, k, v)`](#fn-setindex) | Set `t[k] = v` and return the assigned value.                  |
+| Function              | Description                                                    |
+| --------------------- | -------------------------------------------------------------- |
+| [`call(f, ...)`]      | Call a function with variadic arguments and return its result. |
+| [`index(t, k)`]       | Return the value at key/index `k` in table `t`.                |
+| [`setindex(t, k, v)`] | Set `t[k] = v` and return the assigned value.                  |
 
 ### Arithmetic
 
-<a id="fn-add"></a>
-
-#### `add(a, b)`
+#### `add(a, b)` {#add}
 
 Add two numbers.
 
@@ -76,7 +73,7 @@ Add two numbers.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `sum` (`number`): Sum of `a` and `b`.
 
@@ -86,9 +83,9 @@ Add two numbers.
 add(1, 2) --> 3
 ```
 
-<a id="fn-div"></a>
+---
 
-#### `div(a, b)`
+#### `div(a, b)` {#div}
 
 Divide `a` by `b` using Lua's floating-point division.
 
@@ -97,7 +94,7 @@ Divide `a` by `b` using Lua's floating-point division.
 - `a` (`number`): Dividend value.
 - `b` (`number`): Divisor value.
 
-**Return**:
+**Returns**:
 
 - `quotient` (`number`): Quotient `a / b`.
 
@@ -107,9 +104,9 @@ Divide `a` by `b` using Lua's floating-point division.
 div(10, 4) --> 2.5
 ```
 
-<a id="fn-idiv"></a>
+---
 
-#### `idiv(a, b)`
+#### `idiv(a, b)` {#idiv}
 
 Divide `a` by `b` and return the floor-division quotient.
 
@@ -118,7 +115,7 @@ Divide `a` by `b` and return the floor-division quotient.
 - `a` (`number`): Dividend value.
 - `b` (`number`): Divisor value.
 
-**Return**:
+**Returns**:
 
 - `quotient` (`integer`): Floor-division result.
 
@@ -128,9 +125,9 @@ Divide `a` by `b` and return the floor-division quotient.
 idiv(5, 2) --> 2
 ```
 
-<a id="fn-mod"></a>
+---
 
-#### `mod(a, b)`
+#### `mod(a, b)` {#mod}
 
 Return the modulo remainder of `a` divided by `b`.
 
@@ -139,7 +136,7 @@ Return the modulo remainder of `a` divided by `b`.
 - `a` (`number`): Dividend value.
 - `b` (`number`): Divisor value.
 
-**Return**:
+**Returns**:
 
 - `remainder` (`number`): Remainder of `a % b`.
 
@@ -149,9 +146,9 @@ Return the modulo remainder of `a` divided by `b`.
 mod(5, 2) --> 1
 ```
 
-<a id="fn-mul"></a>
+---
 
-#### `mul(a, b)`
+#### `mul(a, b)` {#mul}
 
 Multiply two numbers.
 
@@ -160,7 +157,7 @@ Multiply two numbers.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `product` (`number`): Product `a * b`.
 
@@ -170,9 +167,9 @@ Multiply two numbers.
 mul(3, 4) --> 12
 ```
 
-<a id="fn-pow"></a>
+---
 
-#### `pow(a, b)`
+#### `pow(a, b)` {#pow}
 
 Raise `a` to the power of `b`.
 
@@ -181,7 +178,7 @@ Raise `a` to the power of `b`.
 - `a` (`number`): Base value.
 - `b` (`number`): Exponent value.
 
-**Return**:
+**Returns**:
 
 - `power` (`number`): Result of `a ^ b`.
 
@@ -191,9 +188,9 @@ Raise `a` to the power of `b`.
 pow(2, 4) --> 16
 ```
 
-<a id="fn-sub"></a>
+---
 
-#### `sub(a, b)`
+#### `sub(a, b)` {#sub}
 
 Subtract `b` from `a`.
 
@@ -202,7 +199,7 @@ Subtract `b` from `a`.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `difference` (`number`): Difference `a - b`.
 
@@ -212,9 +209,9 @@ Subtract `b` from `a`.
 sub(5, 3) --> 2
 ```
 
-<a id="fn-unm"></a>
+---
 
-#### `unm(a)`
+#### `unm(a)` {#unm}
 
 Negate a number.
 
@@ -222,7 +219,7 @@ Negate a number.
 
 - `a` (`number`): Input numeric value.
 
-**Return**:
+**Returns**:
 
 - `negated` (`number`): Result of `-a`.
 
@@ -232,11 +229,11 @@ Negate a number.
 unm(3) --> -3
 ```
 
+---
+
 ### Comparison
 
-<a id="fn-eq"></a>
-
-#### `eq(a, b)`
+#### `eq(a, b)` {#eq}
 
 Check whether two values are equal.
 
@@ -245,7 +242,7 @@ Check whether two values are equal.
 - `a` (`any`): Left value.
 - `b` (`any`): Right value.
 
-**Return**:
+**Returns**:
 
 - `isEqual` (`boolean`): True when `a == b`.
 
@@ -255,9 +252,9 @@ Check whether two values are equal.
 eq(1, 1) --> true
 ```
 
-<a id="fn-ge"></a>
+---
 
-#### `ge(a, b)`
+#### `ge(a, b)` {#ge}
 
 Check whether `a` is greater than or equal to `b`.
 
@@ -266,7 +263,7 @@ Check whether `a` is greater than or equal to `b`.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `isGreaterOrEqual` (`boolean`): True when `a >= b`.
 
@@ -276,9 +273,9 @@ Check whether `a` is greater than or equal to `b`.
 ge(2, 2) --> true
 ```
 
-<a id="fn-gt"></a>
+---
 
-#### `gt(a, b)`
+#### `gt(a, b)` {#gt}
 
 Check whether `a` is strictly greater than `b`.
 
@@ -287,7 +284,7 @@ Check whether `a` is strictly greater than `b`.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `isGreater` (`boolean`): True when `a > b`.
 
@@ -297,9 +294,9 @@ Check whether `a` is strictly greater than `b`.
 gt(3, 2) --> true
 ```
 
-<a id="fn-le"></a>
+---
 
-#### `le(a, b)`
+#### `le(a, b)` {#le}
 
 Check whether `a` is less than or equal to `b`.
 
@@ -308,7 +305,7 @@ Check whether `a` is less than or equal to `b`.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `isLessOrEqual` (`boolean`): True when `a <= b`.
 
@@ -318,9 +315,9 @@ Check whether `a` is less than or equal to `b`.
 le(2, 2) --> true
 ```
 
-<a id="fn-lt"></a>
+---
 
-#### `lt(a, b)`
+#### `lt(a, b)` {#lt}
 
 Check whether `a` is strictly less than `b`.
 
@@ -329,7 +326,7 @@ Check whether `a` is strictly less than `b`.
 - `a` (`number`): Left numeric value.
 - `b` (`number`): Right numeric value.
 
-**Return**:
+**Returns**:
 
 - `isLess` (`boolean`): True when `a < b`.
 
@@ -339,9 +336,9 @@ Check whether `a` is strictly less than `b`.
 lt(1, 2) --> true
 ```
 
-<a id="fn-neq"></a>
+---
 
-#### `neq(a, b)`
+#### `neq(a, b)` {#neq}
 
 Check whether two values are not equal.
 
@@ -350,7 +347,7 @@ Check whether two values are not equal.
 - `a` (`any`): Left value.
 - `b` (`any`): Right value.
 
-**Return**:
+**Returns**:
 
 - `isNotEqual` (`boolean`): True when `a ~= b`.
 
@@ -360,11 +357,11 @@ Check whether two values are not equal.
 neq(1, 2) --> true
 ```
 
+---
+
 ### Logical
 
-<a id="fn-land"></a>
-
-#### `land(a, b)`
+#### `land(a, b)` {#land}
 
 Evaluate `a and b` with Lua short-circuit semantics.
 
@@ -373,9 +370,9 @@ Evaluate `a and b` with Lua short-circuit semantics.
 - `a` (`T1`): First operand.
 - `b` (`T2`): Second operand.
 
-**Return**:
+**Returns**:
 
-- `andValue` (`T1|T2`): Result of `a and b`.
+- `andValue` (`T1` | `T2`): Result of `a and b`.
 
 **Example**:
 
@@ -383,9 +380,9 @@ Evaluate `a and b` with Lua short-circuit semantics.
 land(true, false) --> false
 ```
 
-<a id="fn-lnot"></a>
+---
 
-#### `lnot(a)`
+#### `lnot(a)` {#lnot}
 
 Return the boolean negation of `a`.
 
@@ -393,7 +390,7 @@ Return the boolean negation of `a`.
 
 - `a` (`any`): Input value.
 
-**Return**:
+**Returns**:
 
 - `isNot` (`boolean`): Result of `not a`.
 
@@ -403,9 +400,9 @@ Return the boolean negation of `a`.
 lnot(true) --> false
 ```
 
-<a id="fn-lor"></a>
+---
 
-#### `lor(a, b)`
+#### `lor(a, b)` {#lor}
 
 Evaluate `a or b` with Lua short-circuit semantics.
 
@@ -414,9 +411,9 @@ Evaluate `a or b` with Lua short-circuit semantics.
 - `a` (`T1`): First operand.
 - `b` (`T2`): Second operand.
 
-**Return**:
+**Returns**:
 
-- `orValue` (`T1|T2`): Result of `a or b`.
+- `orValue` (`T1` | `T2`): Result of `a or b`.
 
 **Example**:
 
@@ -424,11 +421,11 @@ Evaluate `a or b` with Lua short-circuit semantics.
 lor(false, true) --> true
 ```
 
+---
+
 ### String & Length
 
-<a id="fn-concat"></a>
-
-#### `concat(a, b)`
+#### `concat(a, b)` {#concat}
 
 Concatenate two strings.
 
@@ -437,7 +434,7 @@ Concatenate two strings.
 - `a` (`string`): Left string.
 - `b` (`string`): Right string.
 
-**Return**:
+**Returns**:
 
 - `concatenated` (`string`): Concatenated result `a .. b`.
 
@@ -447,17 +444,17 @@ Concatenate two strings.
 concat("a", "b") --> "ab"
 ```
 
-<a id="fn-len"></a>
+---
 
-#### `len(a)`
+#### `len(a)` {#len}
 
 Return the length of a string or table using Lua's `#` operator.
 
 **Parameters**:
 
-- `a` (`string|table`): Value supporting Lua's `#` operator.
+- `a` (`string` | `table`): Value supporting Lua's `#` operator.
 
-**Return**:
+**Returns**:
 
 - `length` (`integer`): Length computed by `#a`.
 
@@ -467,11 +464,11 @@ Return the length of a string or table using Lua's `#` operator.
 len("abc") --> 3
 ```
 
+---
+
 ### Tables & Calls
 
-<a id="fn-call"></a>
-
-#### `call(f, ...)`
+#### `call(f, ...)` {#call}
 
 Call a function with variadic arguments and return its result.
 
@@ -480,7 +477,7 @@ Call a function with variadic arguments and return its result.
 - `f` (`fun(...:T1):T2`): Function to call.
 - `...` (`T1`): Additional arguments.
 
-**Return**:
+**Returns**:
 
 - `callResult` (`T2`): Return value(s) from `f(...)`.
 
@@ -490,9 +487,9 @@ Call a function with variadic arguments and return its result.
 call(math.max, 1, 2) --> 2
 ```
 
-<a id="fn-index"></a>
+---
 
-#### `index(t, k)`
+#### `index(t, k)` {#index}
 
 Return the value at key/index `k` in table `t`.
 
@@ -501,7 +498,7 @@ Return the value at key/index `k` in table `t`.
 - `t` (`table`): Source table.
 - `k` (`T`): Key/index value.
 
-**Return**:
+**Returns**:
 
 - `indexedValue` (`T`): Value stored at `t[k]`.
 
@@ -511,9 +508,9 @@ Return the value at key/index `k` in table `t`.
 index({ a = 1 }, "a") --> 1
 ```
 
-<a id="fn-setindex"></a>
+---
 
-#### `setindex(t, k, v)`
+#### `setindex(t, k, v)` {#setindex}
 
 Set `t[k] = v` and return the assigned value.
 
@@ -523,7 +520,7 @@ Set `t[k] = v` and return the assigned value.
 - `k` (`any`): Key/index value.
 - `v` (`T`): Value to set.
 
-**Return**:
+**Returns**:
 
 - `assignedValue` (`T`): Assigned value `v`.
 
@@ -532,3 +529,28 @@ Set `t[k] = v` and return the assigned value.
 ```lua
 setindex({}, "a", 1) --> 1
 ```
+
+<!-- prettier-ignore-start -->
+[`add(a, b)`]: #add
+[`call(f, ...)`]: #call
+[`concat(a, b)`]: #concat
+[`div(a, b)`]: #div
+[`eq(a, b)`]: #eq
+[`ge(a, b)`]: #ge
+[`gt(a, b)`]: #gt
+[`idiv(a, b)`]: #idiv
+[`index(t, k)`]: #index
+[`land(a, b)`]: #land
+[`le(a, b)`]: #le
+[`len(a)`]: #len
+[`lnot(a)`]: #lnot
+[`lor(a, b)`]: #lor
+[`lt(a, b)`]: #lt
+[`mod(a, b)`]: #mod
+[`mul(a, b)`]: #mul
+[`neq(a, b)`]: #neq
+[`pow(a, b)`]: #pow
+[`setindex(t, k, v)`]: #setindex
+[`sub(a, b)`]: #sub
+[`unm(a)`]: #unm
+<!-- prettier-ignore-end -->

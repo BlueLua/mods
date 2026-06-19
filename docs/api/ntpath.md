@@ -1,8 +1,7 @@
 ---
+title: "ntpath"
 description: "Windows/NT-style path operations."
 ---
-
-# `ntpath`
 
 Windows/NT-style path operations.
 
@@ -11,7 +10,7 @@ Windows/NT-style path operations.
 ## Usage
 
 ```lua
-ntpath = require "mods.ntpath"
+ntpath = mods.ntpath
 
 print(ntpath.join([[C:\]], "Users", "me"))    --> "C:\Users\me"
 print(ntpath.normcase([[A/B\C]]))             --> [[a\b\c]]
@@ -19,25 +18,23 @@ print(ntpath.splitdrive([[C:\Users\me]]))     --> "C:", [[\Users\me]]
 print(ntpath.isreserved([[C:\Temp\CON.txt]])) --> true
 ```
 
-> ✨ Same API as `mods.path`, but with Windows/NT path semantics.
+> ✨ Same API as [`mods.path`], but with Windows/NT path semantics.
 
 ## Functions
 
-<a id="fn-expand-percent-vars"></a>
-
-### `_expand_percent_vars(p)`
+### `_expand_percent_vars(p)` {#expand-percent-vars}
 
 Expand percent-style variables in a string. **Parameters**:
 
 - `p` (`string`)
 
-**Return**:
+**Returns**:
 
 - `expanded` (`string`)
 
-<a id="fn-ismount"></a>
+---
 
-### `ismount(path)`
+### `ismount(path)` {#ismount}
 
 Return `true` when `path` points to a mount root.
 
@@ -45,7 +42,7 @@ Return `true` when `path` points to a mount root.
 
 - `path` (`string`): Path to inspect.
 
-**Return**:
+**Returns**:
 
 - `isMount` (`boolean`): `true` if the path resolves to a mount root.
 
@@ -55,9 +52,9 @@ Return `true` when `path` points to a mount root.
 ntpath.ismount([[C:\]]) --> true
 ```
 
-<a id="fn-isreserved"></a>
+---
 
-### `isreserved(path)`
+### `isreserved(path)` {#isreserved}
 
 Return `true` when `path` contains a reserved NT filename.
 
@@ -65,7 +62,7 @@ Return `true` when `path` contains a reserved NT filename.
 
 - `path` (`string`): Path to inspect.
 
-**Return**:
+**Returns**:
 
 - `isReserved` (`boolean`): `true` if any component is NT-reserved.
 
@@ -74,3 +71,7 @@ Return `true` when `path` contains a reserved NT filename.
 ```lua
 ntpath.isreserved([[a\CON.txt]]) --> true
 ```
+
+<!-- prettier-ignore-start -->
+[`mods.path`]: /mods/api/path
+<!-- prettier-ignore-end -->
