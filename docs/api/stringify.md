@@ -1,8 +1,7 @@
 ---
+title: "stringify"
 description: "Render Lua values as readable source-like text."
 ---
-
-# `stringify`
 
 Render Lua values as readable source-like text.
 
@@ -20,9 +19,7 @@ print(stringify(t))
 --> }
 ```
 
-<a id="fn-stringify"></a>
-
-## `stringify(value, opts?)`
+## `stringify(value, opts?)` {#stringify}
 
 Render Lua values as readable source-like text.
 
@@ -33,7 +30,7 @@ Render Lua values as readable source-like text.
   (`{omit_array_keys?:boolean, indent?:string, newline?:string, replacer?:fun(k,v):(result:any)}`):
   Rendering options.
 
-**Return**:
+**Returns**:
 
 - `out` (`string`): Readable string representation.
 

@@ -1,20 +1,18 @@
 ---
+title: "json"
 description: "JSON encoding and decoding helpers."
 ---
-
-# `json`
 
 JSON encoding and decoding helpers.
 
 > [!NOTE]
 >
-> This module aims to implement strict
-> [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) JSON behavior.
+> This module aims to implement strict [RFC 8259] JSON behavior.
 
 ## Usage
 
 ```lua
-local json = require "mods.json"
+local json = mods.json
 
 local encoded = json.encode({ ok = true, value = 42 })
 local decoded = json.decode(encoded)
@@ -103,9 +101,7 @@ assert(json.decode('["\\x"]'))
 
 ## Functions
 
-<a id="fn-decode"></a>
-
-### `decode(s)`
+### `decode(s)` {#decode}
 
 Decode a JSON string into Lua values.
 
@@ -113,10 +109,10 @@ Decode a JSON string into Lua values.
 
 - `s` (`string`): JSON string.
 
-**Return**:
+**Returns**:
 
 - `value` (`any`): Decoded Lua value.
-- `err` (`string?`): Error message when decoding fails.
+- `err?` (`string`): Error message when decoding fails.
 
 **Example**:
 
@@ -127,9 +123,9 @@ print(value.active)            --> true
 print(value.note == json.null) --> true
 ```
 
-<a id="fn-encode"></a>
+---
 
-### `encode(value, opts?)`
+### `encode(value, opts?)` {#encode}
 
 Encode a Lua value as JSON.
 
@@ -138,10 +134,10 @@ Encode a Lua value as JSON.
 - `value` (`any`): Lua value to encode.
 - `opts?` (`{sort_keys?:boolean, indent?:string}`): Encoding options.
 
-**Return**:
+**Returns**:
 
-- `json` (`string?`): JSON string.
-- `err` (`string?`): Error message when encoding fails.
+- `json?` (`string`): JSON string.
+- `err?` (`string`): Error message when encoding fails.
 
 **Example**:
 
@@ -163,3 +159,7 @@ print(s)
 --   ]
 -- }
 ```
+
+<!-- prettier-ignore-start -->
+[RFC 8259]: https://www.rfc-editor.org/rfc/rfc8259
+<!-- prettier-ignore-end -->

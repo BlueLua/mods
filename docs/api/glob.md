@@ -1,15 +1,14 @@
 ---
+title: "glob"
 description: "Glob-style matching and filesystem expansion helpers."
 ---
-
-# `glob`
 
 Glob-style matching and filesystem expansion helpers.
 
 ## Usage
 
 ```lua
-glob = require "mods.glob"
+glob = mods.glob
 
 print(glob.match("src/mods/fs.lua", "**/*.lua")) --> true
 print(glob.match("DATA.TXT", "*.txt", true))     --> true
@@ -59,21 +58,19 @@ print(glob.glob("src", "*.lua")[1])
 
 **Glob Operations**:
 
-| Function                                            | Description                                                 |
-| --------------------------------------------------- | ----------------------------------------------------------- |
-| [`escape(s)`](#fn-escape)                           | Escape glob metacharacters in a literal string.             |
-| [`filter(names, pattern, ignorecase?)`](#fn-filter) | Return the values from `names` that match the glob pattern. |
-| [`glob(path, pattern?, opts?)`](#fn-glob)           | Return glob matches under `path`.                           |
-| [`has_magic(s)`](#fn-has-magic)                     | Return whether a pattern contains glob metacharacters.      |
-| [`iglob(path, pattern?, opts?)`](#fn-iglob)         | Iterator over glob matches under `path`.                    |
-| [`match(path, pattern, ignorecase?)`](#fn-match)    | Match a path against a glob pattern.                        |
-| [`translate(pattern)`](#fn-translate)               | Translate one glob segment into an equivalent Lua pattern.  |
+| Function                                | Description                                                 |
+| --------------------------------------- | ----------------------------------------------------------- |
+| [`escape(s)`]                           | Escape glob metacharacters in a literal string.             |
+| [`filter(names, pattern, ignorecase?)`] | Return the values from `names` that match the glob pattern. |
+| [`glob(path, pattern?, opts?)`]         | Return glob matches under `path`.                           |
+| [`has_magic(s)`]                        | Return whether a pattern contains glob metacharacters.      |
+| [`iglob(path, pattern?, opts?)`]        | Iterator over glob matches under `path`.                    |
+| [`match(path, pattern, ignorecase?)`]   | Match a path against a glob pattern.                        |
+| [`translate(pattern)`]                  | Translate one glob segment into an equivalent Lua pattern.  |
 
 ### Glob Operations
 
-<a id="fn-escape"></a>
-
-#### `escape(s)`
+#### `escape(s)` {#escape}
 
 Escape glob metacharacters in a literal string.
 
@@ -81,7 +78,7 @@ Escape glob metacharacters in a literal string.
 
 - `s` (`string`): Input literal string.
 
-**Return**:
+**Returns**:
 
 - `pattern` (`string`): Escaped glob pattern.
 
@@ -91,9 +88,9 @@ Escape glob metacharacters in a literal string.
 glob.escape("a*b") --> "a\\*b"
 ```
 
-<a id="fn-filter"></a>
+---
 
-#### `filter(names, pattern, ignorecase?)`
+#### `filter(names, pattern, ignorecase?)` {#filter}
 
 Return the values from `names` that match the glob pattern.
 
@@ -103,9 +100,9 @@ Return the values from `names` that match the glob pattern.
 - `pattern` (`string`): Input glob pattern.
 - `ignorecase?` (`boolean`): Override platform-default case matching.
 
-**Return**:
+**Returns**:
 
-- `matches` (`mods.List<string>`): Matching values from `names`.
+- `matches` ([`mods.List`]`<string>`): Matching values from `names`.
 
 **Example**:
 
@@ -113,9 +110,9 @@ Return the values from `names` that match the glob pattern.
 glob.filter({ "a.lua", "b.txt", "c.lua" }, "*.lua") --> { "a.lua", "c.lua" }
 ```
 
-<a id="fn-glob"></a>
+---
 
-#### `glob(path, pattern?, opts?)`
+#### `glob(path, pattern?, opts?)` {#glob}
 
 Return glob matches under `path`.
 
@@ -130,13 +127,11 @@ Return glob matches under `path`.
 
 - `path` (`string`): Input path.
 - `pattern?` (`string`): Optional pattern to match.
-- `opts?`
-  (`{hidden?:boolean, recursive?:boolean, follow?:boolean, ignorecase?:boolean}`):
-  Optional glob options.
+- `opts?` ([`mods.GlobOptions`]): Optional glob options.
 
-**Return**:
+**Returns**:
 
-- `paths` (`mods.List<string>`): Matching paths under `path`.
+- `paths` ([`mods.List`]`<string>`): Matching paths under `path`.
 
 **Example**:
 
@@ -145,9 +140,9 @@ glob.glob("src", "*.lua")
 glob.glob("src", "*.lua", { recursive = true })
 ```
 
-<a id="fn-has-magic"></a>
+---
 
-#### `has_magic(s)`
+#### `has_magic(s)` {#has-magic}
 
 Return whether a pattern contains glob metacharacters.
 
@@ -155,7 +150,7 @@ Return whether a pattern contains glob metacharacters.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `has_magic` (`boolean`): True when the string contains glob syntax.
 
@@ -166,9 +161,9 @@ glob.has_magic("foo.txt") --> false
 glob.has_magic("*.txt")   --> true
 ```
 
-<a id="fn-iglob"></a>
+---
 
-#### `iglob(path, pattern?, opts?)`
+#### `iglob(path, pattern?, opts?)` {#iglob}
 
 Iterator over glob matches under `path`.
 
@@ -183,13 +178,11 @@ Iterator over glob matches under `path`.
 
 - `path` (`string`): Input path.
 - `pattern?` (`string`): Optional pattern to match.
-- `opts?`
-  (`{hidden?:boolean, recursive?:boolean, follow?:boolean, ignorecase?:boolean}`):
-  Optional glob options.
+- `opts?` ([`mods.GlobOptions`]): Optional glob options.
 
-**Return**:
+**Returns**:
 
-- `iterator` (`(fun(state:table, prev?:string): (path:string?))`): Iterator
+- `iterator` (`(fun(state:table, prev?:string): (path?: string))`): Iterator
   function.
 - `state` (`table`): Iterator state table.
 - `initial` (`nil`): Initial iterator value.
@@ -202,9 +195,9 @@ for path in glob.iglob("src", "*.lua") do
 end
 ```
 
-<a id="fn-match"></a>
+---
 
-#### `match(path, pattern, ignorecase?)`
+#### `match(path, pattern, ignorecase?)` {#match}
 
 Match a path against a glob pattern.
 
@@ -214,7 +207,7 @@ Match a path against a glob pattern.
 - `pattern` (`string`): Input glob pattern.
 - `ignorecase?` (`boolean`): Override platform-default case matching.
 
-**Return**:
+**Returns**:
 
 - `matches` (`boolean`): True when the path matches the pattern.
 
@@ -224,9 +217,9 @@ Match a path against a glob pattern.
 glob.match("src/mods/fs.lua", "**/*.lua") --> true
 ```
 
-<a id="fn-translate"></a>
+---
 
-#### `translate(pattern)`
+#### `translate(pattern)` {#translate}
 
 Translate one glob segment into an equivalent Lua pattern.
 
@@ -234,7 +227,7 @@ Translate one glob segment into an equivalent Lua pattern.
 
 - `pattern` (`string`): Input glob segment.
 
-**Return**:
+**Returns**:
 
 - `lua_pattern` (`string`): Lua pattern string.
 
@@ -265,3 +258,15 @@ print(matches == translated_matches) --> true
 >   print(("src/x.lua"):match(glob.translate(pattern))) --> nil
 >   print(glob.match("src/x.lua", pattern))             --> true
 >   ```
+
+<!-- prettier-ignore-start -->
+[`escape(s)`]: #escape
+[`filter(names, pattern, ignorecase?)`]: #filter
+[`glob(path, pattern?, opts?)`]: #glob
+[`has_magic(s)`]: #has-magic
+[`iglob(path, pattern?, opts?)`]: #iglob
+[`match(path, pattern, ignorecase?)`]: #match
+[`mods.GlobOptions`]: /mods/types#mods-globoptions
+[`mods.List`]: /mods/api/list
+[`translate(pattern)`]: #translate
+<!-- prettier-ignore-end -->

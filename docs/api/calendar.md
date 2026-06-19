@@ -1,10 +1,9 @@
 ---
-description: "Calendar and date helpers."
+title: "calendar"
+description: "Calculate weekday alignments, leap years, and month lengths."
 ---
 
-# `calendar`
-
-Calendar and date helpers.
+Calculate weekday alignments, leap years, and month lengths.
 
 > [!WARNING]
 >
@@ -14,49 +13,86 @@ Calendar and date helpers.
 ## Usage
 
 ```lua
-cal = require "mods.calendar"
+cal = mods.calendar
 
 print(cal.weekday(2026, 3, 26)) --> 4
 ```
 
+## Fields
+
+### `days` ([`mods.List`]`<string>`) {#days}
+
+Weekday names indexed from `1` (Monday) to `7` (Sunday).
+
+```lua
+print(cal.days[1]) --> Monday
+print(cal.days[7]) --> Sunday
+```
+
+---
+
+### `firstweekday` ([`mods.CalendarWeekday`]) {#firstweekday}
+
+The default first weekday field.
+
+```lua
+print(cal.firstweekday) --> 1
+cal.firstweekday = cal.SUNDAY
+print(cal.firstweekday) --> 7
+```
+
+> [!NOTE]
+>
+> Reading or writing this property is equivalent to calling `getfirstweekday()`
+> or `setfirstweekday()`.
+
+---
+
+### `months` ([`mods.List`]`<string>`) {#months}
+
+Month names indexed from `1` to `12`.
+
+```lua
+print(cal.months[1])  --> January
+print(cal.months[12]) --> December
+```
+
 ## Functions
 
-| Function                                               | Description                       |
-| ------------------------------------------------------ | --------------------------------- |
-| [`getfirstweekday()`](#fn-getfirstweekday)             | Return the default first weekday. |
-| [`setfirstweekday(firstweekday)`](#fn-setfirstweekday) | Set the default first weekday.    |
+| Function                          | Description                       |
+| --------------------------------- | --------------------------------- |
+| [`getfirstweekday()`]             | Return the default first weekday. |
+| [`setfirstweekday(firstweekday)`] | Set the default first weekday.    |
 
 **Calendar Calculations**:
 
-| Function                                    | Description                                                             |
-| ------------------------------------------- | ----------------------------------------------------------------------- |
-| [`isleap(year)`](#fn-isleap)                | Return `true` for leap years.                                           |
-| [`leapdays(y1, y2)`](#fn-leapdays)          | Return the number of leap years from `y1` up to but not including `y2`. |
-| [`monthrange(year, month)`](#fn-monthrange) | Return the first weekday and number of days for a month.                |
-| [`weekday(year, month, day)`](#fn-weekday)  | Return weekday number where Monday is `1` and Sunday is `7`.            |
+| Function                      | Description                                                             |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| [`isleap(year)`]              | Return `true` for leap years.                                           |
+| [`leapdays(y1, y2)`]          | Return the number of leap years from `y1` up to but not including `y2`. |
+| [`monthrange(year, month)`]   | Return the first weekday and number of days for a month.                |
+| [`weekday(year, month, day)`] | Return weekday number where Monday is `1` and Sunday is `7`.            |
 
 **Formatting**:
 
-| Function                                              | Description                                 |
-| ----------------------------------------------------- | ------------------------------------------- |
-| [`weekheader(width?, firstweekday?)`](#fn-weekheader) | Return the formatted weekday header string. |
+| Function                              | Description                                 |
+| ------------------------------------- | ------------------------------------------- |
+| [`weekheader(width?, firstweekday?)`] | Return the formatted weekday header string. |
 
 **Iterators**:
 
-| Function                                                 | Description                                                            |
-| -------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [`monthdays(year, month, firstweekday?)`](#fn-monthdays) | Iterate `(year, month, day, weekday)` tuples for a full calendar grid. |
-| [`weekdays(firstweekday?)`](#fn-weekdays)                | Iterate weekday numbers for one full week.                             |
+| Function                                  | Description                                                            |
+| ----------------------------------------- | ---------------------------------------------------------------------- |
+| [`monthdays(year, month, firstweekday?)`] | Iterate `(year, month, day, weekday)` tuples for a full calendar grid. |
+| [`weekdays(firstweekday?)`]               | Iterate weekday numbers for one full week.                             |
 
-<a id="fn-getfirstweekday"></a>
-
-### `getfirstweekday()`
+### `getfirstweekday()` {#getfirstweekday}
 
 Return the default first weekday.
 
-**Return**:
+**Returns**:
 
-- `firstweekday` (`1|2|3|4|5|6|7`)
+- `firstweekday` ([`mods.CalendarWeekday`]): Monday
 
 **Example**:
 
@@ -69,15 +105,15 @@ print(cal.getfirstweekday()) --> 1
 >
 > This returns the same value as `cal.firstweekday`.
 
-<a id="fn-setfirstweekday"></a>
+---
 
-### `setfirstweekday(firstweekday)`
+### `setfirstweekday(firstweekday)` {#setfirstweekday}
 
 Set the default first weekday.
 
 **Parameters**:
 
-- `firstweekday` (`1|2|3|4|5|6|7`)
+- `firstweekday` ([`mods.CalendarWeekday`]): Monday
 
 **Example**:
 
@@ -90,11 +126,11 @@ cal.setfirstweekday(cal.SUNDAY)
 >
 > This updates the same value as `cal.firstweekday = ...`.
 
+---
+
 ### Calendar Calculations
 
-<a id="fn-isleap"></a>
-
-#### `isleap(year)`
+#### `isleap(year)` {#isleap}
 
 Return `true` for leap years.
 
@@ -102,7 +138,7 @@ Return `true` for leap years.
 
 - `year` (`integer`)
 
-**Return**:
+**Returns**:
 
 - `isLeap` (`boolean`)
 
@@ -113,9 +149,9 @@ local cal = mods.calendar
 print(cal.isleap(2024)) --> true
 ```
 
-<a id="fn-leapdays"></a>
+---
 
-#### `leapdays(y1, y2)`
+#### `leapdays(y1, y2)` {#leapdays}
 
 Return the number of leap years from `y1` up to but not including `y2`.
 
@@ -124,7 +160,7 @@ Return the number of leap years from `y1` up to but not including `y2`.
 - `y1` (`integer`)
 - `y2` (`integer`)
 
-**Return**:
+**Returns**:
 
 - `count` (`integer`)
 
@@ -135,9 +171,9 @@ local cal = mods.calendar
 print(cal.leapdays(2000, 2025)) --> 7
 ```
 
-<a id="fn-monthrange"></a>
+---
 
-#### `monthrange(year, month)`
+#### `monthrange(year, month)` {#monthrange}
 
 Return the first weekday and number of days for a month.
 
@@ -146,9 +182,9 @@ Return the first weekday and number of days for a month.
 - `year` (`integer`)
 - `month` (`integer`)
 
-**Return**:
+**Returns**:
 
-- `weekday` (`1|2|3|4|5|6|7`)
+- `weekday` ([`mods.CalendarWeekday`]): Monday
 - `ndays` (`integer`)
 
 **Example**:
@@ -159,22 +195,21 @@ wday, ndays = cal.monthrange(2026, 2)
 print(wday, ndays) --> 7 28
 ```
 
-<a id="fn-weekday"></a>
+---
 
-#### `weekday(year, month, day)`
+#### `weekday(year, month, day)` {#weekday}
 
 Return weekday number where Monday is `1` and Sunday is `7`.
 
 **Parameters**:
 
 - `year` (`integer`)
-- `month` (`1|2|3|4|5|6|7|8|9|10|11|12`)
-- `day`
-  (`1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31`)
+- `month` ([`mods.CalendarMonth`]): January
+- `day` ([`mods.modsCalendarMonthday`]): 1st day of the month
 
-**Return**:
+**Returns**:
 
-- `weekday` (`1|2|3|4|5|6|7`)
+- `weekday` ([`mods.CalendarWeekday`]): Monday
 
 **Example**:
 
@@ -183,20 +218,20 @@ local cal = mods.calendar
 print(cal.weekday(2026, 3, 26)) --> 4
 ```
 
+---
+
 ### Formatting
 
-<a id="fn-weekheader"></a>
-
-#### `weekheader(width?, firstweekday?)`
+#### `weekheader(width?, firstweekday?)` {#weekheader}
 
 Return the formatted weekday header string.
 
 **Parameters**:
 
 - `width?` (`integer`)
-- `firstweekday?` (`1|2|3|4|5|6|7`)
+- `firstweekday?` ([`mods.CalendarWeekday`]): Monday
 
-**Return**:
+**Returns**:
 
 - `header` (`string`)
 
@@ -210,24 +245,24 @@ print(cal.weekheader(2, cal.SUNDAY)) --> "Su Mo Tu We Th Fr Sa"
 print(cal.weekheader(3, cal.SUNDAY)) --> "Sun Mon Tue Wed Thu Fri Sat"
 ```
 
+---
+
 ### Iterators
 
-<a id="fn-monthdays"></a>
-
-#### `monthdays(year, month, firstweekday?)`
+#### `monthdays(year, month, firstweekday?)` {#monthdays}
 
 Iterate `(year, month, day, weekday)` tuples for a full calendar grid.
 
 **Parameters**:
 
 - `year` (`integer`)
-- `month` (`1|2|3|4|5|6|7|8|9|10|11|12`)
-- `firstweekday?` (`1|2|3|4|5|6|7`)
+- `month` ([`mods.CalendarMonth`]): January
+- `firstweekday?` ([`mods.CalendarWeekday`]): Monday
 
-**Return**:
+**Returns**:
 
 - `iter`
-  (`fun():year:integer,month:modsCalendarMonth,day:modsCalendarMonthday,weekday:modsCalendarWeekday`)
+  (`fun():year:integer,month:`[`mods.CalendarMonth`]`,day:`[`mods.modsCalendarMonthday`]`,weekday:`[`mods.CalendarWeekday`])
 
 **Example**:
 
@@ -261,19 +296,19 @@ print(lines:join("\n"))
 -- 23 24 25 26 27 28
 ```
 
-<a id="fn-weekdays"></a>
+---
 
-#### `weekdays(firstweekday?)`
+#### `weekdays(firstweekday?)` {#weekdays}
 
 Iterate weekday numbers for one full week.
 
 **Parameters**:
 
-- `firstweekday?` (`1|2|3|4|5|6|7`)
+- `firstweekday?` ([`mods.CalendarWeekday`]): Monday
 
-**Return**:
+**Returns**:
 
-- `iter` (`fun():modsCalendarWeekday`)
+- `iter` (`fun():`[`mods.CalendarWeekday`])
 
 **Example**:
 
@@ -286,43 +321,18 @@ end
 print(table.concat(weekdays, ", ")) --> "1, 2, 3, 4, 5, 6, 7"
 ```
 
-## Fields
-
-<a id="days"></a>
-
-### `days` (`mods.List<string>`)
-
-Weekday names indexed from `1` (Monday) to `7` (Sunday).
-
-```lua
-print(cal.days[1]) --> Monday
-print(cal.days[7]) --> Sunday
-```
-
-<a id="firstweekday"></a>
-
-### `firstweekday` (`1|2|3|4|5|6|7`)
-
-The default first weekday field.
-
-```lua
-print(cal.firstweekday) --> 1
-cal.firstweekday = cal.SUNDAY
-print(cal.firstweekday) --> 7
-```
-
-> [!NOTE]
->
-> Reading or writing this property is equivalent to calling `getfirstweekday()`
-> or `setfirstweekday()`.
-
-<a id="months"></a>
-
-### `months` (`mods.List<string>`)
-
-Month names indexed from `1` to `12`.
-
-```lua
-print(cal.months[1])  --> January
-print(cal.months[12]) --> December
-```
+<!-- prettier-ignore-start -->
+[`getfirstweekday()`]: #getfirstweekday
+[`isleap(year)`]: #isleap
+[`leapdays(y1, y2)`]: #leapdays
+[`mods.CalendarMonth`]: /mods/types#mods-calendarmonth
+[`mods.CalendarWeekday`]: /mods/types#mods-calendarweekday
+[`mods.List`]: /mods/api/list
+[`mods.modsCalendarMonthday`]: /mods/types#mods-modscalendarmonthday
+[`monthdays(year, month, firstweekday?)`]: #monthdays
+[`monthrange(year, month)`]: #monthrange
+[`setfirstweekday(firstweekday)`]: #setfirstweekday
+[`weekday(year, month, day)`]: #weekday
+[`weekdays(firstweekday?)`]: #weekdays
+[`weekheader(width?, firstweekday?)`]: #weekheader
+<!-- prettier-ignore-end -->

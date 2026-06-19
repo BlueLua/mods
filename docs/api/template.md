@@ -1,15 +1,14 @@
 ---
-description: "String template rendering with <code v-pre>{{."
+title: "template"
+description: "String template rendering with {{."
 ---
-
-# `template`
 
 String template rendering with <code v-pre>{{...}}</code> placeholders.
 
 ## Usage
 
 ```lua
-template = require "mods.template"
+template = mods.template
 
 view = {
   user = { name = "Ada" },
@@ -18,9 +17,7 @@ view = {
 out = template("Hello {{user.name}}!", view) --> "Hello Ada!"
 ```
 
-<a id="fn-template"></a>
-
-## `template(tmpl, view)`
+## `template(tmpl, view)` {#template}
 
 Render string templates with <code v-pre>{{...}}</code> placeholders.
 
@@ -29,7 +26,7 @@ Render string templates with <code v-pre>{{...}}</code> placeholders.
 - `tmpl` (`string`): Template string with placeholders.
 - `view` (`table`): Input data used to resolve placeholders.
 
-**Return**:
+**Returns**:
 
 - `out` (`string`): Rendered output string.
 
@@ -85,7 +82,7 @@ template("Hi {{name_func}}", view) --> "Hi Ada"
 
 ## Table Values
 
-Table placeholders are rendered using `mods.stringify`.
+Table placeholders are rendered using [`mods.stringify`].
 
 ```lua
 view = { data = { a = 1, b = true } }
@@ -121,3 +118,7 @@ as-is.
 view = { name = "Ada" }
 template("Hi {{name", view) --> "Hi {{name"
 ```
+
+<!-- prettier-ignore-start -->
+[`mods.stringify`]: /mods/api/stringify
+<!-- prettier-ignore-end -->

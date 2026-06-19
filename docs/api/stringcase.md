@@ -1,15 +1,14 @@
 ---
+title: "stringcase"
 description: "String case conversion and word splitting."
 ---
-
-# `stringcase`
 
 String case conversion and word splitting.
 
 ## Usage
 
 ```lua
-stringcase = require "mods.stringcase"
+stringcase = mods.stringcase
 
 print(stringcase.snake("FooBar")) --> "foo_bar"
 ```
@@ -18,40 +17,38 @@ print(stringcase.snake("FooBar")) --> "foo_bar"
 
 **Basic**:
 
-| Function                | Description                      |
-| ----------------------- | -------------------------------- |
-| [`lower(s)`](#fn-lower) | Convert string to all lowercase. |
-| [`upper(s)`](#fn-upper) | Convert string to all uppercase. |
+| Function     | Description                      |
+| ------------ | -------------------------------- |
+| [`lower(s)`] | Convert string to all lowercase. |
+| [`upper(s)`] | Convert string to all uppercase. |
 
 **Letter Case**:
 
-| Function                          | Description                                                               |
-| --------------------------------- | ------------------------------------------------------------------------- |
-| [`capitalize(s)`](#fn-capitalize) | Capitalize the first letter and lowercase the rest.                       |
-| [`sentence(s)`](#fn-sentence)     | Convert string to sentence case (first letter uppercase, rest unchanged). |
-| [`swapcase(s)`](#fn-swapcase)     | Swap case of each letter.                                                 |
+| Function          | Description                                                               |
+| ----------------- | ------------------------------------------------------------------------- |
+| [`capitalize(s)`] | Capitalize the first letter and lowercase the rest.                       |
+| [`sentence(s)`]   | Convert string to sentence case (first letter uppercase, rest unchanged). |
+| [`swapcase(s)`]   | Swap case of each letter.                                                 |
 
 **Word Case**:
 
-| Function                          | Description                                                           |
-| --------------------------------- | --------------------------------------------------------------------- |
-| [`acronym(s)`](#fn-acronym)       | Get acronym of words in string (first letters only).                  |
-| [`camel(s)`](#fn-camel)           | Convert string to camelCase.                                          |
-| [`constant(s)`](#fn-constant)     | Convert string to CONSTANT_CASE (uppercase snake_case).               |
-| [`delimit(s, sep?)`](#fn-delimit) | Normalize to snake_case, then delimit words with a separator.         |
-| [`dot(s)`](#fn-dot)               | Convert string to dot.case.                                           |
-| [`kebab(s)`](#fn-kebab)           | Convert string to kebab-case.                                         |
-| [`pascal(s)`](#fn-pascal)         | Convert string to PascalCase.                                         |
-| [`path(s)`](#fn-path)             | Convert string to path/case (slashes between words).                  |
-| [`snake(s)`](#fn-snake)           | Convert string to snake_case.                                         |
-| [`space(s)`](#fn-space)           | Convert string to space case (spaces between words).                  |
-| [`title(s)`](#fn-title)           | Convert string to Title Case (first letter of each word capitalized). |
+| Function             | Description                                                           |
+| -------------------- | --------------------------------------------------------------------- |
+| [`acronym(s)`]       | Get acronym of words in string (first letters only).                  |
+| [`camel(s)`]         | Convert string to camelCase.                                          |
+| [`constant(s)`]      | Convert string to CONSTANT_CASE (uppercase snake_case).               |
+| [`delimit(s, sep?)`] | Normalize to snake_case, then delimit words with a separator.         |
+| [`dot(s)`]           | Convert string to dot.case.                                           |
+| [`kebab(s)`]         | Convert string to kebab-case.                                         |
+| [`pascal(s)`]        | Convert string to PascalCase.                                         |
+| [`path(s)`]          | Convert string to path/case (slashes between words).                  |
+| [`snake(s)`]         | Convert string to snake_case.                                         |
+| [`space(s)`]         | Convert string to space case (spaces between words).                  |
+| [`title(s)`]         | Convert string to Title Case (first letter of each word capitalized). |
 
 ### Basic
 
-<a id="fn-lower"></a>
-
-#### `lower(s)`
+#### `lower(s)` {#lower}
 
 Convert string to all lowercase.
 
@@ -59,7 +56,7 @@ Convert string to all lowercase.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `lowercased` (`string`): Lowercased string.
 
@@ -70,9 +67,9 @@ lower("foo_bar-baz") --> "foo_bar-baz"
 lower("FooBar baz")  --> "foobar baz"
 ```
 
-<a id="fn-upper"></a>
+---
 
-#### `upper(s)`
+#### `upper(s)` {#upper}
 
 Convert string to all uppercase.
 
@@ -80,7 +77,7 @@ Convert string to all uppercase.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `uppercased` (`string`): Uppercased string.
 
@@ -91,11 +88,11 @@ upper("foo_bar-baz") --> "FOO_BAR-BAZ"
 upper("FooBar baz")  --> "FOOBAR BAZ"
 ```
 
+---
+
 ### Letter Case
 
-<a id="fn-capitalize"></a>
-
-#### `capitalize(s)`
+#### `capitalize(s)` {#capitalize}
 
 Capitalize the first letter and lowercase the rest.
 
@@ -103,7 +100,7 @@ Capitalize the first letter and lowercase the rest.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `capitalized` (`string`): Capitalized string.
 
@@ -114,9 +111,9 @@ capitalize("foo_bar-baz") --> "Foo_bar-baz"
 capitalize("FooBar baz")  --> "Foobar baz"
 ```
 
-<a id="fn-sentence"></a>
+---
 
-#### `sentence(s)`
+#### `sentence(s)` {#sentence}
 
 Convert string to sentence case (first letter uppercase, rest unchanged).
 
@@ -124,7 +121,7 @@ Convert string to sentence case (first letter uppercase, rest unchanged).
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `sentenceCased` (`string`): Sentence-cased string.
 
@@ -135,9 +132,9 @@ sentence("foo_bar-baz") --> "Foo_bar-baz"
 sentence("FooBar baz")  --> "FooBar baz"
 ```
 
-<a id="fn-swapcase"></a>
+---
 
-#### `swapcase(s)`
+#### `swapcase(s)` {#swapcase}
 
 Swap case of each letter.
 
@@ -145,7 +142,7 @@ Swap case of each letter.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `swapCased` (`string`): Swap-cased string.
 
@@ -156,11 +153,11 @@ swapcase("foo_bar-baz") --> "FOO_BAR-BAZ"
 swapcase("FooBar baz")  --> "fOObAR BAZ"
 ```
 
+---
+
 ### Word Case
 
-<a id="fn-acronym"></a>
-
-#### `acronym(s)`
+#### `acronym(s)` {#acronym}
 
 Get acronym of words in string (first letters only).
 
@@ -168,7 +165,7 @@ Get acronym of words in string (first letters only).
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `acronym` (`string`): Acronym string.
 
@@ -179,9 +176,9 @@ acronym("foo_bar-baz") --> "FBB"
 acronym("FooBar baz")  --> "FBB"
 ```
 
-<a id="fn-camel"></a>
+---
 
-#### `camel(s)`
+#### `camel(s)` {#camel}
 
 Convert string to camelCase.
 
@@ -189,7 +186,7 @@ Convert string to camelCase.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `camelCased` (`string`): Camel-cased string.
 
@@ -200,9 +197,9 @@ camel("foo_bar-baz") --> "fooBarBaz"
 camel("FooBar baz")  --> "fooBarBaz"
 ```
 
-<a id="fn-constant"></a>
+---
 
-#### `constant(s)`
+#### `constant(s)` {#constant}
 
 Convert string to CONSTANT_CASE (uppercase snake_case).
 
@@ -210,7 +207,7 @@ Convert string to CONSTANT_CASE (uppercase snake_case).
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `constantCased` (`string`): Constant-cased string.
 
@@ -221,9 +218,9 @@ constant("foo_bar-baz") --> "FOO_BAR_BAZ"
 constant("FooBar baz")  --> "FOO_BAR_BAZ"
 ```
 
-<a id="fn-delimit"></a>
+---
 
-#### `delimit(s, sep?)`
+#### `delimit(s, sep?)` {#delimit}
 
 Normalize to snake_case, then delimit words with a separator.
 
@@ -232,7 +229,7 @@ Normalize to snake_case, then delimit words with a separator.
 - `s` (`string`): Input string.
 - `sep?` (`string`): Optional separator value (defaults to `""`).
 
-**Return**:
+**Returns**:
 
 - `delimited` (`string`): String with normalized words separated by `sep`.
 
@@ -243,9 +240,9 @@ delimit("foo_bar-baz", "-") --> "foo-bar-baz"
 delimit("FooBar baz", "-")  --> "foo-bar-baz"
 ```
 
-<a id="fn-dot"></a>
+---
 
-#### `dot(s)`
+#### `dot(s)` {#dot}
 
 Convert string to dot.case.
 
@@ -253,7 +250,7 @@ Convert string to dot.case.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `dotCased` (`string`): Dot-cased string.
 
@@ -264,9 +261,9 @@ dot("foo_bar-baz") --> "foo.bar.baz"
 dot("FooBar baz")  --> "foo.bar.baz"
 ```
 
-<a id="fn-kebab"></a>
+---
 
-#### `kebab(s)`
+#### `kebab(s)` {#kebab}
 
 Convert string to kebab-case.
 
@@ -274,7 +271,7 @@ Convert string to kebab-case.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `kebabCased` (`string`): Kebab-cased string.
 
@@ -285,9 +282,9 @@ kebab("foo_bar-baz") --> "foo-bar-baz"
 kebab("FooBar baz")  --> "foo-bar-baz"
 ```
 
-<a id="fn-pascal"></a>
+---
 
-#### `pascal(s)`
+#### `pascal(s)` {#pascal}
 
 Convert string to PascalCase.
 
@@ -295,7 +292,7 @@ Convert string to PascalCase.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `pascalCased` (`string`): Pascal-cased string.
 
@@ -306,9 +303,9 @@ pascal("foo_bar-baz") --> "FooBarBaz"
 pascal("FooBar baz")  --> "FooBarBaz"
 ```
 
-<a id="fn-path"></a>
+---
 
-#### `path(s)`
+#### `path(s)` {#path}
 
 Convert string to path/case (slashes between words).
 
@@ -316,7 +313,7 @@ Convert string to path/case (slashes between words).
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `pathCased` (`string`): Path-cased string.
 
@@ -327,9 +324,9 @@ path("foo_bar-baz") --> "foo/bar/baz"
 path("FooBar baz")  --> "foo/bar/baz"
 ```
 
-<a id="fn-snake"></a>
+---
 
-#### `snake(s)`
+#### `snake(s)` {#snake}
 
 Convert string to snake_case.
 
@@ -337,7 +334,7 @@ Convert string to snake_case.
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `snakeCased` (`string`): Snake-cased string.
 
@@ -348,9 +345,9 @@ snake("foo_bar-baz") --> "foo_bar_baz"
 snake("FooBar baz")  --> "foo_bar_baz"
 ```
 
-<a id="fn-space"></a>
+---
 
-#### `space(s)`
+#### `space(s)` {#space}
 
 Convert string to space case (spaces between words).
 
@@ -358,7 +355,7 @@ Convert string to space case (spaces between words).
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `spaceCased` (`string`): Space-cased string.
 
@@ -369,9 +366,9 @@ space("foo_bar-baz") --> "foo bar baz"
 space("FooBar baz")  --> "foo bar baz"
 ```
 
-<a id="fn-title"></a>
+---
 
-#### `title(s)`
+#### `title(s)` {#title}
 
 Convert string to Title Case (first letter of each word capitalized).
 
@@ -379,7 +376,7 @@ Convert string to Title Case (first letter of each word capitalized).
 
 - `s` (`string`): Input string.
 
-**Return**:
+**Returns**:
 
 - `titleCased` (`string`): Title-cased string.
 
@@ -389,3 +386,22 @@ Convert string to Title Case (first letter of each word capitalized).
 title("foo_bar-baz") --> "Foo Bar Baz"
 title("FooBar baz")  --> "Foo Bar Baz"
 ```
+
+<!-- prettier-ignore-start -->
+[`acronym(s)`]: #acronym
+[`camel(s)`]: #camel
+[`capitalize(s)`]: #capitalize
+[`constant(s)`]: #constant
+[`delimit(s, sep?)`]: #delimit
+[`dot(s)`]: #dot
+[`kebab(s)`]: #kebab
+[`lower(s)`]: #lower
+[`pascal(s)`]: #pascal
+[`path(s)`]: #path
+[`sentence(s)`]: #sentence
+[`snake(s)`]: #snake
+[`space(s)`]: #space
+[`swapcase(s)`]: #swapcase
+[`title(s)`]: #title
+[`upper(s)`]: #upper
+<!-- prettier-ignore-end -->
