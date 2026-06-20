@@ -1,6 +1,11 @@
 ---@meta mods.glob
 
----@alias mods.GlobOptions {hidden?:boolean, recursive?:boolean, follow?:boolean, ignorecase?:boolean}
+---Options for glob matching and directory traversal.
+---@class mods.globOptions
+---@field hidden?     boolean Whether to include hidden files/directories.
+---@field recursive?  boolean Whether to traverse directories recursively.
+---@field follow?     boolean Whether to follow symbolic links.
+---@field ignorecase? boolean Whether to perform case-insensitive matching.
 
 ---
 ---Glob-style matching and filesystem expansion helpers.
@@ -8,10 +13,11 @@
 ---## Usage
 ---
 ---```lua
----glob = mods.glob
+---local mods = require "mods"
+---local glob = mods.glob
 ---
----print(glob.match("src/mods/fs.lua", "**/*.lua")) --> true
----print(glob.match("DATA.TXT", "*.txt", true))     --> true
+---print(glob.match("src/mods/fs.lua", "**/*.lua"))     --> true
+---print(glob.match("DATA.TXT", "*.txt", true))         --> true
 ---print(glob.filter({ "a.lua", "b.txt" }, "*.lua")[1]) --> "a.lua"
 ---print(glob.glob("src", "*.lua")[1])
 ---```
@@ -151,35 +157,21 @@ function M.filter(names, pattern, ignorecase) end
 ---
 ---Return glob matches under `path`.
 ---
----**Options**:
----
----* `hidden`: include hidden paths; defaults to `true`.
----* `recursive`: recurse into subdirectories; defaults to `false`.
----* `follow`: recurse into symlinked directories; defaults to `false`.
----* `ignorecase`: use case-insensitive matching; defaults to platform semantics.
----
 ---```lua
----glob.glob("src", "*.lua")
----glob.glob("src", "*.lua", { recursive = true })
+---print(glob.glob("src", "*.lua"))
+---print(glob.glob("src", "*.lua", { recursive = true }))
 ---```
 ---
 ---@section Glob Operations
 ---@param path string Input path.
 ---@param pattern? string Optional pattern to match.
----@param opts? mods.GlobOptions Optional glob options.
+---@param opts? mods.globOptions Optional glob options.
 ---@return mods.List<string> paths Matching paths under `path`.
 ---@nodiscard
 function M.glob(path, pattern, opts) end
 
 ---
 ---Iterator over glob matches under `path`.
----
----**Options**:
----
----* `hidden`: include hidden paths; defaults to `true`.
----* `recursive`: recurse into subdirectories; defaults to `false`.
----* `follow`: recurse into symlinked directories; defaults to `false`.
----* `ignorecase`: use case-insensitive matching; defaults to platform semantics.
 ---
 ---```lua
 ---for path in glob.iglob("src", "*.lua") do
@@ -190,7 +182,7 @@ function M.glob(path, pattern, opts) end
 ---@section Glob Operations
 ---@param path string Input path.
 ---@param pattern? string Optional pattern to match.
----@param opts? mods.GlobOptions Optional glob options.
+---@param opts? mods.globOptions Optional glob options.
 ---@return (fun(state:table, prev?:string): (path:string?)) iterator Iterator function.
 ---@return table state Iterator state table.
 ---@return nil initial Initial iterator value.
