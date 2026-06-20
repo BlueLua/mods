@@ -1,6 +1,7 @@
 ---@meta mods.calendar
 
----@alias mods.CalendarWeekday
+---Weekday number (1-7) where 1 is Monday and 7 is Sunday.
+---@alias mods.calendarWeekday
 ---| 1 Monday
 ---| 2 Tuesday
 ---| 3 Wednesday
@@ -9,7 +10,8 @@
 ---| 6 Saturday
 ---| 7 Sunday
 
----@alias mods.CalendarMonth
+---Month number (1-12) where 1 is January and 12 is December.
+---@alias mods.calendarMonth
 ---| 1  January
 ---| 2  February
 ---| 3  March
@@ -23,7 +25,8 @@
 ---| 11 November
 ---| 12 December
 
----@alias mods.modsCalendarMonthday
+---Day of the month (1-31).
+---@alias mods.calendarMonthDay
 ---| 1  1st day of the month
 ---| 2  2nd day of the month
 ---| 3  3rd day of the month
@@ -67,7 +70,8 @@
 ---## Usage
 ---
 ---```lua
----cal = mods.calendar
+---local mods = require "mods"
+---local cal = mods.calendar
 ---
 ---print(cal.weekday(2026, 3, 26)) --> 4
 ---```
@@ -123,14 +127,13 @@
 ---> Reading or writing this property is equivalent to calling
 ---> `getfirstweekday()` or `setfirstweekday()`.
 ---
----@field firstweekday mods.CalendarWeekday
+---@field firstweekday mods.calendarWeekday
 local M = {}
 
 ---
 ---Return the default first weekday.
 ---
 ---```lua
----local cal = mods.calendar
 ---print(cal.getfirstweekday()) --> 1
 ---```
 ---
@@ -138,7 +141,7 @@ local M = {}
 --->
 ---> This returns the same value as `cal.firstweekday`.
 ---
----@return mods.CalendarWeekday firstweekday
+---@return mods.calendarWeekday firstWeekday
 ---@nodiscard
 function M.getfirstweekday() end
 
@@ -146,7 +149,6 @@ function M.getfirstweekday() end
 ---Set the default first weekday.
 ---
 ---```lua
----local cal = mods.calendar
 ---cal.setfirstweekday(cal.SUNDAY)
 ---```
 ---
@@ -155,14 +157,13 @@ function M.getfirstweekday() end
 ---> This updates the same value as
 ---> `cal.firstweekday = ...`.
 ---
----@param firstweekday mods.CalendarWeekday
-function M.setfirstweekday(firstweekday) end
+---@param firstWeekday mods.calendarWeekday
+function M.setfirstweekday(firstWeekday) end
 
 ---
 ---Iterate weekday numbers for one full week.
 ---
 ---```lua
----local cal = mods.calendar
 ---local weekdays = {}
 ---for day in cal.weekdays() do
 ---  weekdays[#weekdays + 1] = day
@@ -171,16 +172,15 @@ function M.setfirstweekday(firstweekday) end
 ---```
 ---
 ---@section Iterators
----@param firstweekday? mods.CalendarWeekday
----@return fun():mods.CalendarWeekday iter
+---@param firstWeekday? mods.calendarWeekday
+---@return fun():mods.calendarWeekday iter
 ---@nodiscard
-function M.weekdays(firstweekday) end
+function M.weekdays(firstWeekday) end
 
 ---
 ---Return `true` for leap years.
 ---
 ---```lua
----local cal = mods.calendar
 ---print(cal.isleap(2024)) --> true
 ---```
 ---
@@ -194,7 +194,6 @@ function M.isleap(year) end
 ---Return the number of leap years from `y1` up to but not including `y2`.
 ---
 ---```lua
----local cal = mods.calendar
 ---print(cal.leapdays(2000, 2025)) --> 7
 ---```
 ---
@@ -209,15 +208,14 @@ function M.leapdays(y1, y2) end
 ---Return weekday number where Monday is `1` and Sunday is `7`.
 ---
 ---```lua
----local cal = mods.calendar
 ---print(cal.weekday(2026, 3, 26)) --> 4
 ---```
 ---
 ---@section Calendar Calculations
 ---@param year integer
----@param month mods.CalendarMonth
----@param day mods.modsCalendarMonthday
----@return mods.CalendarWeekday weekday
+---@param month mods.calendarMonth
+---@param day mods.calendarMonthDay
+---@return mods.calendarWeekday weekday
 ---@nodiscard
 function M.weekday(year, month, day) end
 
@@ -225,15 +223,14 @@ function M.weekday(year, month, day) end
 ---Return the first weekday and number of days for a month.
 ---
 ---```lua
----local cal = mods.calendar
----wday, ndays = cal.monthrange(2026, 2)
+---local wday, ndays = cal.monthrange(2026, 2)
 ---print(wday, ndays) --> 7 28
 ---```
 ---
 ---@section Calendar Calculations
 ---@param year integer
 ---@param month integer
----@return mods.CalendarWeekday weekday
+---@return mods.calendarWeekday weekday
 ---@return integer ndays
 ---@nodiscard
 function M.monthrange(year, month) end
@@ -272,18 +269,16 @@ function M.monthrange(year, month) end
 ---
 ---@section Iterators
 ---@param year integer
----@param month mods.CalendarMonth
----@param firstweekday? mods.CalendarWeekday
----@return fun():year:integer,month:mods.CalendarMonth,day:mods.modsCalendarMonthday,weekday:mods.CalendarWeekday iter
+---@param month mods.calendarMonth
+---@param firstWeekday? mods.calendarWeekday
+---@return fun():year:integer,month:mods.calendarMonth,day:mods.calendarMonthDay,weekday:mods.calendarWeekday iter
 ---@nodiscard
-function M.monthdays(year, month, firstweekday) end
+function M.monthdays(year, month, firstWeekday) end
 
 ---
 ---Return the formatted weekday header string.
 ---
 ---```lua
----local cal = mods.calendar
----
 ---print(cal.weekheader(1, cal.SUNDAY)) --> "S M T W T F S"
 ---print(cal.weekheader(2, cal.SUNDAY)) --> "Su Mo Tu We Th Fr Sa"
 ---print(cal.weekheader(3, cal.SUNDAY)) --> "Sun Mon Tue Wed Thu Fri Sat"
@@ -291,9 +286,9 @@ function M.monthdays(year, month, firstweekday) end
 ---
 ---@section Formatting
 ---@param width? integer
----@param firstweekday? mods.CalendarWeekday
+---@param firstWeekday? mods.calendarWeekday
 ---@return string header
 ---@nodiscard
-function M.weekheader(width, firstweekday) end
+function M.weekheader(width, firstWeekday) end
 
 return M
