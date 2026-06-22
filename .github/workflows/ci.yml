@@ -8,32 +8,20 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
-      linux:
-        description: "Linux"
+      test:
+        description: "Test"
         type: boolean
         default: true
-      macos:
-        description: "macOS"
-        type: boolean
-        default: true
-      windows:
-        description: "Windows"
-        type: boolean
-        default: true
-      stylua:
-        description: "StyLua"
-        type: boolean
-        default: false
       luacheck:
         description: "Luacheck"
         type: boolean
         default: false
-      markdownlint:
-        description: "Markdownlint"
+      lua-language-server:
+        description: "LLS"
         type: boolean
         default: false
-      tests:
-        description: "Tests"
+      markdownlint:
+        description: "Markdownlint"
         type: boolean
         default: false
       release-please:
@@ -57,17 +45,13 @@ jobs:
   ci:
     uses: BlueLua/.github/.github/workflows/ci.yml@main
     secrets: inherit
-    # prettier-ignore
     with:
-      linux:   ${{ inputs.linux   || github.event_name != 'workflow_dispatch' }}
-      macos:   ${{ inputs.macos   || github.event_name != 'workflow_dispatch' }}
-      windows: ${{ inputs.windows || github.event_name != 'workflow_dispatch' }}
+      test-linux: ${{ github.event_name == 'workflow_dispatch' && inputs.test || true }}
 
-      tests:        ${{ inputs.tests        || false }}
-      stylua:       ${{ inputs.stylua       || false }}
-      luacheck:     ${{ inputs.luacheck     || false }}
+      luacheck: ${{ inputs.luacheck || false }}
+      lua-language-server: ${{ inputs.lua-language-server || false }}
       markdownlint: ${{ inputs.markdownlint || false }}
 
-      release-please:  ${{ inputs.release-please  || false }}
-      publish-dev:     ${{ inputs.publish-dev     || false }}
+      release-please: ${{ inputs.release-please || false }}
+      publish-dev: ${{ inputs.publish-dev || false }}
       publish-release: ${{ inputs.publish-release || false }}
