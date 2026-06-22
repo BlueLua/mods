@@ -1,5 +1,5 @@
 {
   "package": "mods",
-  "os": ["linux"],
-  "version-files": []
+  "os": ["linux", "macos", "windows"],
+  "version-files": ["src/mods/init.lua", "types/mods.d.lua"]
 }
