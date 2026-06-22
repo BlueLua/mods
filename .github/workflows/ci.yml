@@ -8,7 +8,60 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
-      test:
-        description: "Test"
+      test-linux:
+        description: "Test on Linux"
         type: boolean
         default: false
+      test-macos:
+        description: "Test on macOS"
+        type: boolean
+        default: false
+      test-windows:
+        description: "Test on Windows"
+        type: boolean
+        default: false
+      luacheck:
+        description: "Luacheck"
+        type: boolean
+        default: false
+      lua-language-server:
+        description: "LLS"
+        type: boolean
+        default: false
+      markdownlint:
+        description: "Markdownlint"
+        type: boolean
+        default: false
+      release-please:
+        description: "Release Please"
+        type: boolean
+        default: false
+      publish-dev:
+        description: "Publish dev"
+        type: boolean
+        default: false
+      publish-release:
+        description: "Publish release"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ci:
+    uses: BlueLua/.github/.github/workflows/ci.yml@main
+    secrets: inherit
+    with:
+      test-linux: ${{ github.event_name == 'workflow_dispatch' && inputs.test-linux || true }}
+      test-macos: ${{ github.event_name == 'workflow_dispatch' && inputs.test-macos || true }}
+      test-windows: ${{ github.event_name == 'workflow_dispatch' && inputs.test-windows || true }}
+
+      luacheck: ${{ inputs.luacheck || false }}
+      lua-language-server: ${{ inputs.lua-language-server || false }}
+      markdownlint: ${{ inputs.markdownlint || false }}
+
+      release-please: ${{ inputs.release-please || false }}
+      publish-dev: ${{ inputs.publish-dev || false }}
+      publish-release: ${{ inputs.publish-release || false }}
