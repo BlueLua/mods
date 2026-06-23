@@ -77,7 +77,6 @@ jobs:
 
       - name: Run Tests
         if: hashFiles('**/*.test.lua') != ''
-        shell: bash
         run: |
           luarocks install busted
           busted
