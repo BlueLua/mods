@@ -1,0 +1,87 @@
+name: Publish to LuaRocks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'types/**/*.d.lua'
+      - '*.rockspec'
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Test workflow to pass
+        uses: lewagon/wait-on-check-action@v1
+        with:
+          ref: ${{ github.sha }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          check-regexp: '^Run Tests .*'
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install Lua
+        uses: luarocks/gh-actions-lua@master
+        with:
+          luaVersion: "5.5"
+
+      - name: Install LuaRocks
+        uses: luarocks/gh-actions-luarocks@master
+
+      - name: Resolve Rockspec
+        shell: bash
+        run: |
+          PACKAGE_NAME=$(jq -r '.package' .github/config.json)
+          ROCKSPEC="${PACKAGE_NAME}-scm-1.rockspec"
+          if [ ! -f "$ROCKSPEC" ]; then
+            echo "No rockspec file found: $ROCKSPEC" >&2
+            exit 1
+          fi
+          echo "rockspec=$ROCKSPEC" >> "$GITHUB_ENV"
+          echo "package_name=$PACKAGE_NAME" >> "$GITHUB_ENV"
+
+      - name: Build and Upload to LuaRocks
+        shell: bash
+        env:
+          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+        run: |
+          set -euo pipefail
+
+          # Detect if this is a tag push
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG_NAME="${{ github.ref_name }}"
+            VERSION="${TAG_NAME#v}"
+            BASE_VERSION="$VERSION"
+
+            # Query LuaRocks once to find the latest revision for this version
+            LATEST_REV=$(luarocks search --porcelain "$package_name" --only-server=https://luarocks.org/manifests/bluelua 2>/dev/null |
+              awk -v pkg="$package_name" -v ver="${BASE_VERSION}" '
+                $1 == pkg && $2 ~ "^"ver"-" {
+                  split($2, a, "-")
+                  print a[2]
+                  exit
+                }
+              ')
+            REVISION=$((LATEST_REV + 1))
+            VERSION="${BASE_VERSION}-${REVISION}"
+
+            ROCKSPEC_FILENAME="${package_name}-${VERSION}.rockspec"
+            sed -e "s/version = .*/version = \"${VERSION}\"/" \
+                -e "s/source = {/source = {\n  tag = \"${TAG_NAME}\",/" \
+                "$rockspec" > "$ROCKSPEC_FILENAME"
+          else
+            # Dev publish: upload the existing SCM rockspec as-is (LuaRocks updates/overwrites it in place)
+            ROCKSPEC_FILENAME="$rockspec"
+          fi
+
+          echo "Generated/loaded rockspec content:"
+          cat "$ROCKSPEC_FILENAME"
+
+          echo "Uploading $ROCKSPEC_FILENAME to LuaRocks..."
+          luarocks upload "$ROCKSPEC_FILENAME" --api-key="${LUAROCKS_API_KEY}" --force

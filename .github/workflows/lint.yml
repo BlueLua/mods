@@ -1,0 +1,72 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+      - '.stylua.toml'
+      - '.luarc.json'
+      - '.github/workflows/lint.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+      - '.stylua.toml'
+      - '.luarc.json'
+      - '.github/workflows/lint.yml'
+  workflow_dispatch:
+
+jobs:
+  luacheck:
+    name: Luacheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Run Luacheck
+        uses: lunarmodules/luacheck@v1
+
+  stylua:
+    name: StyLua
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Run StyLua Check
+        run: npx @johnnymorganz/stylua-bin --check .
+
+  lls:
+    name: Lua Language Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Clone LuaCATS dependencies
+        run: |
+          mkdir -p ~/.local/share/lua/types
+          cd ~/.local/share/lua/types
+          git clone --depth 1 https://github.com/LuaCATS/busted.git
+          git clone --depth 1 https://github.com/LuaCATS/luassert.git
+          git clone --depth 1 https://github.com/LuaCATS/luafilesystem.git
+
+      - name: Install lua-language-server
+        run: |
+          LUALS_DIR="$HOME/.local/share/lua-language-server"
+          mkdir -p "$LUALS_DIR"
+          cd "$LUALS_DIR"
+          gh release download -R LuaLS/lua-language-server -p "*linux-x64.tar.gz" --clobber
+          tar -xzf *.tar.gz
+          echo "$LUALS_DIR/bin" >> $GITHUB_PATH
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run LLS check
+        run: lua-language-server --check .
+
+
