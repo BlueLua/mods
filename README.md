@@ -8,6 +8,8 @@
 
 Modular Lua utilities for common tasks - lazy-loaded, zero dependencies.
 
+Check out the [documentation] for guides and examples.
+
 ## ✨ Features
 
 - **Predictable APIs**: A cohesive collection of helper utilities for common
@@ -34,3 +36,5 @@ local mods = require "mods"
 local stripped = mods.str.strip("   hello world   ")
 print(stripped) -- Output: "hello world"
 ```
+
+[documentation]: https://bluelua.github.io/mods
