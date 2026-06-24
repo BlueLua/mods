@@ -1,5 +1,12 @@
 {
   "package": "mods",
   "os": ["linux", "macos", "windows"],
-  "version-files": ["src/mods/init.lua", "types/mods.d.lua"]
+  "version-files": ["src/mods/init.lua", "types/mods.d.lua"],
+  "desc": "Modular Lua utilities for common tasks - lazy-loaded, zero dependencies.",
+  "usage": "local stripped = mods.str.strip(\"   hello world   \")\nprint(stripped) -- Output: \"hello world\"",
+  "features": [
+    "**Predictable APIs**: A cohesive collection of helper utilities for common programming tasks and data structures.",
+    "**Lazy Loading**: Automatic lazy loading of sub-modules to keep startup times fast.",
+    "**Lightweight**: Pure Lua with no dependencies, except optional [LFS](https://github.com/lunarmodules/luafilesystem) for file operations."
+  ]
 }
