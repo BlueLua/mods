@@ -1,15 +1,30 @@
 ---@meta mods.date
 
----@alias mods.DateParts {ms:integer?, sec:integer?, min:integer?, hour:integer?, day:integer?, month:integer?, year:integer, wday:integer?, yday:integer?, isdst:boolean?}
----@alias mods.DateUnit 'ms'|'milliseconds'|'millisecond'|'s'|'secs'|'sec'|'seconds'|'second'|'m'|'mins'|'min'|'minutes'|'minute'|'h'|'hours'|'hour'|'d'|'days'|'day'|'w'|'weeks'|'week'|'M'|'months'|'month'|'q'|'quarters'|'quarter'|'y'|'years'|'year'
+---Representation of date components.
+---@class mods.DateParts
+---@field ms?    integer The millisecond of the second (`0` to `999`).
+---@field sec?   integer The second of the minute (`0` to `59`).
+---@field min?   integer The minute of the hour (`0` to `59`).
+---@field hour?  integer The hour of the day (`0` to `23`).
+---@field day?   integer The day of the month (`1` to `31`).
+---@field month? integer The month of the year (`1` to `12`).
+---@field year   integer The 4-digit year (e.g., `2026`).
+---@field wday?  integer The weekday number (typically `1` to `7` where Sunday is `1`).
+---@field yday?  integer The day of the year (`1` to `366`).
+---@field isdst? boolean `true` if Daylight Saving Time (DST) is active, `false` otherwise.
 
 ---
----Timezone-naive date helpers and immutable date values.
+---Create, calculate, compare, and format timezone-naive dates.
+---
+---> [!WARNING]
+--->
+---> `mods.List` `evdev.device` This module is still under development and may not be stable.
+---> The API is incomplete and may change in future versions.
 ---
 ---## Usage
 ---
 ---```lua
----local Date = require "mods.date"
+---local Date = mods.date
 ---
 ---local a = Date("2026-03-30T14:45:06")
 ---local b = Date("2026-03-30 14:45:06.123")
@@ -31,8 +46,9 @@
 ---> [!NOTE]
 --->
 ---> - String inputs accept [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
---->   forms, variants using a space instead of `T`, and custom formats via
---->   `Date(input, pattern)`:
+--->   `Date(input, pattern)`
+--->   (see [format tokens](https://bluelua.github.io/mods/reference/date-tokens)
+--->   and [preset aliases](https://bluelua.github.io/mods/reference/date-presets)):
 --->
 --->   ```lua
 --->   Date("2026-03-30T14:45:06")
@@ -50,19 +66,18 @@
 --->   ```
 --->
 ---> - When calling `Date` without arguments, it uses
---->   [mstime](https://github.com/luamod/mstime)
+--->   [`timeutil`](https://github.com/BlueLua/timeutil)
 --->   for millisecond precision if installed; otherwise it falls back to
 --->   [`os.time`](https://www.lua.org/manual/5.1/manual.html#pdf-os.time).
 ---
----@class mods.dateMod
----@field private __call fun(...):mods.Date
----@field duration mods.durationMod
+---@class mods.date
 ---@overload fun(input:string, pattern:string):mods.Date
 ---@overload fun(input?:number|mods.DateParts):mods.Date
 local M = {}
 
 ---
----Create a Date from a Unix timestamp (milliseconds) or a DateParts table.
+---Create a Date from a Unix timestamp (milliseconds) or a
+---[`DateParts`](https://bluelua.github.io/mods/reference/date-parts) table.
 ---
 ---```lua
 ---local d1 = Date(1745155206123)
@@ -76,6 +91,9 @@ function M.new(input) end
 
 ---
 ---Create a Date from a string using an optional pattern.
+---
+---See [format tokens](https://bluelua.github.io/mods/reference/date-tokens)
+---and [preset aliases](https://bluelua.github.io/mods/reference/date-presets).
 ---
 ---```lua
 ---local d1 = Date("2026-03-30")
@@ -96,13 +114,15 @@ function M.new(input, pattern) end
 ---print(Date.unix(1318781876.721).year) --> 2011
 ---```
 ---
----@section Unix
 ---@param timestamp number Unix timestamp in whole or fractional seconds.
 ---@return mods.Date date Date value for the given Unix timestamp.
 function M.unix(timestamp) end
 
 ---
 ---Return `true` when the input can be parsed as a valid Date.
+---
+---See [format tokens](https://bluelua.github.io/mods/reference/date-tokens)
+---and [preset aliases](https://bluelua.github.io/mods/reference/date-presets).
 ---
 ---Unlike `Date(...)`, this helper never raises for invalid input; it just
 ---returns `false`.
@@ -169,20 +189,6 @@ function M.max(...) end
 function M.minmax(...) end
 
 ---
----Return `true` when the value is a duration created by `date.duration(...)`.
----
----```lua
----local shift = date.duration({ day = 2 })
----print(date.is_duration(shift)) --> true
----print(date.is_duration({ day = 2 })) --> false
----```
----
----@section Duration
----@param value any Value to test.
----@return boolean isDuration Whether the value is a `mods.Duration`.
-function M.is_duration(value) end
-
----
 ---Immutable timezone-naive datetime value.
 ---
 ---@class mods.Date
@@ -200,14 +206,14 @@ function M.is_duration(value) end
 ---```lua
 ---print(Date("2026-03-30").month) --> 3
 ---```
----@field month modsCalendarMonth
+---@field month mods.calendarMonth
 ---
 ---Day-of-month component.
 ---
 ---```lua
 ---print(Date("2026-03-30").day) --> 30
 ---```
----@field day modsCalendarMonthday
+---@field day mods.calendarMonthDay
 ---
 ---Hour component.
 ---
@@ -242,7 +248,7 @@ function M.is_duration(value) end
 ---```lua
 ---print(Date("2026-03-30").wday) --> 1
 ---```
----@field wday modsCalendarWeekday
+---@field wday mods.calendarWeekday
 ---
 ---Day-of-year component starting at `1`.
 ---
@@ -369,7 +375,7 @@ function Date:iso_week(iso_week_number) end
 ---
 ---@section Calendar
 ---@param iso_weekday_number? integer ISO weekday to set.
----@return modsCalendarWeekday|mods.Date isoWeekdayOrDate Current ISO weekday number, or a shifted Date when `iso_weekday_number` is provided.
+---@return mods.calendarWeekday|mods.Date isoWeekdayOrDate Current ISO weekday number, or a shifted Date when `iso_weekday_number` is provided.
 ---@nodiscard
 function Date:iso_weekday(iso_weekday_number) end
 
@@ -419,7 +425,7 @@ function Date:is_leap_year() end
 ---```
 ---
 ---@section Calendar
----@return modsCalendarMonthday ndays Number of days in the current month.
+---@return mods.calendarMonthDay ndays Number of days in the current month.
 ---@nodiscard
 function Date:month_days() end
 
@@ -445,70 +451,8 @@ function Date:month_days() end
 ---> d:format("GGGG-[W]WW") -- 2026-W14
 ---> d:format("[hours:]HH") -- hours:14
 ---> ```
----
----**Supported tokens**:
----
----| Token  | Example            | Meaning                            |
----| ------ | ------------------ | ---------------------------------- |
----| `YY`   | `26`               | 2-digit year                       |
----| `YYYY` | `2026`             | 4-digit year                       |
----| `Q`    | `1-4`              | Quarter                            |
----| `Qo`   | `1st..4th`         | Ordinal quarter                    |
----| `M`    | `1-12`             | Month                              |
----| `MM`   | `03-12`            | Month, zero-padded                 |
----| `MMM`  | `Jan-Dec`          | Short month name                   |
----| `MMMM` | `January-December` | Full month name                    |
----| `D`    | `1-31`             | Day of month                       |
----| `DD`   | `01-31`            | Day of month, zero-padded          |
----| `DDD`  | `1-366`            | Day of year                        |
----| `DDDD` | `001-366`          | Day of year, zero-padded           |
----| `d`    | `0-6`              | Weekday number where Sunday is `0` |
----| `e`    | `0-6`              | Weekday number where Sunday is `0` |
----| `E`    | `1-7`              | ISO weekday number                 |
----| `dd`   | `Su-Sa`            | Minimal weekday name               |
----| `ddd`  | `Sun-Sat`          | Short weekday name                 |
----| `dddd` | `Sunday-Saturday`  | Full weekday name                  |
----| `Do`   | `1st..31th`        | Ordinal day of month               |
----| `H`    | `0-23`             | 24-hour                            |
----| `HH`   | `00-23`            | 24-hour, zero-padded               |
----| `h`    | `1-12`             | 12-hour                            |
----| `hh`   | `01-12`            | 12-hour, zero-padded               |
----| `k`    | `1-24`             | 1-24 hour                          |
----| `kk`   | `01-24`            | 1-24 hour, zero-padded             |
----| `m`    | `0-59`             | Minute                             |
----| `mm`   | `00-59`            | Minute, zero-padded                |
----| `s`    | `0-59`             | Second                             |
----| `ss`   | `00-59`            | Second, zero-padded                |
----| `S`    | `0-9`              | Hundreds digit of milliseconds     |
----| `SS`   | `00-99`            | First two digits of milliseconds   |
----| `SSS`  | `000-999`          | Millisecond, zero-padded           |
----| `w`    | `1-53`             | Week of year                       |
----| `ww`   | `01-53`            | Week of year, zero-padded          |
----| `wo`   | `1st..53rd`        | Ordinal week of year               |
----| `W`    | `1-53`             | ISO week of year                   |
----| `WW`   | `01-53`            | ISO week of year, zero-padded      |
----| `GG`   | `26`               | 2-digit ISO week-year              |
----| `GGGG` | `2026`             | ISO week-year                      |
----| `gggg` | `2026`             | Week-year                          |
----| `a`    | `am pm`            | Meridiem lowercase                 |
----| `A`    | `AM PM`            | Meridiem uppercase                 |
----| `x`    | `1523520536123`    | Unix timestamp in milliseconds     |
----| `X`    | `1523520536`       | Unix timestamp in seconds          |
----
----English preset aliases:
----
----| Alias  | Expands to                  |
----| ------ | --------------------------- |
----| `LT`   | `h:mm A`                    |
----| `LTS`  | `h:mm:ss A`                 |
----| `L`    | `MM/DD/YYYY`                |
----| `LL`   | `MMMM D, YYYY`              |
----| `LLL`  | `MMMM D, YYYY h:mm A`       |
----| `LLLL` | `dddd, MMMM D, YYYY h:mm A` |
----| `l`    | `M/D/YYYY`                  |
----| `ll`   | `MMM D, YYYY`               |
----| `lll`  | `MMM D, YYYY h:mm A`        |
----| `llll` | `ddd, MMM D, YYYY h:mm A`   |
+---See [format tokens](https://bluelua.github.io/mods/reference/date-tokens)
+---and [preset aliases](https://bluelua.github.io/mods/reference/date-presets).
 ---
 ---@section Formatting
 ---@param pattern string Format pattern using supported tokens.
@@ -542,8 +486,8 @@ function Date:tostring() end
 ---```
 ---
 ---@section Arithmetic
----@param amount integer|mods.DateDurationParts Signed amount to add, or a duration-style table.
----@param unit? mods.DateUnit Unit for the addition.
+---@param amount integer|mods.DurationParts Signed amount to add, or a duration-style table.
+---@param unit? mods.durationUnit Unit for the addition.
 ---@return mods.Date shifted Shifted date value.
 ---@nodiscard
 function Date:add(amount, unit) end
@@ -561,8 +505,8 @@ function Date:add(amount, unit) end
 ---```
 ---
 ---@section Arithmetic
----@param amount integer|mods.DateDurationParts Signed amount to subtract, or a duration-style table.
----@param unit? mods.DateUnit Unit for the subtraction.
+---@param amount integer|mods.DurationParts Signed amount to subtract, or a duration-style table.
+---@param unit? mods.durationUnit Unit for the subtraction.
 ---@return mods.Date shifted Shifted date value.
 ---@nodiscard
 function Date:subtract(amount, unit) end
@@ -579,7 +523,7 @@ function Date:subtract(amount, unit) end
 ---
 ---@section Arithmetic
 ---@param date mods.Date Date to compare against.
----@param unit? mods.DateUnit Unit used for the difference. Defaults to `"ms"`.
+---@param unit? mods.durationUnit Unit used for the difference. Defaults to `"ms"`.
 ---@return integer delta Signed difference in whole units.
 ---@nodiscard
 function Date:diff(date, unit) end
@@ -735,7 +679,7 @@ function Date:is_between(start_date, end_date, inclusive) end
 ---`"isoWeek"` is also supported here as a boundary-only unit.
 ---
 ---@section Boundaries
----@param unit mods.DateUnit|"isoWeek" Boundary unit.
+---@param unit mods.durationUnit|"isoWeek" Boundary unit.
 ---@return mods.Date bounded Date clamped to the start of the unit.
 ---@nodiscard
 function Date:startof(unit) end
@@ -753,7 +697,7 @@ function Date:startof(unit) end
 ---`"isoWeek"` is also supported here as a boundary-only unit.
 ---
 ---@section Boundaries
----@param unit mods.DateUnit|"isoWeek" Boundary unit.
+---@param unit mods.durationUnit|"isoWeek" Boundary unit.
 ---@return mods.Date bounded Date clamped to the end of the unit.
 ---@nodiscard
 function Date:endof(unit) end
@@ -909,5 +853,4 @@ function Date:__lt(date) end
 ---@return boolean isEarlierOrEqual `true` if the left date is earlier or equal, `false` otherwise.
 function Date:__le(date) end
 
---------------------------------------------------------------------------------
 return M
