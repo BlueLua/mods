@@ -1,3 +1,5 @@
+.lua
+
 # Compilation Artifacts (C Extensions)
 *.o
 *.a
