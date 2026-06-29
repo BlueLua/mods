@@ -3,7 +3,8 @@
 ---@module 'mods.list'
 local List
 
----@alias mods.ValidatorName
+---Supported validation and type check names.
+---@alias mods.validatorName
 ---| type       Any standard Lua type name (e.g., `"table"`, `"number"`).
 ---| string     Any validator name.
 ---| 'callable' A function or table with a `__call` metamethod.
@@ -66,7 +67,7 @@ local List
 ---```
 ---
 ---@class mods.is
----@overload fun(v:any, tp:mods.ValidatorName):boolean
+---@overload fun(v:any, tp:mods.validatorName):boolean
 local M = {}
 
 ---@private
