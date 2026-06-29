@@ -1,22 +1,74 @@
 ---@meta mods.duration
 
----@alias mods.DurationParts {milliseconds:number?, seconds:number?, minutes:number?, hours:number?, days:number?, weeks:number?, months:number?, quarters:number?, years:number?}
----@alias mods.DurationHumanizeRoundMode boolean|'round'|'floor'|'ceil'
+---Representation of duration parts.
+---@class mods.DurationParts
+---@field milliseconds? number The millisecond component (1000 ms = 1 second).
+---@field seconds?      number The second component (60 seconds = 1 minute).
+---@field minutes?      number The minute component (60 minutes = 1 hour).
+---@field hours?        number The hour component (24 hours = 1 day).
+---@field days?         number The day component (7 days = 1 week).
+---@field weeks?        number The week component.
+---@field months?       number The month component (12 months = 1 year).
+---@field quarters?     number The quarter component (3 months = 1 quarter).
+---@field years?        number The year component.
 
+---Rounding mode to use when humanizing durations.
+---@alias mods.durationHumanizeRoundMode
+---| boolean Whether to round (true) or not (false).
+---| 'round' Round to the nearest integer.
+---| 'floor' Round down (floor).
+---| 'ceil'  Round up (ceil).
+
+---Supported units of time for duration representation and calculations.
+---@alias mods.durationUnit
+---| 'ms'           Milliseconds
+---| 'milliseconds' Milliseconds
+---| 'millisecond'  Milliseconds
+---| 's'            Seconds
+---| 'secs'         Seconds
+---| 'sec'          Seconds
+---| 'seconds'      Seconds
+---| 'second'       Seconds
+---| 'm'            Minutes
+---| 'mins'         Minutes
+---| 'min'          Minutes
+---| 'minutes'      Minutes
+---| 'minute'       Minutes
+---| 'h'            Hours
+---| 'hours'        Hours
+---| 'hour'         Hours
+---| 'd'            Days
+---| 'days'         Days
+---| 'day'          Days
+---| 'w'            Weeks
+---| 'weeks'        Weeks
+---| 'week'         Weeks
+---| 'M'            Months
+---| 'months'       Months
+---| 'month'        Months
+---| 'q'            Quarters
+---| 'quarters'     Quarters
+---| 'quarter'      Quarters
+---| 'y'            Years
+---| 'years'        Years
+---| 'year'         Years
+
+---Configuration options for humanizing durations into relative-style strings.
 ---@class mods.DurationHumanizeOptions
 ---@field with_suffix? boolean Whether to include `ago` / `in` style wording.
----@field short? boolean Whether to use abbreviated unit labels like `2h`.
----@field round? mods.DurationHumanizeRoundMode Rounding mode for custom unit output.
----@field max_unit? mods.DateUnit Largest unit allowed when choosing the displayed unit.
----@field min_unit? mods.DateUnit Smallest unit allowed when choosing the displayed unit.
+---@field short?       boolean Whether to use abbreviated unit labels like `2h`.
+---@field round?       mods.durationHumanizeRoundMode Rounding mode for custom unit output.
+---@field max_unit?    mods.durationUnit Largest unit allowed when choosing the displayed unit.
+---@field min_unit?    mods.durationUnit Smallest unit allowed when choosing the displayed unit.
 
 ---
----Reusable immutable duration values for date arithmetic and formatting.
+---Represent, calculate, and humanize time spans.
 ---
 ---## Usage
 ---
 ---```lua
----local Duration = require "mods.duration"
+---local mods = require "mods"
+---local Duration = mods.duration
 ---
 ---local shift = Duration({ day = 2, hour = 3 })
 ---print(shift:format("D [days] HH:mm")) --> 2 days 03:00
@@ -31,6 +83,7 @@ local M = {}
 ---```lua
 ---local a = Duration({ day = 2, hour = 3 })
 ---local b = Duration("PT1H30M")
+---local c = Duration(a)
 ---```
 ---
 ---@param input? string|mods.DurationParts|mods.Duration Duration parts, an ISO 8601 string, or another duration.
@@ -46,19 +99,17 @@ function M.new(input) end
 ---```
 ---
 ---@param input number Numeric amount to convert into a duration.
----@param unit? mods.DateUnit Unit used with the numeric amount. Defaults to `"ms"`.
+---@param unit? mods.durationUnit Unit used with the numeric amount. Defaults to `"ms"`.
 ---@return mods.Duration duration
 ---@nodiscard
 function M.new(input, unit) end
 
 ---
----Return `true` when the value is a duration created by `mods.duration(...)`
----or `mods.date.duration(...)`.
+---Return `true` when the value is a duration created by `mods.duration(...)`.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration.is_duration(Duration({ day = 2 }))) --> true
----print(Duration.is_duration({ day = 2 })) --> false
+---print(Duration.is_duration({ day = 2 }))           --> false
 ---```
 ---
 ---@param value any
@@ -86,13 +137,11 @@ local Duration = {}
 ---Return a shallow copy of the duration value.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local d = Duration({ month = 1, day = 2 })
 ---local copy = d:clone()
 ---print(copy == d, rawequal(copy, d)) --> true false
 ---```
 ---
----@section Duration
 ---@return mods.Duration duration
 function Duration:clone() end
 
@@ -102,11 +151,9 @@ function Duration:clone() end
 ---Returns `-1` when smaller, `0` when equal, and `1` when larger.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration({ day = 1 }):compare({ hour = 24 })) --> 0
 ---```
 ---
----@section Duration
 ---@param other number|string|mods.DurationParts|mods.Duration
 ---@return integer ordering
 function Duration:compare(other) end
@@ -115,13 +162,11 @@ function Duration:compare(other) end
 ---Return the duration expressed in the requested unit.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local d = Duration({ day = 1, hour = 12 })
 ---print(d:as("hour")) --> 36
 ---```
 ---
----@section Duration
----@param unit mods.DateUnit
+---@param unit mods.durationUnit
 ---@return number amount
 function Duration:as(unit) end
 
@@ -129,11 +174,9 @@ function Duration:as(unit) end
 ---Return a compacted duration using the module's canonical carry rules.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration({ minute = 90 }):normalize()) --> duration(hours=1, minutes=30)
 ---```
 ---
----@section Duration
 ---@return mods.Duration duration
 function Duration:normalize() end
 
@@ -141,15 +184,13 @@ function Duration:normalize() end
 ---Return a new duration with another duration or unit amount added.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local a = Duration({ day = 2 })
 ---local b = a:add(3, "hour")
 ---print(b:format("D [days] HH:mm:ss")) --> 2 days 03:00:00
 ---```
 ---
----@section Duration
 ---@param value number|mods.DurationParts|mods.Duration Signed amount to add, or another duration value.
----@param unit? mods.DateUnit Unit used when `value` is a number.
+---@param unit? mods.durationUnit Unit used when `value` is a number.
 ---@return mods.Duration duration
 function Duration:add(value, unit) end
 
@@ -157,15 +198,13 @@ function Duration:add(value, unit) end
 ---Return a new duration with another duration or unit amount subtracted.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local a = Duration({ day = 2, hour = 3 })
 ---local b = a:subtract(3, "hour")
 ---print(b:format("D [days] HH:mm:ss")) --> 2 days 00:00:00
 ---```
 ---
----@section Duration
 ---@param value number|mods.DurationParts|mods.Duration Signed amount to subtract, or another duration value.
----@param unit? mods.DateUnit Unit used when `value` is a number.
+---@param unit? mods.durationUnit Unit used when `value` is a number.
 ---@return mods.Duration duration
 function Duration:subtract(value, unit) end
 
@@ -173,12 +212,10 @@ function Duration:subtract(value, unit) end
 ---Format the duration using duration tokens like `Y`, `MM`, `DD`, and `HH`.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local d = Duration({ day = 2, hour = 3, minute = 4 })
 ---print(d:format("D [days] HH:mm")) --> 2 days 03:04
 ---```
 ---
----@section Duration
 ---@param pattern string Format pattern using supported duration tokens.
 ---@return string formatted
 function Duration:format(pattern) end
@@ -191,14 +228,12 @@ function Duration:format(pattern) end
 ---abbreviated output or explicit unit clamping.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local d = Duration({ day = 3 })
 ---print(d:humanize()) --> 3 days
 ---print(d:humanize(true)) --> in 3 days
 ---print(d:humanize({ short = true })) --> 3d
 ---```
 ---
----@section Duration
 ---@param with_suffix_or_options? boolean|mods.DurationHumanizeOptions Whether to include `ago` / `in` style wording, or an options table.
 ---@param options? mods.DurationHumanizeOptions Additional options when the first argument is a boolean.
 ---@return string humanized
@@ -208,13 +243,11 @@ function Duration:humanize(with_suffix_or_options, options) end
 ---Return `true` when both duration values have identical components.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local a = Duration({ day = 2 })
 ---local b = Duration({ day = 2 })
 ---print(a:equals(b)) --> true
 ---```
 ---
----@section Duration
 ---@param other any Value to compare against.
 ---@return boolean isEqual
 function Duration:equals(other) end
@@ -223,11 +256,9 @@ function Duration:equals(other) end
 ---Return an ISO 8601 duration string.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration({ hour = 1, minute = 30 }):to_iso()) --> PT1H30M
 ---```
 ---
----@section Duration
 ---@return string iso
 function Duration:to_iso() end
 
@@ -235,11 +266,9 @@ function Duration:to_iso() end
 ---Return a debug-friendly string representation of the duration.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration({ day = 2, hour = 3 })) --> duration(days=2, hours=3)
 ---```
 ---
----@section Duration
 ---@return string s
 function Duration:tostring() end
 
@@ -247,7 +276,6 @@ function Duration:tostring() end
 ---Return the same result as `tostring()` when coerced to a string.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration({ day = 2 })) --> duration(days=2)
 ---```
 ---
@@ -259,7 +287,6 @@ function Duration:__tostring() end
 ---Return `true` when both duration values have identical components.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---print(Duration({ day = 2 }) == Duration({ day = 2 })) --> true
 ---```
 ---
@@ -272,9 +299,9 @@ function Duration:__eq(duration) end
 ---Create a duration from numeric parts, an ISO 8601 string, or another duration.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local a = Duration({ day = 2, hour = 3 })
 ---local b = Duration("PT1H30M")
+---local c = Duration(a)
 ---```
 ---
 ---@section Metamethods
@@ -286,13 +313,12 @@ function M:__call(input) end
 ---Create a duration from a numeric amount and unit.
 ---
 ---```lua
----local Duration = require "mods.duration"
 ---local d = Duration(90, "minute")
 ---```
 ---
 ---@section Metamethods
 ---@param input number Numeric amount to convert into a duration.
----@param unit? mods.DateUnit Unit used with the numeric amount. Defaults to `"ms"`.
+---@param unit? mods.durationUnit Unit used with the numeric amount. Defaults to `"ms"`.
 ---@return mods.Duration duration
 function M:__call(input, unit) end
 

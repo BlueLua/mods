@@ -53,7 +53,6 @@ local HUMANIZE_UNITS = {
 
 local DURATION_UNITS      = date_duration.duration_units
 local DURATION_UNIT_NAMES = date_duration.duration_unit_names
-local DURATION_TABLE_KEYS = Set(HUMANIZE_UNIT_ORDER)
 local DURATION_TOKENS_1   = Set({ "Y" , "M" , "D" , "H" , "m" , "s"  })
 local DURATION_TOKENS_2   = Set({ "YY", "MM", "DD", "HH", "mm", "ss" })
 local DURATION_FORMATTERS = {
@@ -139,7 +138,7 @@ local function normalize_duration(delta, lvl)
   local normalized = zero_duration()
 
   for key, value in pairs(delta) do
-    if not DURATION_TABLE_KEYS[key] then
+    if not DURATION_UNIT_NAMES[key] then
       error(fmt("bad duration key %q", tostring(key)), lvl or 3)
     end
     if type(value) ~= "number" then
