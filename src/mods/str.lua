@@ -20,6 +20,14 @@ local upper = string.upper
 ---@type mods.str
 local M = {}
 
+local escpatt = function (patt)
+  return (gsub(patt, '%p', '%%%0'))
+end
+
+local escrepl = function (patt)
+  return (gsub(patt, '%%', '%%%%'))
+end
+
 local function norm_range(s, start, stop)
   if start == nil then
     start = 1
@@ -43,18 +51,14 @@ local function norm_range(s, start, stop)
   return start, stop
 end
 
-local function escape_class(s)
-  return gsub(s, "([]%%^-])", "%%%1")
-end
-
 local function first_char_or_space(fillchar)
   return fillchar and sub(fillchar, 1, 1) or " "
 end
 
 local function split_whitespace_words(s)
-  local parts = {}
+  local i, parts = 1, {}
   for w in gmatch(s, "%S+") do
-    parts[#parts + 1] = w
+    i, parts[i] = i+1, w
   end
   return parts
 end
@@ -105,25 +109,15 @@ function M.count(s, subp, start, stop)
   local a, b = norm_range_exclusive(s, start, stop)
   if b <= a then
     return 0
-  end
-  local slice = sub(s, a, b - 1)
-  if subp == "" then
+  elseif subp == "" then
     return (b - a) + 1
   end
 
-  local n = 0
-  local pos = 1
-  local sublen = #subp
-  while true do
-    local i = find(slice, subp, pos, true)
-    if not i then
-      break
-    end
-    n = n + 1
-    pos = i + sublen
-  end
-  return n
+  local slice = sub(s, a, b - 1)
+  local _, count = gsub(slice, escpatt(subp))
+  return count
 end
+
 
 function M.expandtabs(s, tabsize)
   local ts = tabsize or 8
@@ -216,12 +210,7 @@ function M.isalpha(s)
 end
 
 function M.isascii(s)
-  for i = 1, #s do
-    if byte(s, i) > 127 then
-      return false
-    end
-  end
-  return true
+  return not find(s, '[\128-\255]')
 end
 
 function M.isdecimal(s)
@@ -229,38 +218,25 @@ function M.isdecimal(s)
 end
 
 function M.islower(s)
-  return match(s, "%a") ~= nil and match(s, "%u") == nil
+  -- if all cased characters are lower and there is at least 1 character
+  return not( not find(s, '%u') and find(s, '%l'))
 end
 
 function M.isspace(s)
-  return find(s, "^%s+$") == 1
+  return not not find(s, "^%s+$")
 end
 
+-- all words start with uppercase
 function M.istitle(s)
-  local has = false
-  for word in gmatch(s, "%a+") do
-    local first = sub(word, 1, 1)
-    local rest = sub(word, 2)
-    if first ~= upper(first) or rest ~= lower(rest) then
-      return false
-    end
-    has = true
-  end
-  return has
+  return find(s,'%a') ~= nil and not find(s, '%f[%a]%l+') -- a word starts with lowercase
 end
 
 function M.isupper(s)
-  return match(s, "%a") ~= nil and match(s, "%l") == nil
+  return find(s, "%a") ~= nil and find(s, "%l") == nil
 end
 
 function M.isprintable(s)
-  for i = 1, #s do
-    local b = byte(s, i)
-    if b < 32 or b > 126 then
-      return false
-    end
-  end
-  return true
+  return not find(s, '%G')
 end
 
 function M.join(sep, list)
@@ -282,7 +258,7 @@ function M.lstrip(s, chars)
   if chars == "" then
     return s
   end
-  local set = escape_class(chars)
+  local set = escpatt(chars)
   return (gsub(s, "^[" .. set .. "]+", ""))
 end
 
@@ -293,7 +269,7 @@ function M.rstrip(s, chars)
   if chars == "" then
     return s
   end
-  local set = escape_class(chars)
+  local set = escpatt(chars)
   return (gsub(s, "[" .. set .. "]+$", ""))
 end
 
@@ -338,68 +314,22 @@ function M.replace(s, old, new, count)
     count = -1
   end
 
-  if old == "" then
-    local limit = count
-    if limit < 0 then
-      limit = #s + 1
-    end
-    if limit == 0 then
-      return s
-    end
-    local out = {}
-    out[#out + 1] = new
-    local n = 1
-    for i = 1, #s do
-      out[#out + 1] = sub(s, i, i)
-      if n < limit then
-        out[#out + 1] = new
-        n = n + 1
-      end
-    end
-    return concat(out)
-  end
-
-  local out = {}
-  local start = 1
-  local n = 0
-  while true do
-    local i, j = find(s, old, start, true)
-    if not i or (count >= 0 and n >= count) then
-      break
-    end
-    out[#out + 1] = sub(s, start, i - 1)
-    out[#out + 1] = new
-    start = j + 1
-    n = n + 1
-  end
-  out[#out + 1] = sub(s, start)
-  return concat(out)
+  return (gsub(s, escpatt(old), escrepl(new), count))
 end
 
 function M.rfind(s, subp, start, stop)
   local a, b = norm_range(s, start, stop)
   if subp == "" then
     return b
-  end
-  if b < a then
+  elseif b < a then
     return
   end
   local slice = sub(s, a, b)
-  local last
-  local pos = 1
-  while true do
-    local i = find(slice, subp, pos, true)
-    if not i then
-      break
-    end
-    last = i
-    pos = i + 1
-  end
-  if not last then
-    return
-  end
-  return a + last - 1
+  -- return find(slice, '.*' .. litpatt(subp))
+  local pos = find(slice:reverse(), subp:reverse(), 1, true)
+  return pos and #slice-pos or -1
 end
+
 
 function M.rjust(s, width, fillchar)
   if width <= #s then
@@ -413,21 +343,15 @@ function M.rpartition(s, sep)
   if sep == "" then
     error("empty separator")
   end
-  local i, j = nil, nil
-  local pos = 1
-  while true do
-    local a, b = find(s, sep, pos, true)
-    if not a then
-      break
-    end
-    i, j = a, b
-    pos = a + 1
+  local escsep = escpatt(sep)
+  local a,b,c = s:match('^(.*)(' .. escsep .. ')(.-)$')
+  if a then
+    return a,b,c
+  else
+    return '','',s
   end
-  if not i then
-    return "", "", s
-  end
-  return sub(s, 1, i - 1), sep, sub(s, j + 1)
 end
+
 
 function M.rsplit(s, sep, maxsplit)
   if sep == nil then
@@ -583,9 +507,7 @@ function M.startswith(s, prefix, start, stop)
 end
 
 function M.title(s)
-  return (gsub(lower(s), "(%a)(%w*)", function(f, r)
-    return upper(f) .. r
-  end))
+  return (gsub(s, "%f[%a]%l", upper))
 end
 
 function M.translate(s, table_map)
