@@ -1,4 +1,176 @@
+local List = require "pl.List"
+local Set = require "pl.Set"
+local assert = require "luassert"
+local busted = require "busted"
+local say = require "say"
+local tablex = require "pl.tablex"
+local util = require "luassert.util"
+local pretty = require "pl.pretty".write
+
+local fmt = string.format
+local flr = math.floor
+local find = string.find
+local spairs = tablex.sort
+local unpack = table.unpack or unpack
+
+local it = busted.it
+local case_keys = Set({ "args", "assert", "expected", "init", "throws" })
+
+local function is_list(t)
+  for k in pairs(t) do
+    if type(k) ~= "number" or k < 1 or k > #t or k ~= flr(k) then
+      return false
+    end
+  end
+  return true
+end
+
+local function quote(v)
+  if type(v) ~= "string" then
+    return v
+  end
+  if find(v, '"', 1, true) and not find(v, "'", 1, true) then
+    return "'" .. v .. "'"
+  end
+  return '"' .. v:gsub('"', '\\"') .. '"'
+end
+
+local function stringify(v, strip_braces)
+  if v == nil then
+    return ""
+  end
+  local vt = type(v)
+  local res = (vt == "table" and is_list(v)) and "{ " .. List(v):map(quote):join(", ") .. " }" or pretty(v)
+  if strip_braces and vt == "table" then
+    return res:sub(3, -3)
+  end
+  return res
+end
+
+local function is_case(v)
+  if type(v) ~= "table" then
+    return false
+  end
+  for k in pairs(v) do
+    if case_keys[k] then
+      return true
+    end
+  end
+  return false
+end
+
+local function flatten_cases(cases)
+  local res = {}
+
+  local function append(case)
+    if type(case) == "function" or is_case(case) then
+      res[#res + 1] = case
+    elseif type(case) == "table" then
+      for i = 1, #case do
+        append(case[i])
+      end
+    end
+  end
+
+  for i = 1, #cases do
+    append(cases[i])
+  end
+
+  return res
+end
+
+local function unpack_args(args)
+  if args == nil then
+    return
+  end
+  local n = args.n
+  if n == nil then
+    n = 0
+    for k in pairs(args) do
+      if type(k) == "number" and k % 1 == 0 and k > n then
+        n = k
+      end
+    end
+  end
+  return unpack(args, 1, n)
+end
+
+local function each(name, api, tests)
+  local label_name = name or ""
+
+  for fname, t in spairs(tests) do
+    local cases = flatten_cases(t)
+    for i = 1, #cases do
+      local case = cases[i]
+      if type(case) == "function" then
+        it(fmt("%s.%s() [case %d]", label_name, fname, i), case)
+      else
+        local has_method = case.init
+
+        local function invoke()
+          if fname == "__call" then
+            return api(unpack_args(case.args))
+          end
+          if has_method then
+            local obj = api(unpack_args(case.init))
+            return obj[fname](obj, unpack_args(case.args))
+          end
+          return api[fname](unpack_args(case.args))
+        end
+
+        local label
+        if fname == "__call" then
+          label = fmt("%s(%s)", label_name, stringify(case.args, true))
+        elseif has_method then
+          label = fmt("%s(%s):%s(%s)", label_name, stringify(case.init, true), fname, stringify(case.args, true))
+        else
+          label = fmt("%s.%s(%s)", label_name, fname, stringify(case.args, true))
+        end
+
+        it(label, function()
+          if case.throws then
+            assert.Error(invoke, type(case.throws) == "string" and case.throws or nil)
+          elseif case["assert"] ~= nil then
+            case["assert"](invoke())
+          else
+            assert.Same(case.expected, invoke())
+          end
+        end)
+      end
+    end
+  end
+end
+
+local positive_msg = "assertion.callable.positive"
+local negative_msg = "assertion.callable.negative"
+say:set(positive_msg, "Expected object to be callable.\nPassed in:\n%s\nExpected:\ncallable object")
+say:set(negative_msg, "Expected object to not be callable.\nPassed in:\n%s\nDid not expect:\ncallable object")
+
+assert:register("assertion", "callable", function(_, args)
+  return util.callable(args[1])
+end, positive_msg, negative_msg)
+
+local list_positive = "assertion.list.positive"
+local list_negative = "assertion.list.negative"
+say:set(list_positive, "Expected object to be a mods.List.\nPassed in:\n%s\nExpected:\nmods.List")
+say:set(list_negative, "Expected object to not be a mods.List.\nPassed in:\n%s\nDid not expect:\nmods.List")
+
+assert:register("assertion", "list", function(_, args)
+  return getmetatable(args[1]) == require "mods.list"
+end, list_positive, list_negative)
+
+local set_positive = "assertion.set.positive"
+local set_negative = "assertion.set.negative"
+say:set(set_positive, "Expected object to be a mods.Set.\nPassed in:\n%s\nExpected:\nmods.Set")
+say:set(set_negative, "Expected object to not be a mods.Set.\nPassed in:\n%s\nDid not expect:\nmods.Set")
+
+assert:register("assertion", "set", function(_, args)
+  return getmetatable(args[1]) == require "mods.set"
+end, set_positive, set_negative)
+
 rawset(_G, "_TEST", true)
+rawset(_G, "each", each)
+rawset(_G, "unpack", table.unpack or unpack)
 
 return {
   _all = {
