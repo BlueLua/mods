@@ -7,7 +7,6 @@ local _, time = pcall(require, "timeutil")
 
 local Set = mods.set
 local calendar = mods.calendar
-local duration = mods.duration
 local date_duration = require "mods._date_duration"
 local utils = mods.utils
 local tbl = mods.tbl
@@ -757,8 +756,6 @@ end
 
 
 -- stylua: ignore start
-M.duration               = duration
-function M.is_duration(v) return duration.is_duration(v)                                                 end
 function M.min(...)       return (M.minmax(...))                                                         end
 function M.max(...)       return select(2, M.minmax(...))                                                end
 function M.unix(ts)       return from_unix_ms(floor(assert_arg(1, ts, "number") * MS_PER_SECOND))        end
