@@ -78,7 +78,7 @@ function M.args_repr(v) end
 ---@generic T
 ---@param argn integer Argument index for error context.
 ---@param v T Value to check.
----@param validator? mods.ValidatorName Validator name (defaults to `"truthy"`).
+---@param validator? mods.validatorName Validator name (defaults to `"truthy"`).
 ---@param optional? boolean Skip errors when `v` is `nil` (defaults to `false`).
 ---@param lv? integer Error level passed to `error` (defaults to `3`).
 ---@return T validatedValue Same input value on success, or `nil` when optional.
@@ -97,7 +97,7 @@ function M.assert_arg(argn, v, validator, optional, lv) end
 ---@section Validation
 ---@param name string Name for the error prefix.
 ---@param v any Value to validate.
----@param validator? mods.ValidatorName Validator name (defaults to `"truthy"`).
+---@param validator? mods.validatorName Validator name (defaults to `"truthy"`).
 ---@param optional? boolean Skip errors when `v` is `nil` (defaults to `false`).
 ---@param msg? string Optional override template passed to `mods.validate`.
 ---@return nil none
@@ -119,7 +119,7 @@ function M.validate(name, v, validator, optional, msg) end
 ---@section Validation
 ---@param path table Path parts for the error name.
 ---@param v any Value to validate.
----@param validator? mods.ValidatorName Validator name (defaults to `"truthy"`).
+---@param validator? mods.validatorName Validator name (defaults to `"truthy"`).
 ---@param optional? boolean Skip errors when `v` is `nil` (defaults to `false`).
 ---@param msg? string Optional override template passed to `mods.validate`.
 ---@return nil none
