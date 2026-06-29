@@ -1,33 +1,34 @@
 ---@meta mods.validate
 
+---Custom error message templates for validators, indexed by validator name.
 ---@class modsValidatorMessages
----@field [string] string
+---@field [string] string Custom message template for a validator.
 ---
----@field boolean? string
----@field function? string
----@field nil? string
----@field number? string
----@field string? string
----@field table? string
----@field thread? string
----@field userdata? string
+---@field boolean?  string Custom message template for boolean validator failures.
+---@field function? string Custom message template for function validator failures.
+---@field nil?      string Custom message template for nil validator failures.
+---@field number?   string Custom message template for number validator failures.
+---@field string?   string Custom message template for string validator failures.
+---@field table?    string Custom message template for table validator failures.
+---@field thread?   string Custom message template for thread validator failures.
+---@field userdata? string Custom message template for userdata validator failures.
 ---
----@field callable? string
----@field false? string
----@field falsy? string
----@field integer? string
----@field true? string
----@field truthy? string
+---@field callable? string Custom message template for callable validator failures.
+---@field false?    string Custom message template for false validator failures.
+---@field falsy?    string Custom message template for falsy validator failures.
+---@field integer?  string Custom message template for integer validator failures.
+---@field true?     string Custom message template for true validator failures.
+---@field truthy?   string Custom message template for truthy validator failures.
 ---
----@field block? string
----@field char? string
----@field device? string
----@field dir? string
----@field fifo? string
----@field file? string
----@field link? string
----@field path? string
----@field socket? string
+---@field block?  string Custom message template for block device validator failures.
+---@field char?   string Custom message template for character device validator failures.
+---@field device? string Custom message template for device validator failures.
+---@field dir?    string Custom message template for directory validator failures.
+---@field fifo?   string Custom message template for named pipe validator failures.
+---@field file?   string Custom message template for file validator failures.
+---@field link?   string Custom message template for symbolic link validator failures.
+---@field path?   string Custom message template for path validator failures.
+---@field socket? string Custom message template for socket validator failures.
 
 ---
 ---Validation helpers for Lua values and filesystem path types.
@@ -134,7 +135,7 @@
 ---
 ---@field messages modsValidatorMessages
 ---
----@overload fun(v:any, validator?:mods.ValidatorName, msg?:string):(boolean, string?)
+---@overload fun(v:any, validator?:mods.validatorName, msg?:string):(boolean, string?)
 local M = {}
 
 ---
