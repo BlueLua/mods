@@ -1,6 +1,7 @@
 ---@meta mods.log
 
----@alias mods.LogLevel
+---Log level name or severity threshold.
+---@alias mods.logLevel
 ---| string  Any custom log level name.
 ---| "debug" Debug messages.
 ---| "info"  Informational messages.
@@ -8,29 +9,34 @@
 ---| "error" Error messages.
 ---| "off"   Logging disabled.
 
----@alias mods.LogHandler fun(record: mods.log.record)
+---Callback function for handling log records.
+---@alias mods.logHandler fun(record: mods.log.record)
 
+---Numeric severity levels used for log message filtering.
 ---@enum mods.log.levelno
+-- stylua: ignore
 local LEVELS = {
-  debug = 10,
-  info = 20,
-  warn = 30,
-  error = 40,
-  off = math.huge,
+  debug = 10,        -- Debug messages.
+  info  = 20,        -- Informational messages.
+  warn  = 30,        -- Warning messages.
+  error = 40,        -- Error messages.
+  off   = math.huge, -- Logging disabled.
 }
 
+---A single log entry containing metadata and the formatted message.
 ---@class mods.log.record
----@field levelname mods.LogLevel Log level name.
----@field levelno integer Numeric severity used for filtering.
----@field name string? Optional logger name.
----@field message string Joined message string.
----@field args {[integer]:any, n:integer} Original variadic arguments.
----@field line string Formatted plain-text log line.
+---@field levelname mods.logLevel Log level name.
+---@field levelno   integer Numeric severity used for filtering.
+---@field name      string? Optional logger name.
+---@field message   string Joined message string.
+---@field args      {[integer]:any, n:integer} Original variadic arguments.
+---@field line      string Formatted plain-text log line.
 
+---Configuration options for creating a new logger instance.
 ---@class mods.log.new.opts
----@field handler? mods.LogHandler Optional handler function that receives each emitted record.
----@field level? mods.LogLevel Minimum enabled level; use `"off"` to disable logging. Defaults to `"warn"`.
----@field name? string Optional logger name included in emitted records.
+---@field handler? mods.logHandler Optional handler function that receives each emitted record.
+---@field level?   mods.logLevel Minimum enabled level; use `"off"` to disable logging. Defaults to `"warn"`.
+---@field name?    string Optional logger name included in emitted records.
 
 ---
 ---Logger factory that emits normalized records through an optional custom handler.
@@ -66,7 +72,7 @@ local Logger = {}
 ---Emit a record for `level` when it passes the logger filter.
 ---
 ---@section Logger Methods
----@param levelname mods.LogLevel Log level to emit.
+---@param levelname mods.logLevel Log level to emit.
 ---@param ... any Additional values joined with spaces.
 function Logger:log(levelname, ...) end
 
