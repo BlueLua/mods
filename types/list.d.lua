@@ -397,19 +397,15 @@ function List:index(v) end
 function List:index_if(pred) end
 
 ---
----Return the number of elements in the list.
+---Return the length of the list, defined by its maximum positive integer index.
 ---
 ---```lua
----n = List({ "a", "b", "c" }):len() --> 3
+---n = List({ "a", nil, "c" }):len() --> 3
 ---```
----
----> [!NOTE]
---->
----> Uses Lua's `#` operator.
 ---
 ---@section Queries
 ---@param self mods.List|any[] Current list.
----@return integer count Element count.
+---@return integer length List length.
 ---@nodiscard
 function List:len() end
 

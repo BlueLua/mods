@@ -287,7 +287,13 @@ function List:last()
 end
 
 function List:len()
-  return #self
+  local max = 0
+  for k in pairs(self) do
+    if type(k) == "number" and k > max and k % 1 == 0 then
+      max = k
+    end
+  end
+  return max
 end
 
 function List:isempty()
@@ -459,6 +465,7 @@ List.pop = remove
 List.__add = List.extend
 List.__eq = List.equals
 List.__le = List.le
+List.__len = List.len
 List.__lt = List.lt
 List.__mul = function(a, b)
   ---@diagnostic disable-next-line: param-type-mismatch

@@ -229,6 +229,39 @@ describe("mods.list", function()
     end)
   end)
 
+  describe("len()", function()
+    it("handles gaps in lists", function()
+      local ls = List({ "b", "c", [5] = "d", [6] = nil })
+      assert.are_equal(5, ls:len())
+    end)
+
+    it("ignores non-number keys", function()
+      local ls = List({ [1] = "a", foo = "bar" })
+      assert.are_equal(1, ls:len())
+    end)
+
+    it("does not let smaller keys overwrite the maximum key", function()
+      local ls = List({ [11] = "a", [10] = "b" })
+      assert.are_equal(11, ls:len())
+    end)
+
+    it("ignores non-integer keys", function()
+      local ls = List({ [2] = "a", [3.5] = "b" })
+      assert.are_equal(2, ls:len())
+    end)
+
+    it("ignores negative keys", function()
+      local ls = List()
+      ls[-1] = "a"
+      assert.are_equal(0, ls:len())
+    end)
+
+    it("ignores key 0", function()
+      local ls = List({ [0] = "a", [2] = "b" })
+      assert.are_equal(2, ls:len())
+    end)
+  end)
+
   describe("metamethods", function()
     it("__add (+) extends and returns the left list", function()
       local a = List({ "a", "b" })
