@@ -108,6 +108,9 @@ describe("mods.is", function()
     Float = {
       { expected = true , args = { 1.5 } },
       { expected = mods.runtime.version >= 503, args = { 2.0 } },
+      { expected = false, args = { math.huge } },
+      { expected = false, args = { -math.huge } },
+      { expected = false, args = { 0/0       } },
       { expected = false, args = { 1   } },
       { expected = false, args = { "abc" } },
       { expected = false, args = { nil } },
