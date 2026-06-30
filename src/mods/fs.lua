@@ -14,7 +14,7 @@ local join = path.join
 local assert_arg = utils.assert_arg
 local validate = utils.validate
 local isdir = is.dir
-local islink = is.link
+local islink = is.symlink
 
 local open = io.open
 local os_remove = os.remove

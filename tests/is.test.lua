@@ -196,10 +196,10 @@ describe("mods.is", function()
     Fifo   = { { expected = false, args = { false       } } },
     Socket = { { expected = false, args = { false       } } },
     Device = { { expected = false, args = { false       } } },
-    Link   = { { expected = false, args = { "README.md" } } },
+    Symlink = { { expected = false, args = { "README.md" } } },
   })
 
-  it("link detects symlink paths when supported", function()
+  it("symlink detects symlink paths when supported", function()
     local root = make_tmp_dir()
 
     local target = path.join(root, "target.txt")
@@ -208,7 +208,7 @@ describe("mods.is", function()
 
     local ok = fs.symlink(target, link)
     if ok then
-      assert.is_true(is.link(link))
+      assert.is_true(is.symlink(link))
     end
 
     assert.is_true(fs.rm(root, true))

@@ -21,7 +21,7 @@
 ---| 'dir'      A directory path.
 ---| 'fifo'     A named pipe (FIFO) path.
 ---| 'file'     A regular file path.
----| 'link'     A symbolic link path.
+---| 'symlink' A symbolic link path.
 ---| 'path'     Any existing path or symbolic link.
 ---| 'socket'   A socket path.
 
@@ -438,14 +438,14 @@ M.file = function(v) end
 ---Returns `true` when `v` is a symlink path.
 ---
 ---```lua
----is.link("/path/to/link")
+---is.symlink("/path/to/link")
 ---```
 ---
 ---@section Path Checks
 ---@param v any Value to validate.
----@return boolean isLink Whether the check succeeds.
+---@return boolean isSymlink Whether the check succeeds.
 ---@nodiscard
-M.link = function(v) end
+M.symlink = function(v) end
 
 ---
 ---Returns `true` when `v` is a socket path.
@@ -459,4 +459,5 @@ M.link = function(v) end
 ---@return boolean isSocket Whether the check succeeds.
 ---@nodiscard
 M.socket = function(v) end
+
 return M

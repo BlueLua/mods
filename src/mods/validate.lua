@@ -15,7 +15,7 @@ local M = { messages = {} }
 local messages = {}
 local validators = {}
 local path_validator_names =
-  Set({ "path", "block_device", "char_device", "dir", "fifo", "file", "link", "socket", "device" })
+  Set({ "path", "block_device", "char_device", "dir", "fifo", "file", "symlink", "socket", "device" })
 
 setmetatable(M.messages, {
   __index = messages,
@@ -93,7 +93,12 @@ for k in ("false true falsy truthy integer callable finite infinite float nan de
 end
 
 for k in pairs(path_validator_names) do
-  local expected = ({ dir = "directory", block_device = "block device", char_device = "character device" })[k] or k
+  local expected = ({
+    dir = "directory",
+    block_device = "block device",
+    char_device = "character device",
+    symlink = "symbolic link",
+  })[k] or k
   M.register(k, is[k], fmt("{{value}} is not a valid %s path", expected))
 end
 

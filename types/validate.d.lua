@@ -32,7 +32,7 @@
 ---@field dir?    string Custom message template for directory validator failures.
 ---@field fifo?   string Custom message template for named pipe validator failures.
 ---@field file?   string Custom message template for file validator failures.
----@field link?   string Custom message template for symbolic link validator failures.
+---@field symlink? string Custom message template for symbolic link validator failures.
 ---@field path?   string Custom message template for path validator failures.
 ---@field socket? string Custom message template for socket validator failures.
 
@@ -527,7 +527,7 @@ M.file = function(v, msg) end
 ---error message.
 ---
 ---```lua
----ok, err = validate.link(".")
+---ok, err = validate.symlink(".")
 ---```
 ---
 ---@section Path Checks
@@ -535,7 +535,7 @@ M.file = function(v, msg) end
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.link = function(v, msg) end
+M.symlink = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is a socket path. Otherwise returns `false` and an
