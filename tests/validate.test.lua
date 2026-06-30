@@ -77,6 +77,11 @@ describe("mods.validate", function()
     { "dir"      , "src"       , nil          , "string expected, got no value"                         },
   }
 
+  if jit then
+    local ffi_cdata = require("ffi").new("int", 1)
+    table.insert(tests, { "cdata", ffi_cdata, "abc", "cdata expected, got string" })
+  end
+
   for i = 1, #tests do
     local tp, valid, invalid, msg = unpack(tests[i] --[[@as {[1]:string, [2]:any, [3]:any, [4]:string}]], 1, 4)
     local fname = capitalize(tp)
@@ -193,6 +198,11 @@ describe("mods.validate", function()
       validate.register("number", function(v)
         return type(v) == "number"
       end)
+    end)
+
+    it("validate.cdata is function and rejects non-cdata values", function()
+      assert.Function(validate.cdata)
+      assert.are_same({ false, "cdata expected, got string" }, { validate.cdata("abc") })
     end)
   end)
 end)

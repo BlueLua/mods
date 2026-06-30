@@ -19,6 +19,7 @@ function M.string(v)   return type(v) == "string"   end
 function M.table(v)    return type(v) == "table"    end
 function M.thread(v)   return type(v) == "thread"   end
 function M.userdata(v) return type(v) == "userdata" end
+function M.cdata(v)    return type(v) == "cdata"    end
 
 M["nil"]      = function (v) return type(v) == "nil"      end
 M["function"] = function (v) return type(v) == "function" end

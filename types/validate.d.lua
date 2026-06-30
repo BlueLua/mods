@@ -5,6 +5,7 @@
 ---@field [string] string Custom message template for a validator.
 ---
 ---@field boolean?  string Custom message template for boolean validator failures.
+---@field cdata?    string Custom message template for cdata validator failures.
 ---@field function? string Custom message template for function validator failures.
 ---@field nil?      string Custom message template for nil validator failures.
 ---@field number?   string Custom message template for number validator failures.
@@ -270,6 +271,21 @@ M.thread = function(v, msg) end
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.userdata = function(v, msg) end
+
+---
+---Returns `true` when `v` is a cdata value (LuaJIT only). Otherwise returns
+---`false` and an error message.
+---
+---```lua
+---ok, err = validate.cdata(v)
+---```
+---
+---@section Type Checks
+---@param v any Value to validate.
+---@param msg? string Optional override template.
+---@return boolean isValid Whether the check succeeds.
+---@return string? err Error message when the check fails.
+M.cdata = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is exactly `false`. Otherwise returns `false` and an

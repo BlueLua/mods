@@ -82,7 +82,7 @@ function M.register(name, validator, tmpl)
   M[key] = wrapped
 end
 
-for k in ("boolean function nil number string table thread userdata"):gmatch("%S+") do
+for k in ("boolean function nil number string table thread userdata cdata"):gmatch("%S+") do
   M.register(k, is[k])
 end
 

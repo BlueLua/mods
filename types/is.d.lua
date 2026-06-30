@@ -175,6 +175,19 @@ M.thread = function(v) end
 M.userdata = function(v) end
 
 ---
+---Returns `true` when `v` is a cdata value (LuaJIT only).
+---
+---```lua
+---is.cdata(v)
+---```
+---
+---@section Type Checks
+---@param v any Value to validate.
+---@return boolean isCdata Whether the check succeeds.
+---@nodiscard
+M.cdata = function(v) end
+
+---
 ---Truthiness, exact-value, and callable checks.
 ---
 

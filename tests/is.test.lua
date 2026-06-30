@@ -4,6 +4,7 @@ local mods = require "mods"
 local fs = mods.fs
 local is = mods.is
 local path = mods.path
+local is_luajit = mods.runtime.is_luajit
 
 local make_tmp_dir = helpers.make_tmp_dir
 local tmpname = helpers.tmpname
@@ -15,6 +16,7 @@ describe("mods.is", function()
   local co = coroutine.create(fn)
   local ct = setmetatable({}, { __call = fn })
   local nct = setmetatable({}, { __call = true })
+  local ffi_cdata = is_luajit and require("ffi").new("int", 1) or nil
 
   -- each()
 
@@ -57,6 +59,7 @@ describe("mods.is", function()
       { expected = false, args = { 123      , "infinite" } },
       { expected = true , args = { 1.5      , "float"    } },
       { expected = false, args = { "abc"    , "float"    } },
+      { expected = is_luajit, args = { ffi_cdata, "cdata" } },
 
       -- uppercase validator names should fail (fall back to type check)
       { expected = false, args = { nil      , "Nil"      } },
@@ -70,6 +73,11 @@ describe("mods.is", function()
       { expected = true , args = { false } },
       { expected = false, args = { 123 } },
       { expected = false, args = { nil } },
+    },
+    Cdata = {
+      { expected = false, args = { 123 } },
+      { expected = false, args = { "abc" } },
+      { expected = is_luajit, args = { ffi_cdata } },
     },
     Nil = {
       { expected = true , args = { nil   } },
