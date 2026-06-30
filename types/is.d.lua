@@ -10,6 +10,7 @@
 ---| 'float'    A float number.
 ---| 'infinite' An infinite number.
 ---| 'falsy'    A falsy value (nil or false).
+---| 'defined'  A defined value (not nil).
 ---| 'integer'  An integer number.
 ---| 'nan'      A NaN (not-a-number) value.
 ---| 'true'     The boolean value true.
@@ -217,6 +218,21 @@ M.False = function(v) end
 ---@return boolean isTrue Whether the check succeeds.
 ---@nodiscard
 M.True = function(v) end
+
+---
+---Returns `true` when `v` is defined (not `nil`).
+---
+---```lua
+---is.defined(1)     --> true
+---is.defined(false) --> true
+---is.defined(nil)   --> false
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@return boolean isDefined Whether the check succeeds.
+---@nodiscard
+M.defined = function(v) end
 
 ---
 ---Returns `true` when `v` is falsy.

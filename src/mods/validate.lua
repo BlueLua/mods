@@ -86,7 +86,7 @@ for k in ("boolean function nil number string table thread userdata cdata"):gmat
   M.register(k, is[k])
 end
 
-for k in ("false true falsy truthy integer callable finite infinite float nan"):gmatch("%S+") do
+for k in ("false true falsy truthy integer callable finite infinite float nan defined"):gmatch("%S+") do
   M.register(k, is[k], fmt("%s value expected, got {{value}}", k))
 end
 

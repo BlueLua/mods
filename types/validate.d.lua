@@ -17,6 +17,7 @@
 ---@field callable? string Custom message template for callable validator failures.
 ---@field false?    string Custom message template for false validator failures.
 ---@field falsy?    string Custom message template for falsy validator failures.
+---@field defined?  string Custom message template for defined validator failures.
 ---@field finite?   string Custom message template for finite validator failures.
 ---@field float?    string Custom message template for float validator failures.
 ---@field infinite? string Custom message template for infinite validator failures.
@@ -319,6 +320,22 @@ M.False = function(v, msg) end
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.True = function(v, msg) end
+
+---
+---Returns `true` when `v` is defined (not `nil`). Otherwise returns `false`
+---and an error message.
+---
+---```lua
+---ok, err = validate.defined(1)   --> true, nil
+---ok, err = validate.defined(nil) --> false, "defined value expected, got no value"
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@param msg? string Optional override template.
+---@return boolean isValid Whether the check succeeds.
+---@return string? err Error message when the check fails.
+M.defined = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is falsy. Otherwise returns `false` and an error

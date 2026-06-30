@@ -45,6 +45,8 @@ describe("mods.is", function()
       { expected = true , args = { false    , "falsy"    } },
       { expected = false, args = { true     , "false"    } },
       { expected = false, args = { true     , "falsy"    } },
+      { expected = true , args = { false    , "defined"  } },
+      { expected = false, args = { nil      , "defined"  } },
       { expected = true , args = { 123      , "integer"  } },
       { expected = false, args = { 13.4     , "integer"  } },
       { expected = true , args = { true     , "true"     } },
@@ -90,6 +92,14 @@ describe("mods.is", function()
       { expected = true , args = { fn  } },
       { expected = false, args = { {}  } },
       { expected = false, args = { 123 } },
+    },
+    Defined = {
+      { expected = true , args = { false } },
+      { expected = true , args = { true  } },
+      { expected = true , args = { 123   } },
+      { expected = true , args = { "abc" } },
+      { expected = true , args = { {}    } },
+      { expected = false, args = { nil   } },
     },
     Falsy = {
       { expected = true , args = { false } },

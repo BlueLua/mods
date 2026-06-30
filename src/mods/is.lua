@@ -30,6 +30,7 @@ M["function"] = function (v) return type(v) == "function" end
 --------------------
 
 -- stylua: ignore start
+function M.defined(v) return v ~= nil end
 function M.falsy(v)   return not v and true or false            end
 function M.finite(v)   return type(v) == "number" and v < huge and v > -huge end
 function M.float(v)    return math_type(v) == "float" and v < huge and v > -huge end
