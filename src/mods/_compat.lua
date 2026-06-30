@@ -12,7 +12,7 @@ local unpack = table.unpack or unpack
 local pack = table.pack
 local huge, neg_huge = math.huge, -math.huge
 
-if runtime.is_lua51 then
+if runtime.version == 501 then
   pack = function(...)
     return { n = select("#", ...), ... }
   end
@@ -21,7 +21,7 @@ if runtime.is_lua51 then
   rawset(table, "pack", pack)
 end
 
-if runtime.is_lua51 and not runtime.is_luajit then
+if runtime.version == 501 and not runtime.is_luajit then
   local loadfile = loadfile
   local xpcall = xpcall
 

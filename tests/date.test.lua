@@ -3,7 +3,7 @@ local mods = require "mods"
 local cal = mods.calendar
 local Date = mods.date
 
-local is_lua51 = mods.runtime.is_lua51
+local is_lua51 = mods.runtime.version == 501
 local args_repr = mods.utils.args_repr
 local spairs = mods.tbl.spairs
 

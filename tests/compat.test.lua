@@ -3,7 +3,7 @@
 local mods = require "mods"
 
 local runtime = mods.runtime
-local is_lua51 = runtime.is_lua51
+local is_lua51 = runtime.version == 501
 local is_luajit = runtime.is_luajit
 
 local source = debug.getinfo(1, "S").source

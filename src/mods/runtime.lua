@@ -4,18 +4,12 @@ local minor = tonumber(minor_s) --[[@as integer]]
 local is_luajit = rawget(_G, "jit") ~= nil
 local is_windows = package.config:sub(1, 1) == "\\"
 
----@type mods.runtime
 local M = {
   version = major * 100 + minor,
   major = major,
   minor = minor,
   is_luajit = is_luajit,
   is_windows = is_windows,
-  is_lua51 = major == 5 and minor == 1,
-  is_lua52 = major == 5 and minor == 2,
-  is_lua53 = major == 5 and minor == 3,
-  is_lua54 = major == 5 and minor == 4,
-  is_lua55 = major == 5 and minor == 5,
 }
 
 return M

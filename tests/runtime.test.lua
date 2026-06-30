@@ -11,27 +11,8 @@ describe("mods.runtime", function()
     assert.are_equal(version_nums[version], runtime.version)
     assert.is_number(runtime.major)
     assert.is_number(runtime.minor)
-    assert.is_boolean(runtime.is_lua51)
-    assert.is_boolean(runtime.is_lua52)
-    assert.is_boolean(runtime.is_lua53)
-    assert.is_boolean(runtime.is_lua54)
-    assert.is_boolean(runtime.is_lua55)
     assert.is_boolean(runtime.is_luajit)
     assert.is_boolean(runtime.is_windows)
-  end)
-
-  it("flags Lua versions consistently", function()
-    local version_flags = {}
-    for minor = 1, 5 do
-      local flag = "is_lua5" .. minor
-      version_flags[flag] = version == "Lua 5." .. minor
-    end
-
-    assert.are_equal(version_flags.is_lua51, runtime.is_lua51)
-    assert.are_equal(version_flags.is_lua52, runtime.is_lua52)
-    assert.are_equal(version_flags.is_lua53, runtime.is_lua53)
-    assert.are_equal(version_flags.is_lua54, runtime.is_lua54)
-    assert.are_equal(version_flags.is_lua55, runtime.is_lua55)
   end)
 
   it("version encodes major/minor versions", function()
