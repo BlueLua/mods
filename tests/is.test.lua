@@ -11,7 +11,7 @@ local tmpname = helpers.tmpname
 
 -- stylua: ignore
 describe("mods.is", function()
-  local is_unix = not mods.runtime.is_windows
+  local is_unix = mods.runtime.is_unix
   local fn = function() end
   local co = coroutine.create(fn)
   local ct = setmetatable({}, { __call = fn })

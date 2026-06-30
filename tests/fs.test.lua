@@ -15,7 +15,7 @@ local dirname = path.dirname
 local fmt = string.format
 
 describe("mods.fs", function()
-  local is_unix = not mods.runtime.is_windows
+  local is_unix = mods.runtime.is_unix
   local cwd = path.cwd() --[[@as string]]
   local readme_file = join(cwd, "README.md")
   local spec_file = join(cwd, "tests", "_types.lua")

@@ -10,6 +10,7 @@ local M = {
   minor = minor,
   is_luajit = is_luajit,
   is_windows = is_windows,
+  is_unix = not is_windows,
 }
 
 return M

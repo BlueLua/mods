@@ -54,6 +54,14 @@
 ---
 ---@field is_windows boolean
 ---
+---True when running on a Unix-like host (Linux, macOS).
+---
+---```lua
+---print(runtime.is_unix) --> true | false
+---```
+---
+---@field is_unix boolean
+---
 local M = {}
 
 return M
