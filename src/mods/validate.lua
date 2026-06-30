@@ -13,7 +13,7 @@ local M = { messages = {} }
 ---@type modsValidatorMessages
 local messages = {}
 local validators = {}
-local validator_names = mods.set({ "path", "block", "char", "dir", "fifo", "file", "link", "socket", "device" })
+local path_validator_names = mods.set({ "path", "block", "char", "dir", "fifo", "file", "link", "socket", "device" })
 
 setmetatable(M.messages, {
   __index = messages,
@@ -43,7 +43,7 @@ local function render_msg(expected, tp, v, tmpl)
   expected = tostring(expected)
 
   if not tmpl then
-    if vt ~= "string" and validator_names[expected] then
+    if vt ~= "string" and path_validator_names[expected] then
       tmpl = messages.string
       expected = "string"
     else
@@ -90,7 +90,7 @@ for k in ("false true falsy truthy integer callable finite infinite float"):gmat
   M.register(k, is[k], fmt("%s value expected, got {{value}}", k))
 end
 
-for k in pairs(validator_names) do
+for k in pairs(path_validator_names) do
   local expected = k == "dir" and "directory" or k
   M.register(k, is[k], fmt("{{value}} is not a valid %s path", expected))
 end
