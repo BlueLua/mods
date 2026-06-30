@@ -89,7 +89,6 @@ M._path_validator_names = List({ "path", "block", "char", "dir", "fifo", "file",
 ---@return boolean isBoolean Whether the check succeeds.
 ---@nodiscard
 M.boolean = function(v) end
-M.Boolean = M.boolean
 
 ---
 ---Returns `true` when `v` is a function.
@@ -102,7 +101,6 @@ M.Boolean = M.boolean
 ---@param v any Value to validate.
 ---@return boolean isFunction Whether the check succeeds.
 ---@nodiscard
-M["function"] = function(v) end
 M.Function = function(v) end
 
 ---
@@ -116,8 +114,7 @@ M.Function = function(v) end
 ---@param v any Value to validate.
 ---@return boolean isNil Whether the check succeeds.
 ---@nodiscard
-M["nil"] = function(v) end
-M.Nil = M["nil"]
+M.Nil = function(v) end
 
 ---
 ---Returns `true` when `v` is a number.
@@ -131,7 +128,6 @@ M.Nil = M["nil"]
 ---@return boolean isNumber Whether the check succeeds.
 ---@nodiscard
 M.number = function(v) end
-M.Number = M.number
 
 ---
 ---Returns `true` when `v` is a string.
@@ -145,7 +141,6 @@ M.Number = M.number
 ---@return boolean isString Whether the check succeeds.
 ---@nodiscard
 M.string = function(v) end
-M.String = M.string
 
 ---
 ---Returns `true` when `v` is a table.
@@ -159,7 +154,6 @@ M.String = M.string
 ---@return boolean isTable Whether the check succeeds.
 ---@nodiscard
 M.table = function(v) end
-M.Table = M.table
 
 ---
 ---Returns `true` when `v` is a thread.
@@ -173,7 +167,6 @@ M.Table = M.table
 ---@return boolean isThread Whether the check succeeds.
 ---@nodiscard
 M.thread = function(v) end
-M.Thread = M.thread
 
 ---
 ---Returns `true` when `v` is userdata.
@@ -187,7 +180,6 @@ M.Thread = M.thread
 ---@return boolean isUserdata Whether the check succeeds.
 ---@nodiscard
 M.userdata = function(v) end
-M.Userdata = M.userdata
 
 ---
 ---Truthiness, exact-value, and callable checks.
@@ -204,8 +196,7 @@ M.Userdata = M.userdata
 ---@param v any Value to validate.
 ---@return boolean isFalse Whether the check succeeds.
 ---@nodiscard
-M["false"] = function(v) end
-M.False = M["false"]
+M.False = function(v) end
 
 ---
 ---Returns `true` when `v` is exactly `true`.
@@ -218,8 +209,7 @@ M.False = M["false"]
 ---@param v any Value to validate.
 ---@return boolean isTrue Whether the check succeeds.
 ---@nodiscard
-M["true"] = function(v) end
-M.True = M["true"]
+M.True = function(v) end
 
 ---
 ---Returns `true` when `v` is falsy.
@@ -233,7 +223,6 @@ M.True = M["true"]
 ---@return boolean isFalsy Whether the check succeeds.
 ---@nodiscard
 M.falsy = function(v) end
-M.Falsy = M.falsy
 
 ---
 ---Returns `true` when `v` is callable.
@@ -247,7 +236,6 @@ M.Falsy = M.falsy
 ---@return boolean isCallable Whether the check succeeds.
 ---@nodiscard
 M.callable = function(v) end
-M.Callable = M.callable
 
 ---
 ---Returns `true` when `v` is a finite number.
@@ -261,7 +249,6 @@ M.Callable = M.callable
 ---@return boolean isFinite Whether the check succeeds.
 ---@nodiscard
 M.finite = function(v) end
-M.Finite = M.finite
 
 ---
 ---Returns `true` when `v` is a float number.
@@ -315,7 +302,6 @@ M.integer = function(v) end
 ---@return boolean isTruthy Whether the check succeeds.
 ---@nodiscard
 M.truthy = function(v) end
-M.Truthy = M.truthy
 
 ---
 ---Returns `true` when `v` is a valid filesystem path.
@@ -333,7 +319,6 @@ M.Truthy = M.truthy
 ---@return boolean isPath Whether the check succeeds.
 ---@nodiscard
 M.path = function(v) end
-M.Path = M.path
 
 ---
 ---Returns `true` when `v` is a block device path.
@@ -347,7 +332,6 @@ M.Path = M.path
 ---@return boolean isBlock Whether the check succeeds.
 ---@nodiscard
 M.block = function(v) end
-M.Block = M.block
 
 ---
 ---Returns `true` when `v` is a character device path.
@@ -361,7 +345,6 @@ M.Block = M.block
 ---@return boolean isChar Whether the check succeeds.
 ---@nodiscard
 M.char = function(v) end
-M.Char = M.char
 
 ---
 ---Returns `true` when `v` is a block or character device path.
@@ -375,7 +358,6 @@ M.Char = M.char
 ---@return boolean isDevice Whether the check succeeds.
 ---@nodiscard
 M.device = function(v) end
-M.Device = M.device
 
 ---
 ---Returns `true` when `v` is a directory path.
@@ -389,7 +371,6 @@ M.Device = M.device
 ---@return boolean isDir Whether the check succeeds.
 ---@nodiscard
 M.dir = function(v) end
-M.Dir = M.dir
 
 ---
 ---Returns `true` when `v` is a FIFO path.
@@ -403,7 +384,6 @@ M.Dir = M.dir
 ---@return boolean isFifo Whether the check succeeds.
 ---@nodiscard
 M.fifo = function(v) end
-M.Fifo = M.fifo
 
 ---
 ---Returns `true` when `v` is a file path.
@@ -417,7 +397,6 @@ M.Fifo = M.fifo
 ---@return boolean isFile Whether the check succeeds.
 ---@nodiscard
 M.file = function(v) end
-M.File = M.file
 
 ---
 ---Returns `true` when `v` is a symlink path.
@@ -431,7 +410,6 @@ M.File = M.file
 ---@return boolean isLink Whether the check succeeds.
 ---@nodiscard
 M.link = function(v) end
-M.Link = M.link
 
 ---
 ---Returns `true` when `v` is a socket path.
@@ -445,6 +423,4 @@ M.Link = M.link
 ---@return boolean isSocket Whether the check succeeds.
 ---@nodiscard
 M.socket = function(v) end
-M.Socket = M.socket
-
 return M

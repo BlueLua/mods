@@ -156,7 +156,6 @@ local M = {}
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.boolean = function(v, msg) end
-M.Boolean = M.boolean
 
 ---
 ---Returns `true` when `v` is a function. Otherwise returns `false` and an error
@@ -173,8 +172,7 @@ M.Boolean = M.boolean
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M["function"] = function(v, msg) end
-M.Function = M["function"]
+M.Function = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is `nil`. Otherwise returns `false` and an error
@@ -190,8 +188,7 @@ M.Function = M["function"]
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M["nil"] = function(v, msg) end
-M.Nil = M["nil"]
+M.Nil = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is a number. Otherwise returns `false` and an error
@@ -208,7 +205,6 @@ M.Nil = M["nil"]
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.number = function(v, msg) end
-M.Number = M.number
 
 ---
 ---Returns `true` when `v` is a string. Otherwise returns `false` and an error
@@ -225,7 +221,6 @@ M.Number = M.number
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.string = function(v, msg) end
-M.String = M.string
 
 ---
 ---Returns `true` when `v` is a table. Otherwise returns `false` and an error
@@ -242,7 +237,6 @@ M.String = M.string
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.table = function(v, msg) end
-M.Table = M.table
 
 ---
 ---Returns `true` when `v` is a thread. Otherwise returns `false` and an error
@@ -260,7 +254,6 @@ M.Table = M.table
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.thread = function(v, msg) end
-M.Thread = M.thread
 
 ---
 ---Returns `true` when `v` is a userdata value. Otherwise returns `false` and an error
@@ -277,7 +270,6 @@ M.Thread = M.thread
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.userdata = function(v, msg) end
-M.Userdata = M.userdata
 
 ---
 ---Returns `true` when `v` is exactly `false`. Otherwise returns `false` and an
@@ -293,8 +285,7 @@ M.Userdata = M.userdata
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M["false"] = function(v, msg) end
-M.False = M["false"]
+M.False = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is exactly `true`. Otherwise returns `false` and an
@@ -310,8 +301,7 @@ M.False = M["false"]
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M["true"] = function(v, msg) end
-M.True = M["true"]
+M.True = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is falsy. Otherwise returns `false` and an error
@@ -328,7 +318,6 @@ M.True = M["true"]
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.falsy = function(v, msg) end
-M.Falsy = M.falsy
 
 ---
 ---Returns `true` when `v` is callable. Otherwise returns `false` and an error
@@ -345,7 +334,6 @@ M.Falsy = M.falsy
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.callable = function(v, msg) end
-M.Callable = M.callable
 
 ---
 ---Returns `true` when `v` is an integer. Otherwise returns `false` and an error
@@ -362,7 +350,6 @@ M.Callable = M.callable
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.integer = function(v, msg) end
-M.Integer = M.integer
 
 ---
 ---Returns `true` when `v` is truthy. Otherwise returns `false` and an error
@@ -379,7 +366,6 @@ M.Integer = M.integer
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.truthy = function(v, msg) end
-M.Truthy = M.truthy
 
 ---
 ---Returns `true` when `v` is a valid filesystem path. Otherwise returns `false`
@@ -395,7 +381,6 @@ M.Truthy = M.truthy
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.path = function(v, msg) end
-M.Path = M.path
 
 ---
 ---Returns `true` when `v` is a block device path. Otherwise returns `false`
@@ -411,7 +396,6 @@ M.Path = M.path
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.block = function(v, msg) end
-M.Block = M.block
 
 ---
 ---Returns `true` when `v` is a char device path. Otherwise returns `false` and
@@ -427,7 +411,6 @@ M.Block = M.block
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.char = function(v, msg) end
-M.Char = M.char
 
 ---
 ---Returns `true` when `v` is a block or char device path. Otherwise returns
@@ -443,7 +426,6 @@ M.Char = M.char
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.device = function(v, msg) end
-M.Device = M.device
 
 ---
 ---Returns `true` when `v` is a directory path. Otherwise returns `false` and an
@@ -459,7 +441,6 @@ M.Device = M.device
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.dir = function(v, msg) end
-M.Dir = M.dir
 
 ---
 ---Returns `true` when `v` is a FIFO path. Otherwise returns `false` and an error
@@ -475,7 +456,6 @@ M.Dir = M.dir
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.fifo = function(v, msg) end
-M.Fifo = M.fifo
 
 ---
 ---Returns `true` when `v` is a file path. Otherwise returns `false` and an error
@@ -491,7 +471,6 @@ M.Fifo = M.fifo
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.file = function(v, msg) end
-M.File = M.file
 
 ---
 ---Returns `true` when `v` is a symlink path. Otherwise returns `false` and an
@@ -507,7 +486,6 @@ M.File = M.file
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.link = function(v, msg) end
-M.Link = M.link
 
 ---
 ---Returns `true` when `v` is a socket path. Otherwise returns `false` and an
@@ -523,7 +501,6 @@ M.Link = M.link
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.socket = function(v, msg) end
-M.Socket = M.socket
 
 ---
 ---Register or override a validator function by name.
