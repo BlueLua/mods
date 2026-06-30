@@ -465,7 +465,6 @@ List.pop = remove
 List.__add = List.extend
 List.__eq = List.equals
 List.__le = List.le
-List.__len = List.len
 List.__lt = List.lt
 List.__mul = function(a, b)
   ---@diagnostic disable-next-line: param-type-mismatch
