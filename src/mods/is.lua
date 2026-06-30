@@ -4,6 +4,7 @@ local List = mods.list
 local lfs = mods.utils.lazy_module("lfs") ---@module 'lfs'
 local abs = math.abs
 local huge = math.huge
+local math_type = math.type
 
 ---@type mods.is
 local M = {}
@@ -31,7 +32,8 @@ M["function"] = function (v) return type(v) == "function" end
 -- stylua: ignore start
 function M.falsy(v)   return not v and true or false            end
 function M.finite(v)   return type(v) == "number" and v < huge and v > -huge end
-function M.infinite(v) return type(v) == "number" and abs(v) == huge end
+function M.float(v)    return type(v) == "number" and math_type(v) == "float" end
+function M.infinite(v) return type(v) == "number" and abs(v) == huge          end
 function M.integer(v) return type(v) == "number" and v % 1 == 0 end
 function M.truthy(v)  return v and true or false                end
 

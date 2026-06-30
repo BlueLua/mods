@@ -55,6 +55,8 @@ describe("mods.is", function()
       { expected = false, args = { math.huge, "finite"   } },
       { expected = true , args = { math.huge, "infinite" } },
       { expected = false, args = { 123      , "infinite" } },
+      { expected = true , args = { 1.5      , "float"    } },
+      { expected = false, args = { "abc"    , "float"    } },
 
       -- uppercase validator names should fail (fall back to type check)
       { expected = false, args = { nil      , "Nil"      } },
@@ -102,6 +104,13 @@ describe("mods.is", function()
       { expected = false, args = { 0/0        } },
       { expected = false, args = { "abc"      } },
       { expected = false, args = { nil        } },
+    },
+    Float = {
+      { expected = true , args = { 1.5 } },
+      { expected = mods.runtime.version >= 503, args = { 2.0 } },
+      { expected = false, args = { 1   } },
+      { expected = false, args = { "abc" } },
+      { expected = false, args = { nil } },
     },
     Infinite = {
       { expected = true , args = { math.huge  } },

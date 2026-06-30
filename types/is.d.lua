@@ -10,6 +10,7 @@ local List
 ---| 'callable' A function or table with a `__call` metamethod.
 ---| 'false'    The boolean value false.
 ---| 'finite'   A finite number.
+---| 'float'    A float number.
 ---| 'infinite' An infinite number.
 ---| 'falsy'    A falsy value (nil or false).
 ---| 'integer'  An integer number.
@@ -261,6 +262,20 @@ M.Callable = M.callable
 ---@nodiscard
 M.finite = function(v) end
 M.Finite = M.finite
+
+---
+---Returns `true` when `v` is a float number.
+---
+---```lua
+---is.float(1.5) --> true
+---is.float(1.0) --> true (on Lua >= 5.3) or false (on Lua <= 5.2)
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@return boolean isFloat Whether the check succeeds.
+---@nodiscard
+M.float = function(v) end
 
 ---
 ---Returns `true` when `v` is an infinite number.
