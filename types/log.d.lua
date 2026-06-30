@@ -1,4 +1,4 @@
----@meta mods.log
+---@meta _
 
 ---Log level name or severity threshold.
 ---@alias mods.logLevel

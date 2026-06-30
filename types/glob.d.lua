@@ -1,4 +1,4 @@
----@meta mods.glob
+---@meta _
 
 ---Options for glob matching and directory traversal.
 ---@class mods.GlobOptions

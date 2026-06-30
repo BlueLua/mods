@@ -1,4 +1,4 @@
----@meta mods.ntpath
+---@meta _
 
 ---Windows/NT-style path operations.
 ---

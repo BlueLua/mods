@@ -1,4 +1,4 @@
----@meta mods.List
+---@meta _
 
 ---
 ---A list class for creating, transforming, and querying sequences of values.

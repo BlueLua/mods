@@ -1,4 +1,4 @@
----@meta mods.json
+---@meta _
 
 ---@class mods.json.null
 

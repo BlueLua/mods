@@ -1,4 +1,4 @@
----@meta mods.stringify
+---@meta _
 ---
 ---Render Lua values as readable source-like text.
 ---

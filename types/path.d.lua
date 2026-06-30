@@ -1,4 +1,4 @@
----@meta mods.path
+---@meta _
 
 ---@module "mods.fs"
 local fs

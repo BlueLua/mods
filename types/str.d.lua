@@ -1,4 +1,4 @@
----@meta mods.str
+---@meta _
 
 ---
 ---String operations for searching, splitting, trimming, and formatting text.

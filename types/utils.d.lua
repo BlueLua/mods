@@ -1,4 +1,4 @@
----@meta mods.utils
+---@meta _
 
 ---
 ---Shared utility helpers used across the Mods library.

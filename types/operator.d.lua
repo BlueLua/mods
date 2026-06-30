@@ -1,4 +1,4 @@
----@meta mods.operator
+---@meta _
 
 ---
 ---Lua operators exposed as functions.

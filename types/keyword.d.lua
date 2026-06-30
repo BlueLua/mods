@@ -1,4 +1,4 @@
----@meta mods.keyword
+---@meta _
 
 ---
 ---Helpers for Lua keywords and identifiers.

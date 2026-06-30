@@ -1,4 +1,4 @@
----@meta mods.fs
+---@meta _
 
 ---Filesystem entry type.
 ---@alias mods.fsEntryType

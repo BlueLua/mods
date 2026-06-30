@@ -1,4 +1,4 @@
----@meta mods.is
+---@meta _
 
 ---@module 'mods.list'
 local List

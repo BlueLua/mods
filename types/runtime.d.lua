@@ -1,4 +1,4 @@
----@meta mods.runtime
+---@meta _
 
 ---
 ---Lua runtime metadata and version compatibility flags.

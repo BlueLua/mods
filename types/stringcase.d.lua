@@ -1,4 +1,4 @@
----@meta mods.stringcase
+---@meta _
 
 ---
 ---String case conversion and word splitting.

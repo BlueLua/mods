@@ -1,4 +1,4 @@
----@meta mods.date
+---@meta _
 
 ---Representation of date components.
 ---@class mods.DateParts

@@ -1,4 +1,4 @@
----@meta mods.duration
+---@meta _
 
 ---Representation of duration parts.
 ---@class mods.DurationParts

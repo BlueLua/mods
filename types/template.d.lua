@@ -1,4 +1,4 @@
----@meta mods.template
+---@meta _
 ---
 ---String template rendering with <code v-pre>{{...}}</code> placeholders.
 ---

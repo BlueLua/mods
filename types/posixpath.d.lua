@@ -1,4 +1,4 @@
----@meta mods.posixpath
+---@meta _
 
 ---
 ---POSIX-style path operations.

@@ -1,4 +1,4 @@
----@meta mods.calendar
+---@meta _
 
 ---Weekday number (1-7) where 1 is Monday and 7 is Sunday.
 ---@alias mods.calendarWeekday

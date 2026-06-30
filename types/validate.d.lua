@@ -1,4 +1,4 @@
----@meta mods.validate
+---@meta _
 
 ---Custom error message templates for validators, indexed by validator name.
 ---@class modsValidatorMessages

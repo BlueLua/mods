@@ -1,4 +1,4 @@
----@meta mods.tbl
+---@meta _
 
 ---
 ---Table operations for querying, copying, merging, and transforming tables.
