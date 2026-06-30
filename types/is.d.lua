@@ -15,8 +15,8 @@
 ---| 'nan'      A NaN (not-a-number) value.
 ---| 'true'     The boolean value true.
 ---| 'truthy'   A truthy value (not nil and not false).
----| 'block'    A block device path.
----| 'char'     A character device path.
+---| 'block_device' A block device path.
+---| 'char_device' A character device path.
 ---| 'device'   A character or block device path.
 ---| 'dir'      A directory path.
 ---| 'fifo'     A named pipe (FIFO) path.
@@ -326,7 +326,6 @@ M.integer = function(v) end
 ---@nodiscard
 M.nan = function(v) end
 
-
 ---
 ---Returns `true` when `v` is truthy.
 ---
@@ -361,27 +360,27 @@ M.path = function(v) end
 ---Returns `true` when `v` is a block device path.
 ---
 ---```lua
----is.block("/dev/sda")
+---is.block_device("/dev/sda")
 ---```
 ---
 ---@section Path Checks
 ---@param v any Value to validate.
----@return boolean isBlock Whether the check succeeds.
+---@return boolean isBlockDevice Whether the check succeeds.
 ---@nodiscard
-M.block = function(v) end
+M.block_device = function(v) end
 
 ---
 ---Returns `true` when `v` is a character device path.
 ---
 ---```lua
----is.char("/dev/null")
+---is.char_device("/dev/null")
 ---```
 ---
 ---@section Path Checks
 ---@param v any Value to validate.
----@return boolean isChar Whether the check succeeds.
+---@return boolean isCharDevice Whether the check succeeds.
 ---@nodiscard
-M.char = function(v) end
+M.char_device = function(v) end
 
 ---
 ---Returns `true` when `v` is a block or character device path.

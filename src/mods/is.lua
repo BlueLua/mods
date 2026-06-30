@@ -68,14 +68,14 @@ function M.device(v)
 end
 
 -- stylua: ignore start
-function M.block(v)  return type(v) == "string" and lfs.attributes(v, "mode") == "block device"     end
-function M.char(v)   return type(v) == "string" and lfs.attributes(v, "mode") == "char device"      end
-function M.dir(v)    return type(v) == "string" and lfs.attributes(v, "mode") == "directory"        end
-function M.fifo(v)   return type(v) == "string" and lfs.attributes(v, "mode") == "named pipe"       end
-function M.file(v)   return type(v) == "string" and lfs.attributes(v, "mode") == "file"             end
-function M.socket(v) return type(v) == "string" and lfs.attributes(v, "mode") == "socket"           end
-function M.link(v)   return type(v) == "string" and islink(v)                                       end
-function M.path(v)   return type(v) == "string" and (lfs.attributes(v, "mode") ~= nil or islink(v)) end
+function M.block_device(v) return type(v) == "string" and lfs.attributes(v, "mode") == "block device"     end
+function M.char_device(v)  return type(v) == "string" and lfs.attributes(v, "mode") == "char device"      end
+function M.dir(v)          return type(v) == "string" and lfs.attributes(v, "mode") == "directory"        end
+function M.fifo(v)         return type(v) == "string" and lfs.attributes(v, "mode") == "named pipe"       end
+function M.file(v)         return type(v) == "string" and lfs.attributes(v, "mode") == "file"             end
+function M.socket(v)       return type(v) == "string" and lfs.attributes(v, "mode") == "socket"           end
+function M.link(v)         return type(v) == "string" and islink(v)                                       end
+function M.path(v)         return type(v) == "string" and (lfs.attributes(v, "mode") ~= nil or islink(v)) end
 -- stylua: ignore end
 
 --------------------------------

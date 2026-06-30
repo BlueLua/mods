@@ -6,6 +6,7 @@ local validate = mods.utils.validate
 local template = mods.template
 local lower = string.lower
 local fmt = string.format
+local Set = mods.set
 
 ---@type mods.validate
 local M = { messages = {} }
@@ -13,7 +14,8 @@ local M = { messages = {} }
 ---@type modsValidatorMessages
 local messages = {}
 local validators = {}
-local path_validator_names = mods.set({ "path", "block", "char", "dir", "fifo", "file", "link", "socket", "device" })
+local path_validator_names =
+  Set({ "path", "block_device", "char_device", "dir", "fifo", "file", "link", "socket", "device" })
 
 setmetatable(M.messages, {
   __index = messages,
@@ -91,7 +93,7 @@ for k in ("false true falsy truthy integer callable finite infinite float nan de
 end
 
 for k in pairs(path_validator_names) do
-  local expected = k == "dir" and "directory" or k
+  local expected = ({ dir = "directory", block_device = "block device", char_device = "character device" })[k] or k
   M.register(k, is[k], fmt("{{value}} is not a valid %s path", expected))
 end
 

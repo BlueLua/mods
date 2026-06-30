@@ -26,8 +26,8 @@
 ---@field true?     string Custom message template for true validator failures.
 ---@field truthy?   string Custom message template for truthy validator failures.
 ---
----@field block?  string Custom message template for block device validator failures.
----@field char?   string Custom message template for character device validator failures.
+---@field block_device? string Custom message template for block device validator failures.
+---@field char_device? string Custom message template for character device validator failures.
 ---@field device? string Custom message template for device validator failures.
 ---@field dir?    string Custom message template for directory validator failures.
 ---@field fifo?   string Custom message template for named pipe validator failures.
@@ -437,7 +437,7 @@ M.path = function(v, msg) end
 ---and an error message.
 ---
 ---```lua
----ok, err = validate.block(".")
+---ok, err = validate.block_device(".")
 ---```
 ---
 ---@section Path Checks
@@ -445,14 +445,14 @@ M.path = function(v, msg) end
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.block = function(v, msg) end
+M.block_device = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is a char device path. Otherwise returns `false` and
 ---an error message.
 ---
 ---```lua
----ok, err = validate.char(".")
+---ok, err = validate.char_device(".")
 ---```
 ---
 ---@section Path Checks
@@ -460,7 +460,7 @@ M.block = function(v, msg) end
 ---@param msg? string Optional override template.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.char = function(v, msg) end
+M.char_device = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is a block or char device path. Otherwise returns
