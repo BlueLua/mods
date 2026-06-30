@@ -16,6 +16,8 @@
 ---@field callable? string Custom message template for callable validator failures.
 ---@field false?    string Custom message template for false validator failures.
 ---@field falsy?    string Custom message template for falsy validator failures.
+---@field finite?   string Custom message template for finite validator failures.
+---@field infinite? string Custom message template for infinite validator failures.
 ---@field integer?  string Custom message template for integer validator failures.
 ---@field true?     string Custom message template for true validator failures.
 ---@field truthy?   string Custom message template for truthy validator failures.

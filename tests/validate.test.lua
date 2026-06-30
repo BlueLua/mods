@@ -57,6 +57,8 @@ describe("mods.validate", function()
     { "falsy"    , nil         , 123          , "falsy value expected, got 123"                         },
     { "integer"  , 123         , 13.4         , "integer value expected, got 13.4"                      },
     { "integer"  , 123         , nil          , "integer value expected, got no value"                  },
+    { "finite"   , 123         , math.huge    , "finite value expected, got inf"                        },
+    { "infinite" , math.huge   , 123          , "infinite value expected, got 123"                      },
     { "integer"  , 123         , "abc"        , 'integer value expected, got "abc"'                     },
     { "true"     , true        , false        , "true value expected, got false"                        },
     { "truthy"   , 123         , nil          , "truthy value expected, got no value"                   },

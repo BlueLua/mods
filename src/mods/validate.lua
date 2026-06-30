@@ -86,7 +86,7 @@ for k in ("boolean function nil number string table thread userdata"):gmatch("%S
   M.register(k, is[k])
 end
 
-for k in ("false true falsy truthy integer callable"):gmatch("%S+") do
+for k in ("false true falsy truthy integer callable finite infinite"):gmatch("%S+") do
   M.register(k, is[k], fmt("%s value expected, got {{value}}", k))
 end
 

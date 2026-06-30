@@ -9,6 +9,8 @@ local List
 ---| string     Any validator name.
 ---| 'callable' A function or table with a `__call` metamethod.
 ---| 'false'    The boolean value false.
+---| 'finite'   A finite number.
+---| 'infinite' An infinite number.
 ---| 'falsy'    A falsy value (nil or false).
 ---| 'integer'  An integer number.
 ---| 'true'     The boolean value true.
@@ -247,6 +249,33 @@ M.callable = function(v) end
 M.Callable = M.callable
 
 ---
+---Returns `true` when `v` is a finite number.
+---
+---```lua
+---is.finite(42) --> true
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@return boolean isFinite Whether the check succeeds.
+---@nodiscard
+M.finite = function(v) end
+M.Finite = M.finite
+
+---
+---Returns `true` when `v` is an infinite number.
+---
+---```lua
+---is.infinite(math.huge)  --> true
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@return boolean isInfinite Whether the check succeeds.
+---@nodiscard
+M.infinite = function(v) end
+
+---
 ---Returns `true` when `v` is an integer.
 ---
 ---```lua
@@ -258,7 +287,6 @@ M.Callable = M.callable
 ---@return boolean isInteger Whether the check succeeds.
 ---@nodiscard
 M.integer = function(v) end
-M.Integer = M.integer
 
 ---
 ---Returns `true` when `v` is truthy.

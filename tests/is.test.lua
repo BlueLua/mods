@@ -51,6 +51,10 @@ describe("mods.is", function()
       { expected = false, args = { false    , "truthy"   } },
       { expected = true , args = { io.stdout, "userdata" } },
       { expected = false, args = { {}       , "userdata" } },
+      { expected = true , args = { 123      , "finite"   } },
+      { expected = false, args = { math.huge, "finite"   } },
+      { expected = true , args = { math.huge, "infinite" } },
+      { expected = false, args = { 123      , "infinite" } },
 
       -- uppercase validator names should fail (fall back to type check)
       { expected = false, args = { nil      , "Nil"      } },
@@ -89,6 +93,23 @@ describe("mods.is", function()
       { expected = false, args = { 13.4  } },
       { expected = false, args = { "123" } },
       { expected = false, args = { nil   } },
+    },
+    Finite = {
+      { expected = true , args = { 123        } },
+      { expected = true , args = { -1.5       } },
+      { expected = false, args = { math.huge  } },
+      { expected = false, args = { -math.huge } },
+      { expected = false, args = { 0/0        } },
+      { expected = false, args = { "abc"      } },
+      { expected = false, args = { nil        } },
+    },
+    Infinite = {
+      { expected = true , args = { math.huge  } },
+      { expected = true , args = { -math.huge } },
+      { expected = false, args = { 123        } },
+      { expected = false, args = { 0/0        } },
+      { expected = false, args = { "abc"      } },
+      { expected = false, args = { nil        } },
     },
     Truthy = {
       { expected = true , args = { 123   } },
