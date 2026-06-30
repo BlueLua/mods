@@ -1,8 +1,5 @@
 ---@meta _
 
----@module 'mods.list'
-local List
-
 ---Supported validation and type check names.
 ---@alias mods.validatorName
 ---| type       Any standard Lua type name (e.g., `"table"`, `"number"`).
@@ -72,10 +69,6 @@ local List
 ---@class mods.is
 ---@overload fun(v:any, tp:mods.validatorName):boolean
 local M = {}
-
----@private
----Names of filesystem path-check predicates shared by related modules/tests.
-M._path_validator_names = List({ "path", "block", "char", "dir", "fifo", "file", "link", "socket", "device" })
 
 ---
 ---Returns `true` when `v` is a boolean.

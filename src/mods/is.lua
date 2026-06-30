@@ -1,6 +1,5 @@
 local mods = require "mods"
 
-local List = mods.list
 local lfs = mods.utils.lazy_module("lfs") ---@module 'lfs'
 local abs = math.abs
 local huge = math.huge
@@ -52,7 +51,6 @@ end
 -------------------
 --- Path checks ---
 -------------------
-M._path_validator_names = List({ "path", "block", "char", "dir", "fifo", "file", "link", "socket", "device" })
 
 local function islink(p)
   return lfs.symlinkattributes(p, "mode") == "link"

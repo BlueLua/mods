@@ -13,7 +13,7 @@ local M = { messages = {} }
 ---@type modsValidatorMessages
 local messages = {}
 local validators = {}
-local validator_names = is._path_validator_names:toset()
+local validator_names = mods.set({ "path", "block", "char", "dir", "fifo", "file", "link", "socket", "device" })
 
 setmetatable(M.messages, {
   __index = messages,
