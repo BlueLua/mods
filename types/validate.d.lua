@@ -21,6 +21,7 @@
 ---@field float?    string Custom message template for float validator failures.
 ---@field infinite? string Custom message template for infinite validator failures.
 ---@field integer?  string Custom message template for integer validator failures.
+---@field nan?      string Custom message template for nan validator failures.
 ---@field true?     string Custom message template for true validator failures.
 ---@field truthy?   string Custom message template for truthy validator failures.
 ---
@@ -366,6 +367,22 @@ M.callable = function(v, msg) end
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
 M.integer = function(v, msg) end
+
+---
+---Returns `true` when `v` is a NaN (not-a-number) value. Otherwise returns
+---`false` and an error message.
+---
+---```lua
+---ok, err = validate.nan(0/0) --> true, nil
+---ok, err = validate.nan(1)   --> false, "nan value expected, got 1"
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@param msg? string Optional override template.
+---@return boolean isValid Whether the check succeeds.
+---@return string? err Error message when the check fails.
+M.nan = function(v, msg) end
 
 ---
 ---Returns `true` when `v` is truthy. Otherwise returns `false` and an error

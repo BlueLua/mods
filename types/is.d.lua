@@ -11,6 +11,7 @@
 ---| 'infinite' An infinite number.
 ---| 'falsy'    A falsy value (nil or false).
 ---| 'integer'  An integer number.
+---| 'nan'      A NaN (not-a-number) value.
 ---| 'true'     The boolean value true.
 ---| 'truthy'   A truthy value (not nil and not false).
 ---| 'block'    A block device path.
@@ -295,6 +296,20 @@ M.infinite = function(v) end
 ---@return boolean isInteger Whether the check succeeds.
 ---@nodiscard
 M.integer = function(v) end
+
+---
+---Returns `true` when `v` is a NaN (not-a-number) value.
+---
+---```lua
+---is.nan(0/0)
+---```
+---
+---@section Value Checks
+---@param v any Value to validate.
+---@return boolean isNan Whether the check succeeds.
+---@nodiscard
+M.nan = function(v) end
+
 
 ---
 ---Returns `true` when `v` is truthy.

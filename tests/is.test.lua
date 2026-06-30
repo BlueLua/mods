@@ -57,6 +57,8 @@ describe("mods.is", function()
       { expected = false, args = { math.huge, "finite"   } },
       { expected = true , args = { math.huge, "infinite" } },
       { expected = false, args = { 123      , "infinite" } },
+      { expected = true , args = { 0/0      , "nan"      } },
+      { expected = false, args = { 123      , "nan"      } },
       { expected = true , args = { 1.5      , "float"    } },
       { expected = false, args = { "abc"    , "float"    } },
       { expected = is_luajit, args = { ffi_cdata, "cdata" } },
@@ -130,6 +132,12 @@ describe("mods.is", function()
       { expected = false, args = { 0/0        } },
       { expected = false, args = { "abc"      } },
       { expected = false, args = { nil        } },
+    },
+    Nan = {
+      { expected = true , args = { 0/0   } },
+      { expected = false, args = { 123   } },
+      { expected = false, args = { "abc" } },
+      { expected = false, args = { nil   } },
     },
     Truthy = {
       { expected = true , args = { 123   } },

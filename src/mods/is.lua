@@ -35,6 +35,7 @@ function M.finite(v)   return type(v) == "number" and v < huge and v > -huge end
 function M.float(v)    return math_type(v) == "float" and v < huge and v > -huge end
 function M.infinite(v) return type(v) == "number" and abs(v) == huge          end
 function M.integer(v) return type(v) == "number" and v % 1 == 0 end
+function M.nan(v)     return type(v) == "number" and v ~= v end
 function M.truthy(v)  return v and true or false                end
 
 M["false"] = function (v) return v == false end
