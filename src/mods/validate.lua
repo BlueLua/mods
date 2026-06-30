@@ -43,7 +43,7 @@ local function render_msg(expected, tp, v, tmpl)
   expected = tostring(expected)
 
   if not tmpl then
-    if vt ~= "string" and path_validator_names[expected] then
+    if vt ~= "string" and rawget(path_validator_names, expected) then
       tmpl = messages.string
       expected = "string"
     else

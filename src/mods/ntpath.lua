@@ -97,14 +97,14 @@ local function is_reserved_name(name)
   for i = 1, #name do
     local c = sub(name, i, i)
     local b = byte(c)
-    if (b and b < 32) or reserved_char[c] then
+    if (b and b < 32) or rawget(reserved_char, c) then
       return true
     end
   end
 
   local base = match(name, "^[^%.]*") or name
   base = upper(gsub(base, " +$", ""))
-  return reserved_names[base] == true
+  return rawget(reserved_names, base) == true
 end
 
 function M.normcase(s)

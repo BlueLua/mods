@@ -430,11 +430,11 @@ function Duration:format(pattern)
       return DURATION_FORMATTERS[token](parts)
     end
   end, function(token)
-    if DURATION_TOKENS_2[token] then
+    if rawget(DURATION_TOKENS_2, token) then
       return DURATION_FORMATTERS[token](parts)
     end
   end, function(token)
-    if DURATION_TOKENS_1[token] then
+    if rawget(DURATION_TOKENS_1, token) then
       return DURATION_FORMATTERS[token](parts)
     end
   end)

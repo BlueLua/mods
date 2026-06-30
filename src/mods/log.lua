@@ -42,7 +42,7 @@ end
 
 local function validate_opts(opts)
   for k in pairs(opts) do
-    if not ALLOWED_OPTS[k] then
+    if not rawget(ALLOWED_OPTS, k) then
       error("unknown log option: " .. tostring(k), 3)
     end
   end

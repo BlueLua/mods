@@ -606,7 +606,7 @@ local function normalize_duration(fname, delta)
   local normalized = date_duration.zero_duration()
 
   for k, v in pairs(delta) do
-    if not DURATION_KEYS[k] then
+    if not rawget(DURATION_KEYS, k) then
       error(fmt("bad duration key %q", tostring(k)), 3)
     end
 
@@ -827,7 +827,7 @@ function Date:format(pattern)
     if preset then
       return self:format(preset)
     end
-    if DATE_TOKENS_4[token] then
+    if rawget(DATE_TOKENS_4, token) then
       return format_token(self, token, wday, h12)
     end
   end, function(token)
@@ -835,15 +835,15 @@ function Date:format(pattern)
     if preset then
       return self:format(preset)
     end
-    if DATE_TOKENS_3[token] then
+    if rawget(DATE_TOKENS_3, token) then
       return format_token(self, token, wday, h12)
     end
   end, function(token)
-    if token == "Do" or DATE_TOKENS_2[token] then
+    if token == "Do" or rawget(DATE_TOKENS_2, token) then
       return format_token(self, token, wday, h12)
     end
   end, function(token)
-    if DATE_TOKENS_1[token] then
+    if rawget(DATE_TOKENS_1, token) then
       return format_token(self, token, wday, h12)
     end
   end)

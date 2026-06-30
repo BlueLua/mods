@@ -41,7 +41,7 @@ local function split_parts(p)
     local next_i = i + 1
     local c = sub(p, i, i)
     local next_c = sub(p, next_i, next_i)
-    if c == "/" or (is_windows and c == "\\" and not escaped_glob_chars[next_c]) then
+    if c == "/" or (is_windows and c == "\\" and not rawget(escaped_glob_chars, next_c)) then
       parts[#parts + 1] = sub(p, start, i - 1)
       start = next_i
     end
@@ -346,7 +346,7 @@ function M.has_magic(s)
     local c = sub(s, i, i)
     if c == "\\" then
       i = i + 1
-    elseif magic_chars[c] then
+    elseif rawget(magic_chars, c) then
       return true
     end
     i = i + 1
