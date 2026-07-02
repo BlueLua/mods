@@ -70,7 +70,11 @@ function M.register(name, validator, tmpl)
     messages[key] = tmpl
   end
 
-  local wrapped = function(v, tmpl_)
+  local wrapped = function(v, tmpl_, optional)
+    if optional and v == nil then
+      return true
+    end
+
     if validator(v) then
       return true
     end
@@ -112,13 +116,17 @@ return setmetatable(M, {
   end,
 
   ---@param validator mods.validatorName
-  __call = function(_, v, validator, tmpl)
+  __call = function(_, v, validator, tmpl, optional)
     validator = validator or "truthy"
+    if optional and v == nil then
+      return true
+    end
+
     validate_template(3, validator, tmpl)
 
     local validate_ = validators[validator]
     if validate_ then
-      return validate_(v, tmpl)
+      return validate_(v, tmpl, optional)
     end
 
     local tp = type(v)

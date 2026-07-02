@@ -141,7 +141,7 @@
 ---
 ---@field messages modsValidatorMessages
 ---
----@overload fun(v:any, validator?:mods.validatorName, msg?:string):(boolean, string?)
+---@overload fun(v:any, validator?:mods.validatorName, msg?:string, optional?:boolean):(boolean, string?)
 local M = {}
 
 ---
@@ -156,9 +156,10 @@ local M = {}
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.boolean = function(v, msg) end
+M.boolean = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a function. Otherwise returns `false` and an error
@@ -173,9 +174,10 @@ M.boolean = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.Function = function(v, msg) end
+M.Function = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is `nil`. Otherwise returns `false` and an error
@@ -189,9 +191,10 @@ M.Function = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.Nil = function(v, msg) end
+M.Nil = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a number. Otherwise returns `false` and an error
@@ -205,9 +208,10 @@ M.Nil = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.number = function(v, msg) end
+M.number = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a string. Otherwise returns `false` and an error
@@ -221,9 +225,10 @@ M.number = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.string = function(v, msg) end
+M.string = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a table. Otherwise returns `false` and an error
@@ -237,9 +242,10 @@ M.string = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.table = function(v, msg) end
+M.table = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a thread. Otherwise returns `false` and an error
@@ -254,9 +260,10 @@ M.table = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.thread = function(v, msg) end
+M.thread = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a userdata value. Otherwise returns `false` and an error
@@ -270,9 +277,10 @@ M.thread = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.userdata = function(v, msg) end
+M.userdata = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a cdata value (LuaJIT only). Otherwise returns
@@ -285,9 +293,10 @@ M.userdata = function(v, msg) end
 ---@section Type Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.cdata = function(v, msg) end
+M.cdata = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is exactly `false`. Otherwise returns `false` and an
@@ -301,9 +310,10 @@ M.cdata = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.False = function(v, msg) end
+M.False = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is exactly `true`. Otherwise returns `false` and an
@@ -317,9 +327,10 @@ M.False = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.True = function(v, msg) end
+M.True = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is defined (not `nil`). Otherwise returns `false`
@@ -333,9 +344,10 @@ M.True = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.defined = function(v, msg) end
+M.defined = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is falsy. Otherwise returns `false` and an error
@@ -349,9 +361,10 @@ M.defined = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.falsy = function(v, msg) end
+M.falsy = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is callable. Otherwise returns `false` and an error
@@ -365,9 +378,10 @@ M.falsy = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.callable = function(v, msg) end
+M.callable = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is an integer. Otherwise returns `false` and an error
@@ -381,9 +395,10 @@ M.callable = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.integer = function(v, msg) end
+M.integer = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a NaN (not-a-number) value. Otherwise returns
@@ -397,9 +412,10 @@ M.integer = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.nan = function(v, msg) end
+M.nan = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is truthy. Otherwise returns `false` and an error
@@ -413,9 +429,10 @@ M.nan = function(v, msg) end
 ---@section Value Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.truthy = function(v, msg) end
+M.truthy = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a valid filesystem path. Otherwise returns `false`
@@ -428,9 +445,10 @@ M.truthy = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.path = function(v, msg) end
+M.path = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a block device path. Otherwise returns `false`
@@ -443,9 +461,10 @@ M.path = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.block_device = function(v, msg) end
+M.block_device = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a char device path. Otherwise returns `false` and
@@ -458,9 +477,10 @@ M.block_device = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.char_device = function(v, msg) end
+M.char_device = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a block or char device path. Otherwise returns
@@ -473,9 +493,10 @@ M.char_device = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.device = function(v, msg) end
+M.device = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a directory path. Otherwise returns `false` and an
@@ -488,9 +509,10 @@ M.device = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.dir = function(v, msg) end
+M.dir = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a FIFO path. Otherwise returns `false` and an error
@@ -503,9 +525,10 @@ M.dir = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.fifo = function(v, msg) end
+M.fifo = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a file path. Otherwise returns `false` and an error
@@ -518,9 +541,10 @@ M.fifo = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.file = function(v, msg) end
+M.file = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a symlink path. Otherwise returns `false` and an
@@ -533,9 +557,10 @@ M.file = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.symlink = function(v, msg) end
+M.symlink = function(v, msg, optional) end
 
 ---
 ---Returns `true` when `v` is a socket path. Otherwise returns `false` and an
@@ -548,9 +573,10 @@ M.symlink = function(v, msg) end
 ---@section Path Checks
 ---@param v any Value to validate.
 ---@param msg? string Optional override template.
+---@param optional? boolean Skip validation when `v` is `nil`.
 ---@return boolean isValid Whether the check succeeds.
 ---@return string? err Error message when the check fails.
-M.socket = function(v, msg) end
+M.socket = function(v, msg, optional) end
 
 ---
 ---Register or override a validator function by name.
