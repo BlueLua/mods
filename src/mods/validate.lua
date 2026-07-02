@@ -109,9 +109,12 @@ end
 messages.path = "{{value}} is not a valid path"
 
 return setmetatable(M, {
-  __index = function(_, k)
+  __index = function(t, k)
     if type(k) == "string" then
-      return validators[lower(k)]
+      local validator = validators[lower(k)]
+      if validator then
+        return rawset(t, k, validator)[k]
+      end
     end
   end,
 
