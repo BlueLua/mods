@@ -1,6 +1,6 @@
 require("mods._compat")
 
-return setmetatable({ _VERSION = "mods 0.6.0" }, { -- x-release-please-version
+return setmetatable({ _VERSION = "mods 1.0.0" }, { -- x-release-please-version
   __index = function(t, k)
     local modname = "mods." .. tostring(k)
     local ok, v = pcall(require, modname)
