@@ -6,6 +6,106 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://github.com/BlueLua/mods/compare/v0.6.0...v1.0.0) (2026-07-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **runtime:** drop is_luaXY version check flags
+* rename link path validator to symlink
+* rename block/char path validators to block_device/char_device
+* rename stringcase.capital to stringcase.capitalize
+* rename stringcase.swap to stringcase.swapcase
+* rename stringcase.replace to stringcase.delimit
+* rename tbl.pairmap to tbl.map
+* remove tbl.map
+* remove str.rindex
+* rename repr to stringify
+* rename Set to set
+* rename List to list
+
+### Features
+
+* add assert module for throwing validations ([33c813e](https://github.com/BlueLua/mods/commit/33c813e326ac254581a8bb01a694b5ff9508631e))
+* add cdata type predicate and validator ([edfe200](https://github.com/BlueLua/mods/commit/edfe200ebef7d3bb58325abf6d969294a527fad0))
+* add date ([893e091](https://github.com/BlueLua/mods/commit/893e091de2748790f9524b6b7b80aae8810ea3f4))
+* add date-duration helper ([4dff673](https://github.com/BlueLua/mods/commit/4dff67390c324dc0eddc73ed9f0aa650ee886c20))
+* add defined type predicate and validator ([31d1e99](https://github.com/BlueLua/mods/commit/31d1e996a8ab73c21c61b31bed5e07e195c595d1))
+* add duration ([b494976](https://github.com/BlueLua/mods/commit/b49497618c7dc473cf54efbc2a0d25ae690f4fe0))
+* add finite and infinite validators ([cb83e73](https://github.com/BlueLua/mods/commit/cb83e73ec3ab1a13a92f3634f29dc540553101b1))
+* add float check predicate and validator ([af9feb0](https://github.com/BlueLua/mods/commit/af9feb03ba584ca7ef7aa7b849e50c3d9f568c33))
+* add nan type checking and validation ([d9c5c69](https://github.com/BlueLua/mods/commit/d9c5c69647b9f156d4f31027d10fab5e3041e1f2))
+* **calendar:** add calendar module ([9bf2d82](https://github.com/BlueLua/mods/commit/9bf2d82c38346b490223ed13f6387df6097d7908))
+* **calendar:** add monthdays iterator ([76ac6f9](https://github.com/BlueLua/mods/commit/76ac6f9c80fca8f80959c4eaa05db0de891ce5ed))
+* **calendar:** expose module from mods entrypoint ([797a8f0](https://github.com/BlueLua/mods/commit/797a8f0024f0b12d36d891c2d12abbec2b65409d))
+* **compat:** add global compat shims ([7e8d773](https://github.com/BlueLua/mods/commit/7e8d77394400860aaa00ba3e7198367f64c86aa2))
+* **compat:** add loadfile ([69cec70](https://github.com/BlueLua/mods/commit/69cec70d0f0edfd96a1acac7f2ab8ace161241d5))
+* **compat:** add table.move shim ([c25a88b](https://github.com/BlueLua/mods/commit/c25a88bb4fa8b32b8ca24378fa4e3ff5f7c58cef))
+* **compat:** add xpcall ([c31c917](https://github.com/BlueLua/mods/commit/c31c9170b15957dfbb8793cf6f0f8f412672de9c))
+* **export:** show field types in generated module docs ([6a6c40d](https://github.com/BlueLua/mods/commit/6a6c40dce821d8ba1498a10a1bf611b9a7fb8552))
+* expose _VERSION ([1a8dd3f](https://github.com/BlueLua/mods/commit/1a8dd3f35047edbdc57b576d4e6bf72ac65063c3))
+* **fs:** add cd helper ([ae07571](https://github.com/BlueLua/mods/commit/ae07571a5186a2f7fe2341ecc7344dbd7bf29a41))
+* **fs:** add cwd helper ([9f45ced](https://github.com/BlueLua/mods/commit/9f45ced99a0695207a80d5bf326f71e4cf73fe60))
+* **fs:** add link and symlink helpers ([7580873](https://github.com/BlueLua/mods/commit/758087398c4a25fcb9c88f5e6c115dd978cca425))
+* **fs:** add names option to listdir ([0b6fcb3](https://github.com/BlueLua/mods/commit/0b6fcb3cf59242998b9c742af2c6732b2a2111cf))
+* **glob:** add filter helper ([1cd9134](https://github.com/BlueLua/mods/commit/1cd913499265663a977850b61b0e45de69a91f1b))
+* **glob:** add glob module ([1c77a48](https://github.com/BlueLua/mods/commit/1c77a4887fc4edefa716e1b8a1fbb81f6150fac9))
+* **glob:** support ignorecase in match ([9da7bf7](https://github.com/BlueLua/mods/commit/9da7bf7d228f5c7a3bfcc9f02ce703e77747f463))
+* **json:** add JSON encode/decode module ([539b8d1](https://github.com/BlueLua/mods/commit/539b8d16fed8e4d5cfcad113085a88e943654951))
+* **keyword:** add Lua 5.5 global keyword ([5b63659](https://github.com/BlueLua/mods/commit/5b63659728bc75a689e8e77b4797f96d524b6f16))
+* **List:** add mirror method ([c1084ad](https://github.com/BlueLua/mods/commit/c1084ad50b81ffeb56451f9fe0d176aadcdab7b2))
+* **List:** add shuffle ([709ec67](https://github.com/BlueLua/mods/commit/709ec675aeb4ef962e222d887e41c3fdd85a4d3f))
+* **list:** make List:len() handle gaps safely ([ededfef](https://github.com/BlueLua/mods/commit/ededfef3170ddf28c98d8d00b07cef6f189cdaa7))
+* **list:** support _tolist conversions ([194e0f2](https://github.com/BlueLua/mods/commit/194e0f2b493c8825dc2174448cd274a7ab55b836))
+* **log:** add logger module ([a6e5f30](https://github.com/BlueLua/mods/commit/a6e5f3039cfce1d9ad553d54575e9c814f40d475))
+* **repr:** add replacers and spacing options ([418a54e](https://github.com/BlueLua/mods/commit/418a54e4006415f32e87b145cdbaced654de7037))
+* **runtime:** add is_unix platform flag ([3842428](https://github.com/BlueLua/mods/commit/38424280148d6996e7d23e38901b59779fedf9f9))
+* **runtime:** add Lua 5.5 detection ([89b626a](https://github.com/BlueLua/mods/commit/89b626aa9ac45446d718bffb308baa1e3c7e115c))
+* **set:** add has ([4ac06b4](https://github.com/BlueLua/mods/commit/4ac06b48a6524c9c9cc442ed7ddbcba9e0ff0100))
+* **Set:** add mirror method ([5399db6](https://github.com/BlueLua/mods/commit/5399db6b96fb2c06a5dca8a99db60f784fa65af8))
+* **set:** support _toset conversions ([2696dce](https://github.com/BlueLua/mods/commit/2696dcef455ba7bea8ed9beac251a656fbd91646))
+* **stringify:** add opts table, newline, and omit_array_keys ([2c8fcb8](https://github.com/BlueLua/mods/commit/2c8fcb8a569b943909246872f6d4d7a555e02279))
+* **tbl:** add deep_equal ([3974857](https://github.com/BlueLua/mods/commit/397485722b3c8c671ec956bb11e5e0faa79c315a))
+* **validate:** add optional parameter support to validators ([1a6610b](https://github.com/BlueLua/mods/commit/1a6610b186c231c52c5fae531078bfac5b37bf68))
+
+
+### Bug Fixes
+
+* **docs:** override vite to patched 6.4.2 ([a310044](https://github.com/BlueLua/mods/commit/a31004437ba73e8a739e2f039710d19f82ffe2f5))
+* **fs:** reject non-directory paths in recursive rm ([37db8bd](https://github.com/BlueLua/mods/commit/37db8bd3d5ad31689842ba95d749b9eaa2bb2c92))
+* **fs:** samefile fallback and early path checks for dir ([ae99f3b](https://github.com/BlueLua/mods/commit/ae99f3ba2ced801ce35dd4c7aaedb73a88d57254))
+* **fs:** use rmdir for directory removal on Windows ([8e29672](https://github.com/BlueLua/mods/commit/8e29672236c102b8a42ef4d09b3bb4b72aae85c1))
+* **fs:** validate directory before listing on Windows ([5668d97](https://github.com/BlueLua/mods/commit/5668d97c5e8d29265d6d151272bc4d974a37b7d4))
+* **fs:** validate directory path in dir() on Windows ([cce1654](https://github.com/BlueLua/mods/commit/cce1654b187b7cb965d7920c03630793ebe3049d))
+* **glob:** avoid backslash path separator in recursive prefix ([f22e31d](https://github.com/BlueLua/mods/commit/f22e31d466baeb0b46f90f8ad3cce74676cbd169))
+* **is:** exclude Infinity and NaN from float predicate ([5ef0372](https://github.com/BlueLua/mods/commit/5ef0372efcd90fbab106b484f6996d62d216c19b))
+* preserve original error message on missing submodule ([64256a0](https://github.com/BlueLua/mods/commit/64256a006f0fba420f16a5a91ccbca0e51bd5d12))
+* **set:** use rawget for membership ([575a563](https://github.com/BlueLua/mods/commit/575a5636bdf8532605cbf9d5f13b491d1cfe278d))
+* **test:** resolve list and set assertions lazily ([f5f6603](https://github.com/BlueLua/mods/commit/f5f66031ae3b7bb57e478331ed8f2fcac58012d4))
+* **utils:** return empty string for nil args_repr ([80d177a](https://github.com/BlueLua/mods/commit/80d177ade020c99ae0227e350b7d2ee05b7fcabd))
+
+
+### Performance Improvements
+
+* use rawget for all Set key lookups ([9effc55](https://github.com/BlueLua/mods/commit/9effc559dc0f0e5aed4fc598e7efa701ebc0d619))
+* **validate:** cache validator lookups on first access ([618a1ec](https://github.com/BlueLua/mods/commit/618a1ec9875e163d7a7b6aec5e9b3d105f2ddc5e))
+
+
+### Code Refactoring
+
+* remove str.rindex ([fc40828](https://github.com/BlueLua/mods/commit/fc40828db911cce9d5f755300bb5dd07b24afabf))
+* remove tbl.map ([b63d1d5](https://github.com/BlueLua/mods/commit/b63d1d5004f1cc4d7b9f0d5667c69856cd639fb5))
+* rename block/char path validators to block_device/char_device ([8da6005](https://github.com/BlueLua/mods/commit/8da60056cfc60fd44460430b1e68d680a9537021))
+* rename link path validator to symlink ([6d95152](https://github.com/BlueLua/mods/commit/6d951521a0aebaab1b2ad4c49aa48cb399e73f61))
+* rename List to list ([084f9d1](https://github.com/BlueLua/mods/commit/084f9d13dea12ef405f403aa069169d2d0403d96))
+* rename repr to stringify ([54ae553](https://github.com/BlueLua/mods/commit/54ae553e959202783489ef66bfa17fcacf046292))
+* rename Set to set ([bf057a8](https://github.com/BlueLua/mods/commit/bf057a839f07aa40c28352468f4722a720e98f52))
+* rename stringcase.capital to stringcase.capitalize ([ae629d4](https://github.com/BlueLua/mods/commit/ae629d4dce43fb751c1fa3022b581ceaeaa3841a))
+* rename stringcase.replace to stringcase.delimit ([a50af41](https://github.com/BlueLua/mods/commit/a50af41b496e57bb9bd0fc8a2e0248c5858ed597))
+* rename stringcase.swap to stringcase.swapcase ([e32f124](https://github.com/BlueLua/mods/commit/e32f1245249a6661b1eba293eefb3ecda58eb9f6))
+* rename tbl.pairmap to tbl.map ([5aefaa6](https://github.com/BlueLua/mods/commit/5aefaa698f332a2ad28e9bbd7240fd05f93c2c39))
+* **runtime:** drop is_luaXY version check flags ([a553eff](https://github.com/BlueLua/mods/commit/a553effec394ba3b1fad8966d870bd0cd450c7cf))
+
 ## [0.6.0](https://github.com/luamod/mods/compare/v0.5.0...v0.6.0) (2026-03-23)
 
 
