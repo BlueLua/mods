@@ -120,22 +120,14 @@ return setmetatable(M, {
 
   ---@param validator mods.validatorName
   __call = function(_, v, validator, tmpl, optional)
-    validator = validator or "truthy"
     if optional and v == nil then
       return true
     end
 
-    validate_template(3, validator, tmpl)
-
-    local validate_ = validators[validator]
+    local validate_ = validators[validator or "truthy"]
     if validate_ then
+      validate_template(3, validator, tmpl)
       return validate_(v, tmpl, optional)
     end
-
-    local tp = type(v)
-    if tp == validator then
-      return true
-    end
-    return false, render_msg(validator, tp, v, tmpl)
   end,
 })
