@@ -28,6 +28,7 @@ local version = "mods 0.6.0" -- x-release-please-version
 ---@field tbl mods.tbl
 ---@field utils mods.utils
 ---@field validate mods.validate
+---@field assert mods.assert
 ---@field date mods.date
 ---@field duration mods.duration
 local M = {
